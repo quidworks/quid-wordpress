@@ -53,6 +53,30 @@ function fetchContent($postTitle) {
     return $results[0][0];
 }
 
+/* --------------------- DATABASE ---------------------*/
+
+// https://codex.wordpress.org/Creating_Tables_with_Plugins
+register_activation_hook( __FILE__, 'createPurchaseDatabase' );
+
+function createPurchaseDatabase() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . "quidPurchases";
+
+    if($wpdb->get_var("show tables like '$table_name'") != $table_name) {
+		$sql = "CREATE TABLE ".$table_name." (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            `user` VARCHAR(60) NOT NULL,
+            `product-id` VARCHAR(255) NOT NULL,
+            `product-title` varchar(255) NOT NULL,
+            PRIMARY KEY (id)
+        );";
+		
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+	}
+}
+
 /* --------------------- INITIALIZATION --------------------- */
 
 // This is included in the head of every wordpress page
