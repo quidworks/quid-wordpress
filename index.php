@@ -62,6 +62,7 @@ function quidInit() {
     print_r("
         <script src='http://localhost:8082/dist/client.bundle.js'></script>
         <link rel='stylesheet' type='text/css' href='http://localhost:8082/demos/quid.css' />
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Barlow:400' />
         <style>
         .wp-quid-error {
             font-family: sans-serif;
