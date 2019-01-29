@@ -3,8 +3,8 @@
 /*
 Plugin Name: QUID Article
 Description: Fetches article once user has paid.
-Version: 0.1.0
-Author: QUID
+Version: 1.0
+Author: QUID Works
 Author URI: https://quid.works
 */
 
@@ -136,8 +136,8 @@ add_action( 'wp_head', 'quidInit' );
 
 function quidInit() {
     print_r("
-        <script src='http://localhost:8082/dist/client.bundle.js'></script>
-        <link rel='stylesheet' type='text/css' href='http://localhost:8082/demos/quid.css' />
+        <script src='http://localhost:8082/dist/client.dev.js'></script>
+        <link rel='stylesheet' type='text/css' href='http://localhost:8082/assets/quid.css' />
         <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Barlow:400' />
         <style>
         .wp-quid-error {
@@ -158,7 +158,10 @@ function quidInit() {
             margin-right: 20px;
         }
         </style>
-        <script>_quid_wp_global = {};</script>
+        <script>
+            let qButton;
+            _quid_wp_global = {};
+        </script>
     ");
 }
 
@@ -174,7 +177,7 @@ function quidFooter() {
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     let target = document.getElementById(_quid_wp_global[res.productID].target);
-                    let postPayButtons = target.getElementsByClassName('quid-button');
+                    let postPayButtons = target.getElementsByClassName('quid-pay-button');
                     let validationErrorNode = target.getElementsByClassName('wp-quid-error')[0];
                     if (validationErrorNode) {
                         target.removeChild(validationErrorNode);
@@ -208,6 +211,7 @@ function quidFooter() {
                         for (let x = 0; x < postPayButtons.length; x += 1) {
                             postPayButtons[x].style.display = 'none';
                         }
+                        target.getElementsByClassName('quid-pay-buttons')[0].style.display = 'none';
                         target.innerHTML = target.innerHTML + ' ' + xhttp.responseText;
                     }
                 }
@@ -216,7 +220,8 @@ function quidFooter() {
             xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhttp.send(JSON.stringify({postTitle: _quid_wp_global[res.productID].title, paymentResponse: res}));
         }
-        function quidPay(el) {
+        function quidPay(button) {
+            const el = button.parentNode;
             quidInstance.requestPayment({
                 productID: el.getAttribute('quid-product-id'),
                 productURL: el.getAttribute('quid-product-url'),
@@ -227,7 +232,13 @@ function quidFooter() {
                 successCallback: quidFetchContent,
             });
         }
-        const quidInstance = new quid.Quid({onLoad: () => {}, baseURL: 'http://localhost:3000', apiKey: '".get_option('quid-publicKey')."'});
+        const quidInstance = new quid.Quid({
+            onLoad: () => {
+                document.getElementsByClassName('quid-pay-button')[0].
+            },
+            baseURL: 'http://localhost:3000',
+            apiKey: '".get_option('quid-publicKey')."',
+        });
         quidInstance.install();
         </script>
     ");
@@ -267,39 +278,51 @@ function quidButton($atts) {
     }
 
     return ('
-        <div>       
-            <button 
-                onclick="quidPay(this)"
-                quid-amount="'.$atts["price"].'"
-                quid-currency="CAD"
-                quid-product-id="'.$atts["id"].'"
-                quid-product-url="'.$atts["url"].'"
-                quid-product-name="'.$atts["name"].'"
-                quid-product-description="'.$atts["description"].'"
-                class="quid-pay-button"
-            >
-                <div class="quid-pay-button-flex"><div class="quid-pay-button-icon">
-                    <img src="https://js.quid.works/v1/assets/quid-button.png" />
-                </div><div class="quid-pay-button-price">'.$atts["price"].' CAD</div></div>
-            </button>
-            <button 
-                onclick="quidPay(this)"
-                quid-amount="0"
-                quid-currency="CAD"
-                quid-product-id="'.$atts["id"].'"
-                quid-product-url="'.$atts["url"].'"
-                quid-product-name="'.$atts["name"].'"
-                quid-product-description="'.$atts["description"].'"
-                class="quid-pay-button"
-            >
-                <div class="quid-pay-button-flex"><div class="quid-pay-button-icon">
-                <img src="https://js.quid.works/v1/assets/quid-button.png" />
-                </div><div class="quid-pay-button-price">Already Paid?</div></div>
-            </button>
-        </div>
-        <script>
-            _quid_wp_global["'.$atts["id"].'"] = {title: "'.$atts["title"].'", target: "'.$atts["target"].'"};
-        </script>
+    <div class="quid-pay-buttons">
+        <div id="'.$atts["id"].'"
+            quid-amount="'.$atts["price"].'"
+            quid-currency="CAD"
+            quid-product-id="'.$atts["id"].'"
+            quid-product-url="'.$atts["url"].'"
+            quid-product-name="'.$atts["name"].'"
+            quid-product-description="'.$atts["description"].'"
+            style="display: inline-flex"
+        ></div>
+        <div id="'.$atts["id"].'_free"
+            quid-amount="0"
+            quid-currency="CAD"
+            quid-product-id="'.$atts["id"].'"
+            quid-product-url="'.$atts["url"].'"
+            quid-product-name="'.$atts["name"].'"
+            quid-product-description="'.$atts["description"].'"
+            style="display: inline-flex"
+        ></div>
+    </div>
+    <script>
+        qButton = quid.createButton({
+            amount: "'.$atts["price"].'",
+            currency: "CAD",
+            theme: "quid",
+            palette: "default",
+            text: "PAY $'.$atts["price"].'",
+        });
+
+        qButton.setAttribute("onclick", "quidPay(this)");
+        document.getElementById("'.$atts["id"].'").appendChild(qButton);
+
+        qButton = quid.createButton({
+            amount: "0",
+            currency: "CAD",
+            theme: "quid",
+            palette: "default",
+            text: "Already Paid",
+        });
+
+        qButton.setAttribute("onclick", "quidPay(this)");
+        document.getElementById("'.$atts["id"].'_free").appendChild(qButton);
+
+        _quid_wp_global["'.$atts["id"].'"] = {title: "'.$atts["title"].'", target: "'.$atts["target"].'"};
+    </script>
     ');
 }
 
