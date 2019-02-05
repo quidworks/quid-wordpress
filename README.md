@@ -12,8 +12,8 @@ The Private Post's title must be the same as the title attribute of the button s
 The flow is as follows:
 
 1. The user loads the merchant's article page, this is the public page.
-2. The user clicks pay and when it succeeds, the callback that gets passed the response data is that which is specified as onPaymentSuccess within autoInit in the plugin.
-3. The callback gets the response and posts it to the server.
+2. The user clicks pay and when it succeeds, the callback that gets passed the response data is that which is specified as successCallback within requestPayment in the plugin.
+3. The callback gets the response and posts it to the wordpress server.
 4. Server hashes the response (including their api secret, minus the sig field) and compares it with the sig field in the response, if they match our plugin uses the response's productID field to query the additional content and send it back to the user.
 
 API keys need to be added at the bottom of the Settings/General page.

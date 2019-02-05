@@ -86,7 +86,6 @@ function storePurchase($userHash, $productID) {
         ) 
     );
     if($wpdb->last_error !== '') {
-        echo $wpdb->last_error;
         return false;
     }
     return true;
@@ -136,9 +135,8 @@ add_action( 'wp_head', 'quidInit' );
 
 function quidInit() {
     print_r("
-        <script src='http://localhost:8082/dist/client.dev.js'></script>
-        <link rel='stylesheet' type='text/css' href='http://localhost:8082/assets/quid.css' />
-        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Barlow:400' />
+        <script src='https://js.quid.works/v1/client.js'></script>
+        <link rel='stylesheet' type='text/css' href='https://js.quid.works/v1/assets/quid.css' />
         <style>
         .wp-quid-error {
             font-family: sans-serif;
@@ -216,7 +214,7 @@ function quidFooter() {
                     }
                 }
             };
-            xhttp.open('POST', '/wordpress/wp-admin/admin-post.php?action=quid-article', true);
+            xhttp.open('POST', '/wp-admin/admin-post.php?action=quid-article', true);
             xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhttp.send(JSON.stringify({postTitle: _quid_wp_global[res.productID].title, paymentResponse: res}));
         }
@@ -234,9 +232,12 @@ function quidFooter() {
         }
         const quidInstance = new quid.Quid({
             onLoad: () => {
-                document.getElementsByClassName('quid-pay-button')[0].
+                const quidButtons = document.getElementsByClassName('quid-pay-button');
+                for (let i = 0; i < quidButtons.length; i += 1) {
+                    quidButtons[i].disabled = false;
+                }
             },
-            baseURL: 'http://localhost:3000',
+            baseURL: 'https://app.quid.works',
             apiKey: '".get_option('quid-publicKey')."',
         });
         quidInstance.install();
@@ -304,7 +305,7 @@ function quidButton($atts) {
             currency: "CAD",
             theme: "quid",
             palette: "default",
-            text: "PAY $'.$atts["price"].'",
+            text: "Pay $'.$atts["price"].'",
         });
 
         qButton.setAttribute("onclick", "quidPay(this)");
