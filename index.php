@@ -423,7 +423,6 @@ function quidSlider($atts) {
         });
         qSlider.getElementsByClassName("quid-pay-button")[0].setAttribute("onclick", "quidPay(baseElement)");
         _quid_wp_global["'.$atts["id"].'"] = {paidText: "'.$atts["paid"].'"};
-        console.log(_quid_wp_global);
     </script>
     ';
     return $html;
