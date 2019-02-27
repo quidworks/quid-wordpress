@@ -64,7 +64,7 @@ function quidFooter() {
                     }
                     if (errorReturned !== '') {
                         payError.style.display = 'block';
-                        validationErrorNode.innerHTML += errorReturned;
+                        validationErrorNode.innerHTML = errorReturned;
                     } else {
                         if (_quid_wp_global[res.productID].required === 'Required') {
                             payButtons.style.display = 'none';
