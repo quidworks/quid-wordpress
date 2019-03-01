@@ -6,9 +6,9 @@ Description: Monetize your posts by either requiring payment to view more than t
 Version: 1.0
 Author: QUID Works
 Author URI: https://quid.works
+License: MIT
+License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 */
-
-/* ^^^^^ The above content is needed to show the plugin on the user's plugin page */
 
 require_once dirname( __FILE__ ) .'/payment.php';
 require_once dirname( __FILE__ ) .'/settings.php';

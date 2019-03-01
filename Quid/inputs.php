@@ -77,7 +77,7 @@ function quidButton() {
                 text: "Already Paid",
             });
     
-            qButton.setAttribute("onclick", "quidPay(this)");
+            qButton.setAttribute("onclick", "quidPay(this, true)");
             document.getElementById("'.$meta->id.'_free").appendChild(qButton);
             ';
         }
@@ -151,7 +151,6 @@ function quidSlider($atts) {
             alreadyPaid.setAttribute("quid-product-url", "'.$meta->url.'");
             alreadyPaid.setAttribute("quid-product-name", "'.$meta->name.'");
             alreadyPaid.setAttribute("quid-product-description", "'.$meta->description.'");
-            console.log(alreadyPaid);
 
             qSlider.getElementsByClassName("quid-slider-button-flex")[0].appendChild(alreadyPaid);
 
@@ -163,7 +162,7 @@ function quidSlider($atts) {
                 text: "Already Paid",
             });
     
-            qButton.setAttribute("onclick", "quidPay(this)");
+            qButton.setAttribute("onclick", "quidPay(this, true)");
             document.getElementById("'.$meta->id.'_free").appendChild(qButton);
             let alreadyPaidButton = alreadyPaid.getElementsByClassName("quid-pay-button")[0];
             alreadyPaidButton.style.display = "block";

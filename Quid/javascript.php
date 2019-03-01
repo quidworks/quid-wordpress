@@ -89,7 +89,7 @@ function quidFooter() {
             xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhttp.send(JSON.stringify({postid: _quid_wp_global[res.productID].postid, paymentResponse: res}));
         }
-        function quidPay(element) {
+        function quidPay(element, redeeming) {
             let el = element;
             let amount = 0;
             let quidCallback;
@@ -109,6 +109,7 @@ function quidFooter() {
                 price: amount,
                 currency: el.getAttribute('quid-currency'),
                 successCallback: quidCallback,
+                redeem: redeeming === true,
             });
         }
         const quidInstance = new quid.Quid({
