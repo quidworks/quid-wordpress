@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*
 Plugin Name: QUID
@@ -20,12 +20,11 @@ require_once dirname( __FILE__ ) .'/inputs.php';
 
 //$baseURL = 'http://localhost:3000';
 $baseURL = 'https://app.quid.works';
-//$wpRoot = '/wordpress';
-$wpRoot = '';
-
+$wpRoot = get_site_url();
 
 function filterPostContent($content) {
     global $post;
+    if ($post->post_type != 'post') return $content;
     $type = get_post_meta($post->ID, 'quid_field_type', true);
     $input = get_post_meta($post->ID, 'quid_field_input', true);
     if ($type == "Required") {

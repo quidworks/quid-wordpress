@@ -63,6 +63,14 @@ function validatePaymentResponse($paymentResponse) {
     $secret = get_option('quid-secretKey');
     $sig = base64_encode(hash_hmac('sha256', $payload, $secret, true));
 
+    if ($sig != $paymentResponse->sig) {
+        error_log(
+            print_r($paymentResponse, true)."\n".print_r('Sig: '.$sig, true)."\n",
+            3,
+            plugin_dir_path(__FILE__)."error_log"
+        );
+    }
+
     return ($sig == $paymentResponse->sig);
 }
 

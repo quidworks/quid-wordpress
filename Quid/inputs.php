@@ -117,17 +117,19 @@ function quidSlider($atts) {
         </div>
     </div>
 
-    <div
-        id="'.$meta->id.'"
-        class="quid-slider"
-        quid-currency="CAD"
-        quid-product-id="'.$meta->id.'"
-        quid-product-url="'.$meta->url.'"
-        quid-product-name="'.$meta->name.'"
-        quid-product-description="'.$meta->description.'"
-        quid-text="'.$meta->text.'"
-        quid-text-paid="'.$meta->paid.'"
-    ></div>
+    <div class="quid-pay-buttons">
+        <div
+            id="'.$meta->id.'"
+            class="quid-slider"
+            quid-currency="CAD"
+            quid-product-id="'.$meta->id.'"
+            quid-product-url="'.$meta->url.'"
+            quid-product-name="'.$meta->name.'"
+            quid-product-description="'.$meta->description.'"
+            quid-text="'.$meta->text.'"
+            quid-text-paid="'.$meta->paid.'"
+        ></div>
+    </div>
     <script>
         baseElement = document.getElementById("'.$meta->id.'");
         qSlider = quid.createSlider({

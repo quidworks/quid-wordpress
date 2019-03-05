@@ -3,6 +3,11 @@
 // This is included in the head of every wordpress page
 add_action( 'wp_head', 'quidInit' );
 
+// <script src='https://js.quid.works/v1/client.js'></script>
+// <link rel='stylesheet' type='text/css' href='https://js.quid.works/v1/assets/quid.css' />
+// <script src='http://localhost:8082/dist/client.dev.js'></script>
+// <link rel='stylesheet' type='text/css' href='http://localhost:8082/assets/quid.css' />
+
 // quid.works.client.js
 function quidInit() {
     print_r("
