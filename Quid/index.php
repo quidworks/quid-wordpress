@@ -21,7 +21,6 @@ require_once dirname( __FILE__ ) .'/inputs.php';
 // https://codex.wordpress.org/Creating_Tables_with_Plugins
 register_activation_hook( __FILE__, 'createPurchaseDatabase' );
 
-//$baseURL = 'http://localhost:3000';
 $baseURL = 'https://app.quid.works';
 $wpRoot = get_site_url();
 
