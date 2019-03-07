@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: QUID
-Description: Monetize your posts by either requiring payment to view more than the excerpt, or display the post while still leaving a way for the reader to leave a tip or donation.
+Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for content.
 Version: 1.0
 Author: QUID Works
 Author URI: https://quid.works
