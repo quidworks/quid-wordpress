@@ -20,13 +20,14 @@ function paymentCallback() {
     if ($cost != 0.000000000) {
         if (!storePurchase(
             $json->paymentResponse->userHash,
-            $json->paymentResponse->productID
-        )) {
+            $json->paymentResponse->productID,
+            false)
+        ) {
             print_r("database error");
             return;
         };
     } else {
-        if (!checkIfPurchasedAlready(
+        if (!hasPurchasedAlready(
             $json->paymentResponse->userHash,
             $json->paymentResponse->productID
         )) {
@@ -43,6 +44,21 @@ function tipCallback() {
         print_r("error");
         return;
     };
+
+    setcookie( "quidUserHash", $json->paymentResponse->userHash, time() + (86400 * 30), "/" );
+
+    $cost = (float)$json->paymentResponse->amount;
+    if ($cost != 0.000000000) {
+        if (!storePurchase(
+            $json->paymentResponse->userHash,
+            $json->paymentResponse->productID,
+            true)
+        ) {
+            print_r("error");
+            return;
+        };
+    }
+
     echo "success";
 }
 
@@ -74,16 +90,14 @@ function validatePaymentResponse($paymentResponse) {
     return ($sig == $paymentResponse->sig);
 }
 
-function checkIfPurchasedAlready($userHash, $productID) {
-    global $wpdb;
-    $sql = $wpdb->prepare("SELECT user FROM {$wpdb->dbname}.{$wpdb->prefix}quidPurchases WHERE user = '%s' AND `product-id` = '%s' ORDER BY ID DESC LIMIT 1", $userHash, $productID);
-    $results = $wpdb->get_results( $sql, ARRAY_N );
-    return sizeof($results) > 0;
-}
-
-function storePurchase($userHash, $productID) {
+function storePurchase($userHash, $productID, $isTip) {
     global $wpdb;
     $table_name = $wpdb->prefix . "quidPurchases";
+
+    $tip = 'false';
+    if ($isTip) {
+        $tip = 'true';
+    }
 
     $wpdb->insert( 
         $table_name, 
@@ -91,6 +105,7 @@ function storePurchase($userHash, $productID) {
             'time' => current_time( 'mysql' ), 
             'user' => $userHash,
             'product-id' => $productID,
+            'tip' => $tip,
         ) 
     );
     if($wpdb->last_error !== '') {

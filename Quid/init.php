@@ -15,8 +15,8 @@ function quidInit() {
         <link rel='stylesheet' type='text/css' href='https://js.quid.works/v1/assets/quid.css' />
         <style>
         .quid-pay-buttons {
-            margin: 0px!important;
-            text-align: center!important;
+            margin: 30px 0px 0px!important;
+            text-align: right!important;
         }
         .wp-quid-error {
             font-family: sans-serif;
@@ -35,9 +35,25 @@ function quidInit() {
             height: 25px;
             margin-right: 20px;
         }
+        .quid-slider-button-flex button {
+            height: 100%;
+        }
         .quid-slider-wrapper.quid-slider-default {
-            margin: 0px auto;
-            width: 300px;
+            margin: 0px 0px 0px auto;
+            width: 175px;
+        }
+        .already-paid .quid-pay-button {
+            background-color: transparent!important;
+            box-shadow: none!important;
+            color: rgba(0,0,0,0.8)!important;
+            margin-right: 2px;
+        }
+        .already-paid button.quid-pay-button.quid-pay-button-default:hover {
+            background-color: #eee!important;
+            filter: none!important;
+        }
+        .already-paid .quid-pay-button-icon {
+            display: none!important;
         }
         </style>
         <script>

@@ -59,7 +59,7 @@ function quidFooter() {
                             break;
                         case 'unpurchased':
                             errorReturned = 'You have not bought this yet';
-                            if (payButton.length > 1) payButton[1].style.display = 'none';
+                            if (payButton.length > 1) payButton[0].style.display = 'none';
                             break;
                     }
                     if (errorReturned !== '') {
@@ -89,7 +89,7 @@ function quidFooter() {
             xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhttp.send(JSON.stringify({postid: _quid_wp_global[res.productID].postid, paymentResponse: res}));
         }
-        function quidPay(element, redeeming) {
+        function quidPay(element, forceLogin) {
             let el = element;
             let amount = 0;
             let quidCallback;
@@ -109,7 +109,7 @@ function quidFooter() {
                 price: amount,
                 currency: el.getAttribute('quid-currency'),
                 successCallback: quidCallback,
-                redeem: redeeming === true,
+                forceLogin: forceLogin === true,
             });
         }
         const quidInstance = new quid.Quid({

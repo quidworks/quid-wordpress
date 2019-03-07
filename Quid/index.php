@@ -10,13 +10,16 @@ License: MIT
 License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 */
 
+require_once dirname( __FILE__ ) .'/database.php';
 require_once dirname( __FILE__ ) .'/payment.php';
 require_once dirname( __FILE__ ) .'/settings.php';
-require_once dirname( __FILE__ ) .'/database.php';
 require_once dirname( __FILE__ ) .'/init.php';
 require_once dirname( __FILE__ ) .'/postmeta.php';
 require_once dirname( __FILE__ ) .'/javascript.php';
 require_once dirname( __FILE__ ) .'/inputs.php';
+
+// https://codex.wordpress.org/Creating_Tables_with_Plugins
+register_activation_hook( __FILE__, 'createPurchaseDatabase' );
 
 //$baseURL = 'http://localhost:3000';
 $baseURL = 'https://app.quid.works';
