@@ -129,17 +129,19 @@ HTML;
     if ($meta->type == "Required") {
         $html .= <<<HTML
             <script>
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        if (xhttp.responseText !== '') {
-                            document.getElementById(`post-content-{$meta->id}`).innerHTML = xhttp.responseText;
+                (function() {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            if (xhttp.responseText !== '') {
+                                document.getElementById(`post-content-{$meta->id}`).innerHTML = xhttp.responseText;
+                            }
                         }
                     }
-                }
-                xhttp.open('POST', '{$wpRoot}/wp-admin/admin-post.php?action=purchase-check', true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send("postID={$post->ID}&productID={$meta->id}");
+                    xhttp.open('POST', '{$wpRoot}/wp-admin/admin-post.php?action=purchase-check', true);
+                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhttp.send("postID={$post->ID}&productID={$meta->id}");
+                })();
             </script>
 HTML;
     }
@@ -235,17 +237,19 @@ HTML;
     if ($meta->type == "Required") {
         $html .= <<<HTML
             <script>
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        if (xhttp.responseText !== '') {
-                            document.getElementById(`post-content-{$meta->id}`).innerHTML = xhttp.responseText;
+                (function() {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            if (xhttp.responseText !== '') {
+                                document.getElementById(`post-content-{$meta->id}`).innerHTML = xhttp.responseText;
+                            }
                         }
                     }
-                }
-                xhttp.open('POST', '{$wpRoot}/wp-admin/admin-post.php?action=purchase-check', true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send("postID={$post->ID}&productID={$meta->id}");
+                    xhttp.open('POST', '{$wpRoot}/wp-admin/admin-post.php?action=purchase-check', true);
+                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhttp.send("postID={$post->ID}&productID={$meta->id}");
+                })();
             </script>
 HTML;
     }
