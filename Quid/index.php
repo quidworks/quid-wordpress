@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: QUID
-Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for blog content.
+Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for content.
 Version: 1.0
 Author: QUID Works
 Author URI: https://quid.works
