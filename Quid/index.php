@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: QUID
-Description: Monetize your posts by either requiring payment to view more than the excerpt, or display the post while still leaving a way for the reader to leave a tip or donation.
+Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for blog content.
 Version: 1.0
 Author: QUID Works
 Author URI: https://quid.works
@@ -18,7 +18,6 @@ require_once dirname( __FILE__ ) .'/postmeta.php';
 require_once dirname( __FILE__ ) .'/javascript.php';
 require_once dirname( __FILE__ ) .'/inputs.php';
 
-//$baseURL = 'http://localhost:3000';
 $baseURL = 'https://app.quid.works';
 $wpRoot = get_site_url();
 
