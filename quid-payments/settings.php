@@ -83,35 +83,6 @@ function renderSettings() {
     echo $html;
 }
 
-// Gets rendered above the QUID setting fields on the Settings/General page
-function quidSettingsCallback() {
-    print_r("
-        <style>
-            .quid-setting {}
-            .quid-setting input {
-                width: 100%; padding: 5px; border-radius: 4px; 
-                border: solid 1px rgba(0,0,0,0.2); margin-bottom: 10px;
-            }
-            @media screen and (min-width: 901px) {
-                .quid-setting {width: 500px;}
-            }
-            @media screen and (max-width: 900px) {
-                .quid-setting {width: 100%;}
-            }
-        </style>
-        <div>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
-        <br/>
-    ");
-}
-
-// This is the actual Setting field, the name must correspond to the first value in the add_settings_field
-function renderPublicKeyField() {
-    print_r("<div class='quid-setting'><input name='quid-publicKey' value='".get_option('quid-publicKey')."' placeholder='Public API Key' /></div>");
-}
-function renderSecretKeyField() {
-    print_r("<div class='quid-setting'><input name='quid-secretKey' placeholder='Secret API Key' /></div>");
-}
-
 // This is the format the key needs to be in to verify the payment
 function hashKey($data) {
     return base64_encode(hash('sha256', $data, true));
