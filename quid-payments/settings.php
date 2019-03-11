@@ -16,7 +16,7 @@ function saveSettings() {
 }
 
 function addMenuPage() {
-    add_submenu_page( 'options-general.php', 'QUID Settings', 'QUID Settings', 'manage_options', 'quid_settings', 'renderSettings' );
+    add_submenu_page( 'options-general.php', 'QUID Payments', 'QUID Payments', 'manage_options', 'quid_settings', 'renderSettings' );
 }
 
 function renderSettings() {
@@ -50,11 +50,12 @@ function renderSettings() {
         }
     </style>
     <div class='quid-settings'>
-        <div class='quid-settings-title'>QUID Settings</div>
-        <div class='quid-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
+        <div class='quid-settings-title'>QUID Payments</div>
+        <div class='quid-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a>.</div>
+        <div class='quid-settings-subtitle'>Instructions for using the QUID Payments plugin can be found in <a target='_blank' href='https://how.quid.works/'>our knowledge base</a>.</div>
         <input id='quid-publicKey' style='margin-bottom: 10px' value='".get_option('quid-publicKey')."' placeholder='Public API Key' /><br />
         <input id='quid-secretKey' type='password' placeholder='Secret API Key' />
-        <p>secret key is not displayed to keep it extra safe</p>
+        <p>Your secret key is not displayed to keep it extra safe</p>
         <button type='button' onclick='submitQuidSettings()'>Save</button>
         <span class='quid-settings-response'></span>
     </div>
