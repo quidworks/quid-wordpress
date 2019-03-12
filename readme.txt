@@ -85,6 +85,24 @@ Check out our [support knowledge base](https://how.quid.works/) or start a suppo
 = 1.0 =
 This is the first version of the plugin.
 
+== Third Party Service ==
+
+The QUID Payments plugin relies on the QUID Payment service hosted at [app.quid.works](https://app.quid.works) for payment processing. In order to accept payments using this plugin you must [create a QUID merchant account](https://app.quid.works/signup?profile=developer) and, in doing so, accept the [Merchant Terms of Use](https://how.quid.works/terms-and-policies/merchant-terms-of-use).
+
+Visitors to your site will need a [QUID user account](https://app.quid.works/signup) in order to make payments. Users can use an existing QUID account or can complete the simple Signup & Pay process without leaving your site.
+
+For more information on the QUID payment service visit the [knowledge base](https://how.quid.works).
+
+== Privacy ==
+
+Using the QUID Payments plugin allows you to accept payments from visitors without having to collect any of their personal or payment card information. The visitor's information is collected directly by QUID and stored in our North American data centre environments. 
+
+When a visitor completes a purchase using QUID, we provide your WordPress site with a unique, randomly-generated user ID that identifies that user within your site. Each user ID created for the visitor is shared with only one merchant and each merchant will be given a different unique, randomly-generated user ID associated with that user's QUID account. This unique user ID allows the QUID Payments plugin to know which visitors have paid for which posts.
+
+When you [create a QUID Merchant Account](https://app.quid.works/signup?profile=developer) you provide your legal name (either your own name or that of your business). This name will be shared with users that have completed payments on your website using QUID. We may also include your business name or website address to promote your use of the QUID service to current and prospective QUID users.
+
+Read the [QUID Privacy Policy](https://how.quid.works/terms-and-policies/quid-privacy-policy) for more information.
+
 == Open Source ==
 
 The QUID Payments plugin is open source software. Feel free to contribute or fork this code on [GitHub](https://github.com/quidworks/quid-wordpress/).
