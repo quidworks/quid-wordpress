@@ -1,91 +1,70 @@
 <?php
 
-add_action( 'admin_post_nopriv_quid-settings', 'saveSettings' );
-add_action( 'admin_post_quid-settings', 'saveSettings' );
+namespace QUIDPaymentsSettings {
 
-add_action('admin_menu', 'addMenuPage');
+    class Settings {
 
-function saveSettings() {
-    if ($_POST['public'] !== '') {
-        update_option('quid-publicKey', $_POST['public']);
-    }
-    if ($_POST['secret'] !== '') {
-        update_option('quid-secretKey', hashKey($_POST['secret']));
-    }
-    echo 'success';
-}
+        function addScripts() {
+            $nonce = wp_create_nonce( 'quid-settings-nonce' );
+            $quidSettingsURL = admin_url('admin-post.php?action=quid-settings&_wpnonce='.$nonce);
 
-function addMenuPage() {
-    add_submenu_page( 'options-general.php', 'QUID Payments', 'QUID Payments', 'manage_options', 'quid_settings', 'renderSettings' );
-}
+            wp_register_style( 'css_quid_settings', plugins_url( 'css/settings.css', __FILE__ ) );
+            wp_enqueue_style( 'css_quid_settings' );
 
-function renderSettings() {
-    global $wpRoot;
-    $html = "
-    <style>
-        .quid-settings {
-            margin-top: 30px;
+            wp_register_script( 'quid_settings', plugins_url( 'js/settings.js', __FILE__ ) );
+            $data = array(
+                'settings_url' => $quidSettingsURL,
+            );
+            wp_localize_script( 'quid_settings', 'dataSettingsJS', $data );
+            wp_enqueue_script( 'quid_settings' );
         }
-        .quid-settings-response {
-            padding-left: 5px;
-        }
-        .quid-settings input {
-            width: 400px;
-            max-width: 100%;
-            padding: 5px; border-radius: 4px; 
-            border: solid 1px rgba(0,0,0,0.2);
-        }
-        .quid-settings p {
-            margin-top: 0px;
-            padding: 0px 5px;
-            opacity: 0.7;
-            font-size: 12px;
-        }
-        .quid-settings-title {
-            font-size: 24px;
-        }
-        .quid-settings-subtitle {
-            font-size: 15px;
-            margin: 25px 0px;
-        }
-    </style>
-    <div class='quid-settings'>
-        <div class='quid-settings-title'>QUID Payments</div>
-        <div class='quid-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a>.</div>
-        <div class='quid-settings-subtitle'>Instructions for using the QUID Payments plugin can be found in <a target='_blank' href='https://how.quid.works/'>our knowledge base</a>.</div>
-        <input id='quid-publicKey' style='margin-bottom: 10px' value='".get_option('quid-publicKey')."' placeholder='Public API Key' /><br />
-        <input id='quid-secretKey' type='password' placeholder='Secret API Key' />
-        <p>Your secret key is not displayed to keep it extra safe</p>
-        <button type='button' onclick='submitQuidSettings()'>Save</button>
-        <span class='quid-settings-response'></span>
-    </div>
-    <script>
-    function submitQuidSettings() {
-        let public = document.getElementById('quid-publicKey').value;
-        let secret = document.getElementById('quid-secretKey').value;
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                const messageOutput = document.getElementsByClassName('quid-settings-response')[0];
-                if (xhttp.responseText === 'success') {
-                    messageOutput.innerHTML = 'Success';
-                } else {
-                    messageOutput.innerHTML = 'Something went wrong';
-                }
+
+        function saveSettings() {
+            $nonce = $_REQUEST['_wpnonce'];
+            if ( ! wp_verify_nonce( $nonce, 'quid-settings-nonce' ) ) {
+                die( 'Security check' ); 
             }
-        }
-        xhttp.open('POST', '".$wpRoot."/wp-admin/admin-post.php?action=quid-settings', true);
-        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhttp.send('public='+public+'&secret='+secret);
-    }
-    </script>
-    ";
-    echo $html;
-}
 
-// This is the format the key needs to be in to verify the payment
-function hashKey($data) {
-    return base64_encode(hash('sha256', $data, true));
+            $public = sanitize_text_field($_POST['public']);
+            $secret = sanitize_text_field($_POST['secret']);
+
+            if ($public !== '') {
+                update_option('quid-publicKey', $public);
+            }
+            if ($secret !== '') {
+                update_option('quid-secretKey', $this->hashKey($secret));
+            }
+            echo 'success';
+        }
+
+        function addMenuPage() {
+            add_submenu_page( 'options-general.php', 'QUID Settings', 'QUID Settings', 'manage_options', 'quid_settings', array($this, 'renderSettings') );
+        }
+
+        function renderSettings() {
+            $quidPublicKey = get_option('quid-publicKey');
+
+            $html = <<<HTML
+            <div class='quid-pay-settings'>
+                <div class='quid-pay-settings-title'>QUID Settings</div>
+                <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
+                <input id='quid-publicKey' style='margin-bottom: 10px' value='{$quidPublicKey}' placeholder='Public API Key' /><br />
+                <input id='quid-secretKey' type='password' placeholder='Secret API Key' />
+                <p>secret key is not displayed to keep it extra safe</p>
+                <button type='button' onclick='submitQuidSettings()'>Save</button>
+                <span class='quid-pay-settings-response'></span>
+            </div>
+HTML;
+            echo $html;
+        }
+
+        // This is the format the key needs to be in to verify the payment
+        function hashKey($data) {
+            return base64_encode(hash('sha256', $data, true));
+        }
+
+    }
+
 }
 
 ?>

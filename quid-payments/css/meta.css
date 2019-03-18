@@ -1,0 +1,17 @@
+.quid-post-meta {
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+}
+
+.quid-post-meta div {
+    width: 25%;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.quid-post-meta input, .quid-post-meta select {
+    width: 100%;
+    border-radius: 4px;
+    border: solid 1px rgba(0, 0, 0, 0.25);
+}

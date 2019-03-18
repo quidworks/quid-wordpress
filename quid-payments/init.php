@@ -1,69 +1,29 @@
 <?php
 
-// This is included in the head of every wordpress page
-add_action( 'wp_head', 'quidInit' );
-
 // <script src='https://js.quid.works/v1/client.js'></script>
 // <link rel='stylesheet' type='text/css' href='https://js.quid.works/v1/assets/quid.css' />
 // <script src='http://localhost:8082/dist/client.dev.js'></script>
 // <link rel='stylesheet' type='text/css' href='http://localhost:8082/assets/quid.css' />
 
 // quid.works.client.js
-function quidInit() {
-    print_r("
-        <script src='https://js.quid.works/v1/client.js'></script>
-        <link rel='stylesheet' type='text/css' href='https://js.quid.works/v1/assets/quid.css' />
-        <style>
-        .quid-pay-buttons {
-            margin: 30px 0px 0px!important;
-            text-align: right!important;
+namespace QUIDPaymentsInit {
+
+    class Init {
+
+        public function addScripts() {
+            wp_register_script( 'js_quid_client', 'https://js.quid.works/v1/client.js' );
+            wp_enqueue_script( 'js_quid_client' );
+            wp_register_script( 'js_quid_init', plugins_url( 'js/init.js', __FILE__ ) );
+            wp_enqueue_script( 'js_quid_init' );
+
+            wp_register_style( 'css_quid_client', 'https://js.quid.works/v1/assets/quid.css' );
+            wp_enqueue_style( 'css_quid_client' );
+            wp_register_style( 'css_quid_init', plugins_url( 'css/init.css', __FILE__ ) );
+            wp_enqueue_style( 'css_quid_init' );
         }
-        .wp-quid-error {
-            font-family: sans-serif;
-            font-size: 15px;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            color: rgba(0,0,0,0.6);
-            border-radius: 4px;
-            padding: 10px 20px;
-            margin: 10px 0px;
-            background-color: #eee;
-            box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.2);
-        }
-        .wp-quid-error-image {
-            height: 25px;
-            margin-right: 20px;
-        }
-        .quid-slider-button-flex button {
-            height: 100%;
-        }
-        .quid-slider-wrapper.quid-slider-default {
-            margin: 0px 0px 0px auto;
-            width: 175px;
-        }
-        .already-paid .quid-pay-button {
-            background-color: transparent!important;
-            box-shadow: none!important;
-            color: rgba(0,0,0,0.8)!important;
-            margin-right: 2px;
-        }
-        .already-paid button.quid-pay-button.quid-pay-button-default:hover {
-            background-color: #eee!important;
-            filter: none!important;
-        }
-        .already-paid .quid-pay-button-icon {
-            display: none!important;
-        }
-        </style>
-        <script>
-            let qButton;
-            let qSlider;
-            let baseElement;
-            let alreadyPaid;
-            _quid_wp_global = {};
-        </script>
-    ");
+
+    }
+
 }
 
 ?>
