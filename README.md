@@ -1,4 +1,6 @@
 # quid-wordpress
-Wordpress Plugin
 
-https://how.quid.works/selling-with-quid/wordpress-pt-2-setup-the-plugin
+## QUID Payments WordPress Plugin
+
+For documentation on implementing and configuring the QUID Payments plugin, please refer to the [QUID quickstart for WordPress](https://how.quid.works/selling-with-quid/quid-quickstart-for-wordpress).
+
