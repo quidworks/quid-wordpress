@@ -10,7 +10,7 @@ quidPaymentsButton = quid.createButton({
 quidPaymentsButton.setAttribute("onclick", "quidPay(this, true)");
 document.getElementById(`${dataButtonJS.meta_id}_free`).appendChild(quidPaymentsButton);
 
-(function () {
+(function (dataButtonJS) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -22,4 +22,4 @@ document.getElementById(`${dataButtonJS.meta_id}_free`).appendChild(quidPayments
   xhttp.open('POST', dataButtonJS.purchase_check_url, true);
   xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhttp.send(`postID=${dataButtonJS.post_id}&productID=${dataButtonJS.meta_id}`);
-})();
+})(dataButtonJS);
