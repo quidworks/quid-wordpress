@@ -28,7 +28,8 @@
 
 .quid-slider-wrapper.quid-slider-default {
     margin: 0px 0px 0px auto;
-    width: 175px;
+    width: auto;
+    display: inline-block;
 }
 
 .quid-pay-already-paid .quid-pay-button {
