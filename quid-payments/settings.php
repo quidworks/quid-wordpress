@@ -48,6 +48,7 @@ namespace QUIDPaymentsSettings {
             <div class='quid-pay-settings'>
                 <div class='quid-pay-settings-title'>QUID Settings</div>
                 <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
+                <div id='quid-connect-container'></div>
                 <input id='quid-publicKey' style='margin-bottom: 10px' value='{$quidPublicKey}' placeholder='Public API Key' /><br />
                 <input id='quid-secretKey' type='password' placeholder='Secret API Key' />
                 <p>secret key is not displayed to keep it extra safe</p>

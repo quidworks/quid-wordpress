@@ -1,4 +1,3 @@
-console.log('HELLO');
 quidPaymentsButton = quid.createButton({
   amount: "0",
   currency: "CAD",

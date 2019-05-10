@@ -29,3 +29,21 @@
     font-size: 15px;
     margin: 25px 0px;
 }
+
+.quid-connect {
+    margin-bottom: 20px;
+}
+
+.quid-connect img {
+    height: 15px !important;
+    width: 15px !important;
+}
+
+.quid-connect-link {
+    height: 100% !important;
+}
+
+.quid-connect-mark {
+    font-family: sans-serif !important;
+    font-size: 13px !important;
+}

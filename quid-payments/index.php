@@ -12,23 +12,23 @@ License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 
 namespace QUIDPayments {
 
+    require_once dirname( __FILE__ ) .'/init.php';
+    require_once dirname( __FILE__ ) .'/javascript.php';
     require_once dirname( __FILE__ ) .'/database.php';
     require_once dirname( __FILE__ ) .'/payment.php';
     require_once dirname( __FILE__ ) .'/settings.php';
-    require_once dirname( __FILE__ ) .'/init.php';
     require_once dirname( __FILE__ ) .'/postmeta.php';
-    require_once dirname( __FILE__ ) .'/javascript.php';
     require_once dirname( __FILE__ ) .'/inputs.php';
     require_once dirname(__FILE__) .'/post.php';
 
     use QUIDPaymentsDatabase as Database;
-    use QUIDPaymentsInit as Init;
     use QUIDPaymentsInputs as Inputs;
     use QUIDPaymentsFooter as Footer;
     use QUIDPaymentsPayment as Payment;
     use QUIDPaymentsPost as Post;
     use QUIDPaymentsMeta as Meta;
     use QUIDPaymentsSettings as Settings;
+    use QUIDPaymentsInit as Init;
 
     $baseURL = 'https://app.quid.works';
 
@@ -57,6 +57,7 @@ namespace QUIDPayments {
     add_action( 'admin_menu', array(new Settings\Settings(), 'addMenuPage') );
 
     add_action( 'wp_enqueue_scripts', array(new Init\Init(), 'addScripts') );
+    add_action( 'admin_enqueue_scripts', array(new Init\Init(), 'addScripts') );
 
     add_action( 'admin_enqueue_scripts', array(new Settings\Settings(), 'addScripts') );
 

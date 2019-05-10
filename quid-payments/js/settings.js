@@ -16,3 +16,13 @@ function submitQuidSettings() {
   xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhttp.send('public=' + public + '&secret=' + secret);
 }
+
+window.onload = () => {
+  var qc = new quid.QuidConnect();
+  var container = document.getElementById('quid-connect-container');
+
+  qc.installAPIKeyButton(container, function(apiKey) {
+    // apiKey contains the generated API key value
+    console.log(apiKey);
+  });
+}
