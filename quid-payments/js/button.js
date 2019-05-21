@@ -1,17 +1,17 @@
-_quid_wp_global[dataButtonJS.meta_id] = {
-  postid: dataButtonJS.post_id,
-  required: dataButtonJS.meta_type,
-  paidText: dataButtonJS.meta_paid,
-  target: `post-content-${dataButtonJS.meta_id}`,
+_quid_wp_global[dataJS.meta_id] = {
+  postid: dataJS.post_id,
+  required: dataJS.meta_type,
+  paidText: dataJS.meta_paid,
+  target: `post-content-${dataJS.meta_id}`,
 };
 
 quidPaymentsButton = quid.createButton({
-  amount: dataButtonJS.meta_price,
+  amount: dataJS.meta_price,
   currency: "CAD",
   theme: "quid",
   palette: "default",
-  text: `Pay ${dataButtonJS.meta_price}`,
+  text: `Pay ${dataJS.meta_price}`,
 });
 
-quidPaymentsButton.setAttribute("onclick", "quidPay(this)");
-document.getElementById(dataButtonJS.meta_id).appendChild(quidPaymentsButton);
+quidPaymentsButton.getElementsByClassName("quid-pay-button")[0].setAttribute("onclick", `quidPay('${dataJS.meta_id}')`);
+document.getElementById(dataJS.meta_id).appendChild(quidPaymentsButton);

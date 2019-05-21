@@ -1,97 +1,165 @@
-function quidSubmitTip(res) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      let slider = document.getElementById(res.productID);
-      let target = document.getElementById(_quid_wp_global[res.productID].target);
-      let payError = target.parentNode.getElementsByClassName('quid-pay-error-container')[0];
-      if (xhttp.responseText !== 'error') {
-        if (_quid_wp_global[res.productID].required === 'Required') {
-          document.getElementById(_quid_wp_global[res.productID].postid + '-excerpt').style.display = 'none';
-          target.innerHTML = xhttp.responseText;
-          slider.style.display = 'none';
-          payError.style.display = 'none';
-        } else {
-          payError.style.display = 'none';
-          slider.getElementsByTagName('button')[0].getElementsByClassName('quid-pay-button-price')[0].innerHTML = _quid_wp_global[res.productID].paidText;
-          setTimeout(() => {
-            slider.style.display = 'none';
-          }, 2000);
-        }
-      } else {
-        payError.style.display = 'block';
-      }
-    }
-  };
-  if (_quid_wp_global[res.productID].required === 'Required') {
-    xhttp.open('POST', dataIndexJS.article_url, true);
-  } else {
-    xhttp.open('POST', dataIndexJS.tip_url, true);
+class quidSliderPayCallback {
+  constructor() {
+    this.xhttp = new XMLHttpRequest();
   }
-  xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhttp.send(JSON.stringify({ postid: _quid_wp_global[res.productID].postid, paymentResponse: res }));
-}
-function quidFetchContent(res) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      let target = document.getElementById(_quid_wp_global[res.productID].target);
-      let payButton = target.parentNode.getElementsByClassName('quid-pay-button');
-      let payButtons = target.parentNode.getElementsByClassName('quid-pay-buttons')[0];
-      let payError = target.parentNode.getElementsByClassName('quid-pay-error-container')[0];
-      let validationErrorNode = document.getElementById('quid-error-' + _quid_wp_global[res.productID].postid);
-      let errorReturned = '';
-      switch (xhttp.responseText) {
-        case 'validation failed':
-          errorReturned = 'Payment failed to go through';
-          break;
-        case 'database error':
-          errorReturned = 'database error';
-          break;
-        case 'unpurchased':
-          errorReturned = 'You have not bought this yet';
-          if (payButton.length > 1) payButton[0].style.display = 'none';
-          break;
-      }
-      if (errorReturned !== '') {
-        payError.style.display = 'block';
-        validationErrorNode.innerHTML = errorReturned;
-      } else {
-        if (_quid_wp_global[res.productID].required === 'Required') {
-          payButtons.style.display = 'none';
-          payError.style.display = 'none';
-          document.getElementById(_quid_wp_global[res.productID].postid + '-excerpt').style.display = 'none';
-          target.innerHTML = xhttp.responseText;
-        } else {
-          payButton[0].getElementsByClassName('quid-pay-button-price')[0].innerHTML = _quid_wp_global[res.productID].paidText;
-          setTimeout(() => {
-            payButtons.style.display = 'none';
-            payError.style.display = 'none';
-          }, 2000);
-        }
-      }
-    }
-  };
-  if (_quid_wp_global[res.productID].required === 'Required') {
-    xhttp.open('POST', dataIndexJS.article_url, true);
-  } else {
-    xhttp.open('POST', dataIndexJS.tip_url, true);
+
+  getRelevantElements() {
+    this.paymentContainer = document.getElementById(`quid-pay-buttons-${this.paymentResponse.productID}`);
+    this.target = document.getElementById(_quid_wp_global[this.paymentResponse.productID].target);
+    this.payError = this.paymentContainer.previousElementSibling;
+    this.excerptContainer = document.getElementById(_quid_wp_global[this.paymentResponse.productID].postid + '-excerpt');
+    this.buttonPrice = this.paymentContainer.getElementsByClassName('quid-pay-button-price')[0];
   }
-  xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhttp.send(JSON.stringify({ postid: _quid_wp_global[res.productID].postid, paymentResponse: res }));
+
+  handleRequestError() {
+    if (this.xhttp.responseText === 'error') {
+      this.payError.style.display = 'block';
+      return true;
+    }
+    return false;
+  }
+
+  finalizeRequiredPayment() {
+    this.excerptContainer.style.display = 'none';
+    this.target.innerHTML = this.xhttp.responseText;
+    this.paymentContainer.style.display = 'none';
+    this.payError.style.display = 'none';
+  }
+
+  finalizeOptionalPayment() {
+    this.payError.style.display = 'none';
+    this.buttonPrice.innerHTML = _quid_wp_global[this.paymentResponse.productID].paidText;
+
+    setTimeout(() => {
+      this.paymentContainer.style.display = 'none';
+    }, 2000);
+  }
+
+  paymentCallback = (response) => {
+    this.paymentResponse = response;
+    this.paymentRequired = _quid_wp_global[response.productID].required === 'Required';
+    this.sendRequest();
+  }
+
+  requestCallback = () => {
+    if (this.xhttp.readyState != 4 || this.xhttp.status != 200) return;
+
+    this.getRelevantElements();
+
+    if (this.handleRequestError()) return;
+
+    if (this.paymentRequired) this.finalizeRequiredPayment();
+    else this.finalizeOptionalPayment();
+  }
+
+  sendRequest() {
+    this.xhttp.onreadystatechange = this.requestCallback;
+
+    if (this.paymentRequired) this.xhttp.open('POST', dataIndexJS.article_url, true);
+    else this.xhttp.open('POST', dataIndexJS.tip_url, true);
+
+    this.xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    this.xhttp.send(JSON.stringify({ postid: _quid_wp_global[this.paymentResponse.productID].postid, paymentResponse: this.paymentResponse }));
+  }
 }
-function quidPay(element, forceLogin) {
-  let el = element;
+
+class quidButtonPayCallback {
+  constructor() {
+    this.xhttp = new XMLHttpRequest();
+    this.paymentResponse = null;
+  }
+
+  getRelevantElements() {
+    const res = this.paymentResponse;
+    this.target = document.getElementById(_quid_wp_global[res.productID].target);
+    this.buttonsContainer = document.getElementById(`quid-pay-buttons-${res.productID}`);
+    this.payButton = this.buttonsContainer.getElementsByClassName('quid-pay-button');
+    this.payError = this.buttonsContainer.previousElementSibling;
+    this.validationErrorNode = this.payError.getElementsByClassName('quid-pay-error')[0];
+  }
+
+  getReturnedError() {
+    switch (this.xhttp.responseText) {
+      case 'validation failed':
+        return 'Payment failed to go through';
+      case 'database error':
+        return 'database error';
+      case 'unpurchased':
+        if (this.payButton.length > 1) this.payButton[0].style.display = 'none';
+        return 'You have not bought this yet';
+      default:
+        return '';
+    }
+  }
+
+  returnedError() {
+    const errorReturned = this.getReturnedError();
+    if (errorReturned !== '') {
+      this.payError.style.display = 'block';
+      this.validationErrorNode.innerHTML = errorReturned;
+      return true;
+    }
+    return false;
+  }
+
+  finalizeOptionalPayment() {
+    this.payButton[0].getElementsByClassName('quid-pay-button-price')[0].innerHTML = _quid_wp_global[this.paymentResponse.productID].paidText;
+    
+    setTimeout(() => {
+      this.buttonsContainer.style.display = 'none';
+      this.payError.style.display = 'none';
+    }, 2000);
+  }
+
+  finalizeRequiredPayment() {
+    this.buttonsContainer.style.display = 'none';
+    this.payError.style.display = 'none';
+    document.getElementById(_quid_wp_global[this.paymentResponse.productID].postid + '-excerpt').style.display = 'none';
+    this.target.innerHTML = this.xhttp.responseText;
+  }
+
+  paymentCallback = (response) => {
+    this.paymentResponse = response;
+    this.paymentRequired = _quid_wp_global[response.productID].required === 'Required';
+    console.log(_quid_wp_global[response.productID]);
+    this.sendRequest();
+  }
+
+  requestCallback = () => {
+    if (this.xhttp.readyState != 4 || this.xhttp.status != 200) return;
+
+    this.getRelevantElements();
+
+    if (this.returnedError()) return;
+  
+    if (this.paymentRequired) this.finalizeRequiredPayment();
+    else this.finalizeOptionalPayment();
+  }
+
+  sendRequest = () => {
+    this.xhttp.onreadystatechange = this.requestCallback;
+
+    if (this.paymentRequired) this.xhttp.open('POST', dataIndexJS.article_url, true);
+    else this.xhttp.open('POST', dataIndexJS.tip_url, true);
+
+    this.xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    this.xhttp.send(JSON.stringify({ postid: _quid_wp_global[this.paymentResponse.productID].postid, paymentResponse: this.paymentResponse }));
+  }
+}
+
+function quidPay(productID, forceLogin) {
+  let el = document.getElementById(productID);
+  let quidCallback = () => {};
   let amount = 0;
-  let quidCallback;
-  if (element.tagName === 'BUTTON') {
-    el = element.parentNode;
-    amount = parseFloat(el.getAttribute('quid-amount'));
-    quidCallback = quidFetchContent;
+
+  if (el.classList.contains('quid-slider')) {
+    amount = parseFloat(el.getElementsByClassName('noUi-handle')[0].getAttribute('aria-valuetext'));
+    quidCallback = new quidSliderPayCallback().paymentCallback;
   } else {
-    amount = parseFloat(element.getElementsByClassName('noUi-handle')[0].getAttribute('aria-valuetext'));
-    quidCallback = quidSubmitTip;
+    amount = parseFloat(el.getAttribute('quid-amount'));
+    quidCallback = new quidButtonPayCallback().paymentCallback;
   }
+
   quidInstance.requestPayment({
     productID: el.getAttribute('quid-product-id'),
     productURL: el.getAttribute('quid-product-url'),
@@ -103,6 +171,7 @@ function quidPay(element, forceLogin) {
     forceLogin: forceLogin === true,
   });
 }
+
 const quidInstance = new quid.Quid({
   onLoad: () => {
     const quidButtons = document.getElementsByClassName('quid-pay-button');
@@ -117,4 +186,5 @@ const quidInstance = new quid.Quid({
   baseURL: dataIndexJS.base_url,
   apiKey: dataIndexJS.public_key,
 });
+
 quidInstance.install();

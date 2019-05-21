@@ -30,13 +30,17 @@ namespace QUIDPayments {
     use QUIDPaymentsMeta as Meta;
     use QUIDPaymentsSettings as Settings;
 
-    $baseURL = 'https://app.quid.works';
+    //$baseURL = 'https://app.quid.works';
+    $baseURL = 'http://localhost:3000';
 
     // https://codex.wordpress.org/Creating_Tables_with_Plugins
     register_activation_hook( __FILE__, array(new Database\Database(), 'createPurchaseDatabase') );
 
     add_action( 'wp_footer', array(new Footer\Footer(), 'js') );
 
+    add_shortcode('quid-slider', array(new Inputs\Inputs(), 'quidSlider'));
+    add_shortcode('quid-button', array(new Inputs\Inputs(), 'quidButton'));
+    
     add_filter( 'the_content', array(new Post\Post(), 'filterPostContent') );
 
     add_action( 'admin_post_nopriv_purchase-check', array(new Inputs\Inputs(), 'returnUserCookie') );
@@ -52,14 +56,13 @@ namespace QUIDPayments {
     add_action( 'admin_post_quid-tip', array(new Payment\Payment(), 'tipCallback') );
 
     add_action( 'save_post', array(new Meta\Meta(), 'save_postdata') );
-    add_action( 'add_meta_boxes', array(new Meta\Meta(), 'add_custom_box') );
+    add_action( 'add_meta_boxes', array(new Meta\Meta(), 'addMetaFields') );
 
     add_action( 'admin_menu', array(new Settings\Settings(), 'addMenuPage') );
 
     add_action( 'wp_enqueue_scripts', array(new Init\Init(), 'addScripts') );
 
     add_action( 'admin_enqueue_scripts', array(new Settings\Settings(), 'addScripts') );
-
 }
 
 ?>
