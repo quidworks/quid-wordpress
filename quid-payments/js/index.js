@@ -1,6 +1,9 @@
 class quidSliderPayCallback {
   constructor() {
     this.xhttp = new XMLHttpRequest();
+
+    this.paymentCallback = this.paymentCallback.bind(this);
+    this.requestCallback = this.requestCallback.bind(this);
   }
 
   getRelevantElements() {
@@ -35,13 +38,13 @@ class quidSliderPayCallback {
     }, 2000);
   }
 
-  paymentCallback = (response) => {
+  paymentCallback(response) {
     this.paymentResponse = response;
     this.paymentRequired = _quid_wp_global[response.productID].required === 'Required';
     this.sendRequest();
   }
 
-  requestCallback = () => {
+  requestCallback() {
     if (this.xhttp.readyState != 4 || this.xhttp.status != 200) return;
 
     this.getRelevantElements();
@@ -67,6 +70,10 @@ class quidButtonPayCallback {
   constructor() {
     this.xhttp = new XMLHttpRequest();
     this.paymentResponse = null;
+
+    this.paymentCallback = this.paymentCallback.bind(this);
+    this.requestCallback = this.requestCallback.bind(this);
+    this.sendRequest = this.sendRequest.bind(this);
   }
 
   getRelevantElements() {
@@ -118,13 +125,13 @@ class quidButtonPayCallback {
     this.target.innerHTML = this.xhttp.responseText;
   }
 
-  paymentCallback = (response) => {
+  paymentCallback(response) {
     this.paymentResponse = response;
     this.paymentRequired = _quid_wp_global[response.productID].required === 'Required';
     this.sendRequest();
   }
 
-  requestCallback = () => {
+  requestCallback() {
     if (this.xhttp.readyState != 4 || this.xhttp.status != 200) return;
 
     this.getRelevantElements();
@@ -135,7 +142,7 @@ class quidButtonPayCallback {
     else this.finalizeOptionalPayment();
   }
 
-  sendRequest = () => {
+  sendRequest() {
     this.xhttp.onreadystatechange = this.requestCallback;
 
     if (this.paymentRequired) this.xhttp.open('POST', dataIndexJS.article_url, true);
@@ -172,7 +179,7 @@ function quidPay(productID, forceLogin) {
 }
 
 const quidInstance = new quid.Quid({
-  onLoad: () => {
+  onLoad: function() {
     const quidButtons = document.getElementsByClassName('quid-pay-button');
     const quidSliders = document.getElementsByClassName('quid-pay-slider');
     for (let i = 0; i < quidButtons.length; i += 1) {
