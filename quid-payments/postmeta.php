@@ -21,19 +21,19 @@ namespace QUIDPaymentsMeta {
             );
         }
 
-        public function add_custom_box() {
+        public function addMetaFields() {
             $screens = ['post', 'wporg_cpt'];
             foreach ($screens as $screen) {
                 add_meta_box(
                     'wporg_box_id',           // Unique ID
                     'QUID - Post Settings',      // Box title
-                    array( $this, 'custom_box_html' ),  // Content callback
+                    array( $this, 'renderMetaFieldsTemplate' ),  // Content callback, must be of type callable
                     $screen                   // Post type
                 );
             }
         }
 
-        public function custom_box_html($post) {
+        public function renderMetaFieldsTemplate($post) {
             $meta = $this->getMetaFields($post);
             wp_register_style( 'css_quid_meta', plugins_url( 'css/meta.css', __FILE__ ) );
             wp_enqueue_style( 'css_quid_meta' );
