@@ -13,7 +13,7 @@ quidPaymentsButton = quid.createButton({
   text: "Already Paid",
 });
 
-quidPaymentsButton.setAttribute("onclick", `quidPay('${dataJS.meta_id}', true)`);
+quidPaymentsButton.setAttribute("onclick", `quidPay('${dataJS.meta_id}_free', true)`);
 document.getElementById(`${dataJS.meta_id}_free`).appendChild(quidPaymentsButton);
 
 (function () {

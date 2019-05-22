@@ -30,8 +30,7 @@ namespace QUIDPayments {
     use QUIDPaymentsMeta as Meta;
     use QUIDPaymentsSettings as Settings;
 
-    //$baseURL = 'https://app.quid.works';
-    $baseURL = 'http://localhost:3000';
+    $baseURL = 'https://app.quid.works';
 
     // https://codex.wordpress.org/Creating_Tables_with_Plugins
     register_activation_hook( __FILE__, array(new Database\Database(), 'createPurchaseDatabase') );

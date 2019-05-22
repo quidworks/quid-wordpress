@@ -1,5 +1,3 @@
-console.log('JAVASCRIPT');
-
 _quid_wp_global[dataJS.meta_id] = {
   postid: dataJS.post_id,
   required: dataJS.meta_type,
