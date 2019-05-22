@@ -43,12 +43,10 @@ class QuidPostMeta {
   }
 
   setMinPrice(price) {
-    console.log(price);
     this.minPrice = price;
   }
 
   setMaxPrice(price) {
-    console.log(price);
     this.maxPrice = price;
   }
 }

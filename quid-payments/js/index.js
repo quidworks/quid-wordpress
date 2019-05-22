@@ -121,7 +121,6 @@ class quidButtonPayCallback {
   paymentCallback = (response) => {
     this.paymentResponse = response;
     this.paymentRequired = _quid_wp_global[response.productID].required === 'Required';
-    console.log(_quid_wp_global[response.productID]);
     this.sendRequest();
   }
 
