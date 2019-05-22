@@ -126,7 +126,7 @@ namespace QUIDPaymentsPayment {
         }
 
         function fetchContent($postid) {
-            return wpautop(get_post_field('post_content', $postid));
+            return do_shortcode(get_post_field('post_content', $postid));
         }
 
     }
