@@ -17,11 +17,13 @@ quidPaymentsButton.setAttribute("onclick", `quidPay('${dataJS.meta_id}_free', tr
 document.getElementById(`${dataJS.meta_id}_free`).appendChild(quidPaymentsButton);
 
 (function () {
+  const contentDiv = document.getElementById(`post-content-${dataJS.meta_id}`);
+  if (!contentDiv) return;
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       if (xhttp.responseText !== '') {
-        document.getElementById(`post-content-${dataJS.meta_id}`).innerHTML = xhttp.responseText;
+        contentDiv.innerHTML = xhttp.responseText;
       }
     }
   }
