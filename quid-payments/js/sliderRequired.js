@@ -24,7 +24,7 @@ try {
     currency: "CAD",
     theme: "quid",
     palette: "default",
-    text: "Already Paid",
+    text: "Restore Purchases",
   });
 
   quidPaymentsButton.setAttribute("onclick", `quidPay('${dataJS.meta_id}_free', true)`);
