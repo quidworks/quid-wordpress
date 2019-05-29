@@ -39,7 +39,7 @@ namespace QUIDPaymentsPost {
 HTML;
 
             $html .= $inputs->quidSlider($meta);
-            $html .= `</div>`;
+            $html .= '</div>';
 
             return $html;
         }

@@ -8,7 +8,7 @@ try {
   };
 
   quidPaymentsAlreadyPaid = document.createElement("DIV");
-  quidPaymentsAlreadyPaid.setAttribute("id", `${dataJS.meta_id}_free`);
+  quidPaymentsAlreadyPaid.setAttribute("id", `${dataJS.meta_domID}_free`);
   quidPaymentsAlreadyPaid.setAttribute("quid-amount", "0");
   quidPaymentsAlreadyPaid.setAttribute("class", "quid-pay-already-paid");
   quidPaymentsAlreadyPaid.setAttribute("quid-currency", "CAD");
@@ -27,8 +27,8 @@ try {
     text: "Already Paid",
   });
 
-  quidPaymentsButton.setAttribute("onclick", `quidPay('${dataJS.meta_id}_free', true)`);
-  document.getElementById(`${dataJS.meta_id}_free`).prepend(quidPaymentsButton);
+  quidPaymentsButton.setAttribute("onclick", `quidPay('${dataJS.meta_domID}_free', true)`);
+  document.getElementById(`${dataJS.meta_domID}_free`).prepend(quidPaymentsButton);
   let quidPaymentsAlreadyPaidButton = quidPaymentsAlreadyPaid.getElementsByClassName("quid-pay-button")[0];
   quidPaymentsAlreadyPaidButton.style.display = "block";
 

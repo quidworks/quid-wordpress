@@ -62,7 +62,7 @@ namespace QUIDPaymentsMeta {
                 </div>
                 <div>
                     <label>Product ID</label>
-                    <input name="quid_field_id" placeholder="ID" value="<?php echo $meta['id'] ?>" />
+                    <input name="quid_field_id" placeholder="Product ID" value="<?php echo $meta['id'] ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>

@@ -27,6 +27,7 @@ namespace QUIDPaymentsSettings {
 
             $public = sanitize_text_field($_POST['public']);
             $secret = sanitize_text_field($_POST['secret']);
+            $align = sanitize_text_field($_POST['align']);
 
             if ($public !== '') {
                 update_option('quid-publicKey', $public);
@@ -34,6 +35,9 @@ namespace QUIDPaymentsSettings {
             if ($secret !== '') {
                 update_option('quid-secretKey', $this->hashKey($secret));
             }
+
+            update_option('quid-align', $align);
+
             echo 'success';
         }
 
@@ -47,6 +51,14 @@ namespace QUIDPaymentsSettings {
             $html = <<<HTML
             <div class='quid-pay-settings'>
                 <div class='quid-pay-settings-title'>QUID Settings</div>
+
+                <div class='quid-pay-settings-title'>Default Button Alignment</div>
+                <select id='quid-align' class='quid-pay-settings-dropdown'>
+                    <option>Right</option>
+                    <option>Center</option>
+                    <option>Left</option>
+                </select>
+
                 <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
                 <input id='quid-publicKey' style='margin-bottom: 10px' value='{$quidPublicKey}' placeholder='Public API Key' /><br />
                 <input id='quid-secretKey' type='password' placeholder='Secret API Key' />

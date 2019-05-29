@@ -6,7 +6,7 @@
     padding-left: 5px;
 }
 
-.quid-pay-settings input {
+.quid-pay-settings input, .quid-pay-settings-dropdown {
     width: 400px;
     max-width: 100%;
     padding: 5px;
@@ -23,6 +23,11 @@
 
 .quid-pay-settings-title {
     font-size: 24px;
+}
+
+.quid-pay-settings-title {
+    font-size: 15px;
+    margin: 25px 0px 10px;
 }
 
 .quid-pay-settings-subtitle {

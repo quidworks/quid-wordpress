@@ -1,5 +1,6 @@
 class quidSliderPayCallback {
-  constructor() {
+  constructor(domID) {
+    this.domID = domID;
     this.xhttp = new XMLHttpRequest();
 
     this.paymentCallback = this.paymentCallback.bind(this);
@@ -7,7 +8,7 @@ class quidSliderPayCallback {
   }
 
   getRelevantElements() {
-    this.paymentContainer = document.getElementById(`quid-pay-buttons-${this.paymentResponse.productID}`);
+    this.paymentContainer = document.getElementById(`quid-pay-buttons-${this.domID}`);
     this.target = document.getElementById(_quid_wp_global[this.paymentResponse.productID].target);
     this.payError = this.paymentContainer.previousElementSibling;
     this.excerptContainer = document.getElementById(_quid_wp_global[this.paymentResponse.productID].postid + '-excerpt');
@@ -67,7 +68,8 @@ class quidSliderPayCallback {
 }
 
 class quidButtonPayCallback {
-  constructor() {
+  constructor(domID) {
+    this.domID = domID;
     this.xhttp = new XMLHttpRequest();
     this.paymentResponse = null;
 
@@ -79,7 +81,7 @@ class quidButtonPayCallback {
   getRelevantElements() {
     const res = this.paymentResponse;
     this.target = document.getElementById(_quid_wp_global[res.productID].target);
-    this.buttonsContainer = document.getElementById(`quid-pay-buttons-${res.productID}`);
+    this.buttonsContainer = document.getElementById(`quid-pay-buttons-${this.domID}`);
     this.payButton = this.buttonsContainer.getElementsByClassName('quid-pay-button');
     this.payError = this.buttonsContainer.previousElementSibling;
     this.validationErrorNode = this.payError.getElementsByClassName('quid-pay-error')[0];
@@ -153,17 +155,22 @@ class quidButtonPayCallback {
   }
 }
 
-function quidPay(productID, forceLogin) {
-  let el = document.getElementById(productID);
+function quidPay(paymentContainerInstanceID, forceLogin) {
+  let el = document.getElementById(paymentContainerInstanceID);
   let quidCallback = () => {};
   let amount = 0;
 
+  const freeIndex = paymentContainerInstanceID.indexOf('_free');
+  if (freeIndex !== -1) {
+    paymentContainerInstanceID = paymentContainerInstanceID.substring(0, freeIndex);
+  }
+
   if (el.classList.contains('quid-slider')) {
     amount = parseFloat(el.getElementsByClassName('noUi-handle')[0].getAttribute('aria-valuetext'));
-    quidCallback = new quidSliderPayCallback().paymentCallback;
+    quidCallback = new quidSliderPayCallback(paymentContainerInstanceID).paymentCallback;
   } else {
     amount = parseFloat(el.getAttribute('quid-amount'));
-    quidCallback = new quidButtonPayCallback().paymentCallback;
+    quidCallback = new quidButtonPayCallback(paymentContainerInstanceID).paymentCallback;
   }
 
   quidInstance.requestPayment({

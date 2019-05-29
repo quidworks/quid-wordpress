@@ -31,12 +31,28 @@ namespace QUIDPaymentsInputs {
             else { echo ''; return; }
         }
 
+        private function buttonAlignment($shortcodeArg) {
+            $alignOption = get_option('quid-align');
+            if ($alignOption != "") {
+                return $alignOption;
+            }
+
+            if (isset($shortcodeArg)) {
+                if ($shortcodeArg == 'center') return 'center';
+                if ($shortcodeArg == 'left') return 'flex-start';
+            }
+            return 'flex-end';
+        }
+
         function quidButton($meta) {
             global $post;
+            $microtimeIdentifier = microtime();
             $requiredFields = ['id', 'price', 'description', 'name', 'url'];
 
             if (!isset($meta['type'])) $meta['type'] = 'Optional';
             if (!isset($meta['paid'])) $meta['paid'] = 'Thanks!';
+
+            $meta['dom-id'] = $meta['id'].$microtimeIdentifier;
 
             foreach ($requiredFields as $field) {
                 if (!isset($meta[$field])) return "";
@@ -49,11 +65,11 @@ namespace QUIDPaymentsInputs {
                         Payment validation failed
                     </div>
                 </div>
-                <div id="quid-pay-buttons-{$meta['id']}" class="quid-pay-buttons">
+                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons" style="display: flex; justify-content: {$this->buttonAlignment($meta['align'])};">
 HTML;
                     if ($meta['type'] == "Required") {
                         $html .= <<<HTML
-                        <div id="{$meta['id']}_free"
+                        <div id="{$meta['dom-id']}_free"
                             class="quid-pay-already-paid"
                             quid-amount="0"
                             quid-currency="CAD"
@@ -67,7 +83,7 @@ HTML;
                     }
 
                     $html .= <<<HTML
-                    <div id="{$meta['id']}"
+                    <div id="{$meta['dom-id']}"
                         quid-amount="{$meta['price']}"
                         quid-currency="CAD"
                         quid-product-id="{$meta['id']}"
@@ -79,14 +95,14 @@ HTML;
                 </div>
 HTML;
 
-            $microtimeIdentifier = microtime();
-
             $this->enqueueJS(
                 'js_quid_button_'.$microtimeIdentifier,
                 plugins_url( 'js/button.js', __FILE__ ),
                 array(
                     'post_id' => $post->ID,
+                    'meta_name' => $meta['name'],
                     'meta_id' => $meta['id'],
+                    'meta_domID' => $meta['dom-id'],
                     'meta_type' => $meta['type'],
                     'meta_price' => $meta['price'],
                     'meta_paid' => $meta['paid'],
@@ -104,7 +120,9 @@ HTML;
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,
+                        'meta_name' => $meta['name'],
                         'meta_id' => $meta['id'],
+                        'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],
@@ -117,6 +135,7 @@ HTML;
 
         function quidSlider($meta) {
             global $post;
+            $microtimeIdentifier = microtime();
             $requiredFields = ['id', 'price', 'description', 'name', 'url'];
 
             if (!isset($meta['type'])) $meta['type'] = 'Optional';
@@ -125,6 +144,8 @@ HTML;
             if (!isset($meta['text'])) $meta['text'] = 'Give';
             if (!isset($meta['initial'])) $meta['initial'] = '1.00';
             if (!isset($meta['paid'])) $meta['paid'] = 'Thanks!';
+
+            $meta['dom-id'] = $meta['id'].$microtimeIdentifier;
 
             foreach ($requiredFields as $field) {
                 if (!isset($meta[$field])) return "";
@@ -138,9 +159,9 @@ HTML;
                     </div>
                 </div>
 
-                <div id="quid-pay-buttons-{$meta['id']}" class="quid-pay-buttons">
+                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons" style="display: flex; justify-content: {$this->buttonAlignment($meta['align'])};">
                     <div
-                        id="{$meta['id']}"
+                        id="{$meta['dom-id']}"
                         class="quid-slider"
                         quid-currency="CAD"
                         quid-product-id="{$meta['id']}"
@@ -153,8 +174,6 @@ HTML;
                 </div>
 HTML;
 
-            $microtimeIdentifier = microtime();
-
             wp_register_style( 'css_quid_init', plugins_url( 'css/init.css', __FILE__ ) );
             wp_enqueue_style( 'css_quid_init' );
 
@@ -164,6 +183,7 @@ HTML;
                 array(
                     'post_id' => $post->ID,
                     'meta_id' => $meta['id'],
+                    'meta_domID' => $meta['dom-id'],
                     'meta_initial' => $meta['initial'],
                     'meta_type' => $meta['type'],
                     'meta_text' => $meta['text'],
@@ -189,6 +209,7 @@ HTML;
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,
                         'meta_id' => $meta['id'],
+                        'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],

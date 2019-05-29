@@ -15,7 +15,7 @@ try {
     text: `Pay ${dataJS.meta_price}`,
   });
 
-  quidPaymentsButton.getElementsByClassName("quid-pay-button")[0].setAttribute("onclick", `quidPay('${dataJS.meta_id}')`);
-  document.getElementById(dataJS.meta_id).appendChild(quidPaymentsButton);
+  quidPaymentsButton.getElementsByClassName("quid-pay-button")[0].setAttribute("onclick", `quidPay('${dataJS.meta_domID}')`);
+  document.getElementById(dataJS.meta_domID).appendChild(quidPaymentsButton);
 
 } catch(e) {}

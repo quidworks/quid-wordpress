@@ -1,5 +1,5 @@
 .quid-pay-buttons {
-    margin: 30px 0px 0px !important;
+    margin: 30px 0px 30px 0px !important;
     text-align: right !important;
 }
 
@@ -22,14 +22,19 @@
     margin-right: 20px;
 }
 
+.quid-slider {
+    margin: initial;
+}
+
 .quid-slider-button-flex button {
     height: 100%;
 }
 
 .quid-slider-wrapper.quid-slider-default {
     margin: 0px 0px 0px auto;
-    width: auto;
+    min-width: 150px;
     display: inline-block;
+    width: auto;
 }
 
 .quid-pay-already-paid .quid-pay-button {

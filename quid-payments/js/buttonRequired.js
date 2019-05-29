@@ -15,8 +15,8 @@ try {
     text: "Already Paid",
   });
 
-  quidPaymentsButton.setAttribute("onclick", `quidPay('${dataJS.meta_id}_free', true)`);
-  document.getElementById(`${dataJS.meta_id}_free`).appendChild(quidPaymentsButton);
+  quidPaymentsButton.setAttribute("onclick", `quidPay('${dataJS.meta_domID}_free', true)`);
+  document.getElementById(`${dataJS.meta_domID}_free`).appendChild(quidPaymentsButton);
 
   (function () {
     const contentDiv = document.getElementById(`post-content-${dataJS.meta_id}`);
