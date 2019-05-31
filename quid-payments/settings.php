@@ -36,6 +36,11 @@ namespace QUIDPaymentsSettings {
                 update_option('quid-secretKey', $this->hashKey($secret));
             }
 
+            $align = strtolower($align);
+            if ($align == 'centre') {
+                $align = 'center';
+            }
+
             update_option('quid-align', $align);
 
             echo 'success';
@@ -47,6 +52,24 @@ namespace QUIDPaymentsSettings {
 
         function renderSettings() {
             $quidPublicKey = get_option('quid-publicKey');
+            $quidAlign = get_option('quid-align');
+
+            $quidAlignLeft = "";
+            $quidAlignRight = "";
+            $quidAlignCenter = "";
+
+            switch ($quidAlign) {
+                case 'center':
+                    $quidAlignCenter = "selected";
+                    break;
+                case 'left':
+                    $quidAlignLeft = "selected";
+                    break;
+                default:
+                    $quidAlignRight = "selected";
+                    break;
+            }
+
 
             $html = <<<HTML
             <div class='quid-pay-settings'>
@@ -54,9 +77,15 @@ namespace QUIDPaymentsSettings {
 
                 <div class='quid-pay-settings-title'>Default Button Alignment</div>
                 <select id='quid-align' class='quid-pay-settings-dropdown'>
-                    <option>Right</option>
-                    <option>Center</option>
-                    <option>Left</option>
+HTML;
+            
+                $html .= '
+                    <option value="right" '.$quidAlignRight.'}>Right</option>
+                    <option value="center" '.$quidAlignCenter.'>Center</option>
+                    <option value="left" '.$quidAlignLeft.'}>Left</option>
+                ';
+
+                $html .= <<<HTML
                 </select>
 
                 <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>

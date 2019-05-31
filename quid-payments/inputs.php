@@ -37,7 +37,7 @@ namespace QUIDPaymentsInputs {
                 if ($shortcodeArg == 'left') return 'flex-start';
                 if ($shortcodeArg == 'right') return 'flex-end';
             }
-            
+
             $alignOption = get_option('quid-align');
             if ($alignOption != "") {
                 return $alignOption;
@@ -67,7 +67,7 @@ namespace QUIDPaymentsInputs {
                         Payment validation failed
                     </div>
                 </div>
-                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons" style="display: flex; justify-content: {$this->buttonAlignment($meta['align'])};">
+                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons for-product-{$meta['id']}" style="display: flex; justify-content: {$this->buttonAlignment($meta['align'])};">
 HTML;
                     if ($meta['type'] == "Required") {
                         $html .= <<<HTML
@@ -111,7 +111,7 @@ HTML;
                 )
             );
 
-            # If required, add restore purchases button beside the pay button.
+            # If required, add already paid button beside the pay button.
             if ($meta['type'] == "Required") {
                 $nonce = wp_create_nonce( 'quid-cookie-nonce' );
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
@@ -161,7 +161,7 @@ HTML;
                     </div>
                 </div>
 
-                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons" style="display: flex; justify-content: {$this->buttonAlignment($meta['align'])};">
+                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons  for-product-{$meta['id']}" style="display: flex; justify-content: {$this->buttonAlignment($meta['align'])};">
                     <div
                         id="{$meta['dom-id']}"
                         class="quid-slider"
@@ -200,7 +200,7 @@ HTML;
             );
 
 
-            # If required, add restore purchases button beside the pay button.
+            # If required, add already paid button beside the pay button.
             if ($meta['type'] == "Required") {
                 $nonce = wp_create_nonce( 'quid-cookie-nonce' );
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);

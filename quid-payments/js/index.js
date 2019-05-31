@@ -23,10 +23,17 @@ class quidSliderPayCallback {
     return false;
   }
 
+  removeAllInputsForSameProduct() {
+    const inputs = document.getElementsByClassName(`for-product-${this.paymentResponse.productID}`);
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].style.display = 'none';
+    }
+  }
+
   finalizeRequiredPayment() {
     this.excerptContainer.style.display = 'none';
     this.target.innerHTML = this.xhttp.responseText;
-    this.paymentContainer.style.display = 'none';
+    this.removeAllInputsForSameProduct();
     this.payError.style.display = 'none';
   }
 
@@ -35,7 +42,7 @@ class quidSliderPayCallback {
     this.buttonPrice.innerHTML = _quid_wp_global[this.paymentResponse.productID].paidText;
 
     setTimeout(() => {
-      this.paymentContainer.style.display = 'none';
+      this.removeAllInputsForSameProduct();
     }, 2000);
   }
 
@@ -111,17 +118,24 @@ class quidButtonPayCallback {
     return false;
   }
 
+  removeAllInputsForSameProduct() {
+    const inputs = document.getElementsByClassName(`for-product-${this.paymentResponse.productID}`);
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].style.display = 'none';
+    }
+  }
+
   finalizeOptionalPayment() {
     this.payButton[0].getElementsByClassName('quid-pay-button-price')[0].innerHTML = _quid_wp_global[this.paymentResponse.productID].paidText;
     
     setTimeout(() => {
-      this.buttonsContainer.style.display = 'none';
+      this.removeAllInputsForSameProduct();
       this.payError.style.display = 'none';
     }, 2000);
   }
 
   finalizeRequiredPayment() {
-    this.buttonsContainer.style.display = 'none';
+    this.removeAllInputsForSameProduct();
     this.payError.style.display = 'none';
     document.getElementById(_quid_wp_global[this.paymentResponse.productID].postid + '-excerpt').style.display = 'none';
     this.target.innerHTML = this.xhttp.responseText;
