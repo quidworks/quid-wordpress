@@ -37,6 +37,11 @@
     width: auto;
 }
 
+.quid-pay-already-paid .quid-pay-button-price {
+    letter-spacing: 0px;
+    font-size: 10px;
+}
+
 .quid-pay-already-paid .quid-pay-button {
     background-color: transparent !important;
     box-shadow: none !important;
