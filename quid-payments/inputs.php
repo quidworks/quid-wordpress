@@ -32,16 +32,16 @@ namespace QUIDPaymentsInputs {
         }
 
         private function buttonAlignment($shortcodeArg) {
-            if (isset($shortcodeArg)) {
-                if ($shortcodeArg == 'center') return 'center';
-                if ($shortcodeArg == 'left') return 'flex-start';
-                if ($shortcodeArg == 'right') return 'flex-end';
+            $alignOption = get_option('quid-align');
+
+            if (!isset($shortcodeArg)) {
+                if ($alignOption == "") $alignOption = 'right';
+                $shortcodeArg = $alignOption;
             }
 
-            $alignOption = get_option('quid-align');
-            if ($alignOption != "") {
-                return $alignOption;
-            }
+            if ($shortcodeArg == 'center') return 'center';
+            if ($shortcodeArg == 'left') return 'flex-start';
+            if ($shortcodeArg == 'right') return 'flex-end';
 
             return 'flex-end';
         }

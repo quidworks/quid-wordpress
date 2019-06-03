@@ -80,9 +80,9 @@ namespace QUIDPaymentsSettings {
 HTML;
             
                 $html .= '
-                    <option value="right" '.$quidAlignRight.'}>Right</option>
+                    <option value="right" '.$quidAlignRight.'>Right</option>
                     <option value="center" '.$quidAlignCenter.'>Center</option>
-                    <option value="left" '.$quidAlignLeft.'}>Left</option>
+                    <option value="left" '.$quidAlignLeft.'>Left</option>
                 ';
 
                 $html .= <<<HTML
