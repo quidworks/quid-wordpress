@@ -2,6 +2,8 @@
 
 namespace QUIDPaymentsMeta {
 
+    use QUIDHelperFunctions as Helpers;
+
     class Meta {
 
         public function getMetaFields($post) {
@@ -62,22 +64,22 @@ namespace QUIDPaymentsMeta {
                 </div>
                 <div>
                     <label>Product ID</label>
-                    <input name="quid_field_id" placeholder="Product ID" value="<?php echo $meta['id'] ?>" />
+                    <input name="quid_field_id" readonly placeholder="Product ID" value="<?php echo Helpers\getPostSlug($post); ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>
                     <label>Product Name</label>
-                    <input name="quid_field_name" placeholder="Name" value="<?php echo $meta['name'] ?>" />
+                    <input name="quid_field_name" readonly placeholder="Name" value="<?php echo Helpers\getPostTitle($post) ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>
                     <label>Product Description</label>
-                    <input name="quid_field_description" placeholder="Description" value="<?php echo $meta['description'] ?>" />
+                    <input name="quid_field_description" readonly placeholder="Description" value="<?php echo Helpers\getSiteTitle() ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>
                     <label>Product URL</label>
-                    <input name="quid_field_url" placeholder="URL" value="<?php echo $meta['url'] ?>" />
+                    <input name="quid_field_url" readonly placeholder="URL" value="<?php echo get_permalink($post) ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>

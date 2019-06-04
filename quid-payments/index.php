@@ -20,6 +20,7 @@ namespace QUIDPayments {
     require_once dirname( __FILE__ ) .'/javascript.php';
     require_once dirname( __FILE__ ) .'/inputs.php';
     require_once dirname(__FILE__) .'/post.php';
+    require_once dirname(__FILE__) .'/helpers.php';
 
     use QUIDPaymentsDatabase as Database;
     use QUIDPaymentsInit as Init;
