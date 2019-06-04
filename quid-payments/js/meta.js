@@ -22,7 +22,7 @@ class QuidPostMeta {
     let float = parseFloat(e.target.value);
     if (float < 0.01) {
       this.outputMessage(e.target.nextElementSibling, "can't be less than $0.01");
-    } else if (float > this.maxPrice) {
+    } else if (float >= this.maxPrice) {
       this.outputMessage(e.target.nextElementSibling, "must be less than max price");
     } else if (isNaN(float)) {} else {
       this.minPrice = float;
@@ -34,7 +34,7 @@ class QuidPostMeta {
     let float = parseFloat(e.target.value);
     if (float > 2.00) {
       this.outputMessage(e.target.nextElementSibling, "can't be more than $2.00");
-    } else if (float < this.minPrice) {
+    } else if (float <= this.minPrice) {
       this.outputMessage(e.target.nextElementSibling, "must be more than min price");
     } else if (isNaN(float)) {} else {
       this.maxPrice = float;

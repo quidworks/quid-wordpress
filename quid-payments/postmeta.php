@@ -124,13 +124,8 @@ namespace QUIDPaymentsMeta {
 
                 $value = $_POST['quid_field_'.$name];
 
-                switch ($name) {
-                    case 'price':
-                        $value = $this->limitPrice($value, false);
-                    case 'initial':
-                        $value = $this->limitPrice($value, true);
-                    default:
-                        break;
+                if ($name == 'initial') {
+                    $value = $this->limitPrice($value, true);
                 }
 
                 if (array_key_exists('quid_field_'.$name, $_POST)) {
@@ -141,6 +136,24 @@ namespace QUIDPaymentsMeta {
                     );
                 }
             }
+        }
+
+        private function limitMinPrice($value, $allowBlank) {
+            if ($allowBlank && $value == "") return $value;
+
+            $price = floatval($value);
+            if ($price < 0.01 || $price > 2.00) return "0.01";
+
+            return $value;
+        }
+
+        private function limitMaxPrice($value, $allowBlank) {
+            if ($allowBlank && $value == "") return $value;
+
+            $price = floatval($value);
+            if ($price < 0.01 || $price > 2.00) return "2.00";
+
+            return $value;
         }
 
         private function limitPrice($value, $allowBlank) {
@@ -156,16 +169,13 @@ namespace QUIDPaymentsMeta {
         }
 
         private function maxAndMinMustBeDifferent(&$minprice, &$maxprice) {
-            $minprice = $this->limitPrice($minprice, true);
-            $maxprice = $this->limitPrice($maxprice, true);
+            $minprice = $this->limitMinPrice($minprice, false);
+            $maxprice = $this->limitMaxPrice($maxprice, false);
 
             $minpriceFloat = floatval($minprice);
             $maxpriceFloat = floatval($maxprice);
 
-            if ($minprice == "" || $minpriceFloat == 0) $minprice = "0.01";
-            if ($maxprice == "" || $maxpriceFloat == 0) $maxprice = "2.00";
-
-            if ($maxprice == $minprice) {
+            if ($maxpriceFloat == $minpriceFloat) {
                 if ($maxpriceFloat == 2.00) {
                     $minpriceFloat -= 0.01;
                     $minprice = strval($minpriceFloat);
