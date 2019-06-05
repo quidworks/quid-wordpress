@@ -54,7 +54,11 @@ namespace QUIDPaymentsInputs {
             $postTitle = Helpers\getPostTitle($post);
             $postSlug = Helpers\getPostSlug($post);
             $microtimeIdentifier = microtime();
-            $requiredFields = ['price'];
+            $requiredFields = ['price']; // Add required shortcode attributes to array
+
+            if (!$meta) {
+                $meta = [];
+            }
 
             if (!isset($meta['type'])) $meta['type'] = 'Optional';
             if (!isset($meta['paid'])) $meta['paid'] = 'Thanks!';
@@ -147,7 +151,11 @@ HTML;
             $postTitle = Helpers\getPostTitle($post);
             $postSlug = Helpers\getPostSlug($post);
             $microtimeIdentifier = microtime();
-            $requiredFields = ['price'];
+            $requiredFields = []; // Add required shortcode attributes to array
+
+            if (!$meta) {
+                $meta = [];
+            }
 
             if (!isset($meta['type'])) $meta['type'] = 'Optional';
             if (!isset($meta['min'])) $meta['min'] = '0.01';

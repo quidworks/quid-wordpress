@@ -37,6 +37,16 @@ namespace QUIDPaymentsMeta {
 
         public function renderMetaFieldsTemplate($post) {
             $meta = $this->getMetaFields($post);
+
+            $buttonsReadOnly = "";
+            $sliderReadOnly = "";
+
+            if ($meta['input'] == 'Buttons') {
+                $buttonsReadOnly = "readonly";
+            } else if ($meta['input'] == 'Slider') {
+                $sliderReadOnly = "readonly";
+            }
+            
             wp_register_style( 'css_quid_meta', plugins_url( 'css/meta.css', __FILE__ ) );
             wp_enqueue_style( 'css_quid_meta' );
 
@@ -56,10 +66,40 @@ namespace QUIDPaymentsMeta {
                 </div>
                 <div>
                     <label>Input Type</label>
-                    <select name="quid_field_input">
-                        <option <?php if ($meta['input'] == "Buttons") echo "selected"; ?> value="Buttons">Buttons</option>
-                        <option <?php if ($meta['input'] == "Slider") echo "selected"; ?> value="Slider">Slider</option>
+                    <select onchange="quidPostMeta.handleInputTypeChange(this)" name="quid_field_input">
+                        <option class="quid-button-option" <?php if ($meta['input'] == "Buttons") echo "selected"; ?> value="Buttons">Buttons</option>
+                        <option class="quid-slider-option" <?php if ($meta['input'] == "Slider") echo "selected"; ?> value="Slider">Slider</option>
                     </select>
+                    <div class="quid-post-meta-message" style="display: none;"></div>
+                </div>
+                <div>
+                    <label>Button Text</label>
+                    <input name="quid_field_text" placeholder="Button Text" value="<?php echo $meta['text'] ?>" />
+                    <div class="quid-post-meta-message" style="display: none;"></div>
+                </div>
+                <div>
+                    <label>Paid Text</label>
+                    <input name="quid_field_paid" placeholder="Paid Button Text" value="<?php echo $meta['paid'] ?>" />
+                    <div class="quid-post-meta-message" style="display: none;"></div>
+                </div>
+                <div>
+                    <label>Price</label>
+                    <input class="quid-post-meta-button-only" <?php echo $sliderReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)" name="quid_field_price" placeholder="Price ($0.01 - $2)" type="number" value="<?php echo $meta['price'] ?>" />
+                    <div class="quid-post-meta-message" style="display: none;"></div>
+                </div>
+                <div>
+                    <label>Minimum Slider Value</label>
+                    <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handleMinKeypress(event)" name="quid_field_min" placeholder="Min Amount ($0.01 or more)" type="number" value="<?php echo $meta['min'] != '' ? $meta['min'] : '0.01' ?>" />
+                    <div class="quid-post-meta-message" style="display: none;"></div>
+                </div>
+                <div>
+                    <label>Maximum Slider Value</label>
+                    <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handleMaxKeypress(event)" name="quid_field_max" placeholder="Max Amount ($2 or less)" type="number" value="<?php echo $meta['max'] != '' ? $meta['max'] : '2.00' ?>" />
+                    <div class="quid-post-meta-message" style="display: none;"></div>
+                </div>
+                <div>
+                    <label>Initial Slider Value</label>
+                    <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)" name="quid_field_initial" placeholder="Initial Amount ($0.01 - $2)" type="number" value="<?php echo $meta['initial'] ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>
@@ -82,36 +122,6 @@ namespace QUIDPaymentsMeta {
                     <input name="quid_field_url" readonly placeholder="URL" value="<?php echo get_permalink($post) ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
-                <div>
-                    <label>Button Text</label>
-                    <input name="quid_field_text" placeholder="Button Text" value="<?php echo $meta['text'] ?>" />
-                    <div class="quid-post-meta-message" style="display: none;"></div>
-                </div>
-                <div>
-                    <label>Paid Text</label>
-                    <input name="quid_field_paid" placeholder="Paid Button Text" value="<?php echo $meta['paid'] ?>" />
-                    <div class="quid-post-meta-message" style="display: none;"></div>
-                </div>
-                <div>
-                    <label>Price</label>
-                    <input name="quid_field_price" placeholder="Price ($0.01 - $2)" type="number" value="<?php echo $meta['price'] ?>" />
-                    <div class="quid-post-meta-message" style="display: none;"></div>
-                </div>
-                <div>
-                    <label>Minimum Slider Value</label>
-                    <input onkeyup="quidPostMeta.handleMinKeypress(event)" name="quid_field_min" placeholder="Min Amount ($0.01 or more)" type="number" value="<?php echo $meta['min'] != '' ? $meta['min'] : '0.01' ?>" />
-                    <div class="quid-post-meta-message" style="display: none;"></div>
-                </div>
-                <div>
-                    <label>Maximum Slider Value</label>
-                    <input onkeyup="quidPostMeta.handleMaxKeypress(event)" name="quid_field_max" placeholder="Max Amount ($2 or less)" type="number" value="<?php echo $meta['max'] != '' ? $meta['max'] : '2.00' ?>" />
-                    <div class="quid-post-meta-message" style="display: none;"></div>
-                </div>
-                <div>
-                    <label>Initial Slider Value</label>
-                    <input name="quid_field_initial" placeholder="Initial Amount ($0.01 - $2)" type="number" value="<?php echo $meta['initial'] ?>" />
-                    <div class="quid-post-meta-message" style="display: none;"></div>
-                </div>
             </div>
             <?php
         }
@@ -124,8 +134,8 @@ namespace QUIDPaymentsMeta {
 
                 $value = $_POST['quid_field_'.$name];
 
-                if ($name == 'initial') {
-                    $value = $this->limitPrice($value, true);
+                if ($name == 'initial' || $name == 'price') {
+                    $value = $this->limitPrice($value, false);
                 }
 
                 if (array_key_exists('quid_field_'.$name, $_POST)) {
@@ -161,11 +171,9 @@ namespace QUIDPaymentsMeta {
 
             $price = floatval($value);
 
-            if ($price == 0) return "2.00";
-            if ($price < 0.01) return "0.01";
-            if ($price > 2.00) return "2.00";
+            if ($price < 0.01 || $price > 2.00) $price = 1.00;
 
-            return $value;
+            return strval(number_format($price, 2, '.', ','));
         }
 
         private function maxAndMinMustBeDifferent(&$minprice, &$maxprice) {

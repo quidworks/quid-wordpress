@@ -73,7 +73,12 @@ namespace QUIDPaymentsSettings {
 
             $html = <<<HTML
             <div class='quid-pay-settings'>
-                <div class='quid-pay-settings-title'>QUID Settings</div>
+                <h1 class='quid-pay-settings-page-title'>QUID Settings</h1>
+
+                <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
+                <input id='quid-publicKey' style='margin-bottom: 10px' value='{$quidPublicKey}' placeholder='Public API Key' /><br />
+                <input id='quid-secretKey' type='password' placeholder='Secret API Key' />
+                <p>secret key is not displayed to keep it extra safe</p>
 
                 <div class='quid-pay-settings-title'>Default Button Alignment</div>
                 <select id='quid-align' class='quid-pay-settings-dropdown'>
@@ -88,11 +93,7 @@ HTML;
                 $html .= <<<HTML
                 </select>
 
-                <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
-                <input id='quid-publicKey' style='margin-bottom: 10px' value='{$quidPublicKey}' placeholder='Public API Key' /><br />
-                <input id='quid-secretKey' type='password' placeholder='Secret API Key' />
-                <p>secret key is not displayed to keep it extra safe</p>
-                <button type='button' onclick='submitQuidSettings()'>Save</button>
+                <div><button class="button button-primary" type='button' onclick='submitQuidSettings()'>Save</button></div>
                 <span class='quid-pay-settings-response'></span>
             </div>
 HTML;

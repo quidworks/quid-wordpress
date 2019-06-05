@@ -18,6 +18,32 @@ class QuidPostMeta {
     }
   }
 
+
+  handleInputTypeChange(theSelectElement) {
+    let priceInputs = undefined;
+    if (theSelectElement.value === 'Slider') {
+      priceInputs = document.getElementsByClassName('quid-post-meta-button-only');
+      for (let i = 0; i < priceInputs.length; i++) {
+        priceInputs[i].setAttribute('readonly', 'readonly');
+      }
+
+      priceInputs = document.getElementsByClassName('quid-post-meta-slider-only');
+      for (let i = 0; i < priceInputs.length; i++) {
+        priceInputs[i].removeAttribute('readonly');
+      }
+    } else {
+      priceInputs = document.getElementsByClassName('quid-post-meta-slider-only');
+      for (let i = 0; i < priceInputs.length; i++) {
+        priceInputs[i].setAttribute('readonly', 'readonly');
+      }
+      
+      priceInputs = document.getElementsByClassName('quid-post-meta-button-only');
+      for (let i = 0; i < priceInputs.length; i++) {
+        priceInputs[i].removeAttribute('readonly');
+      }
+    }
+  }
+
   handleMinKeypress(e) {
     let float = parseFloat(e.target.value);
     if (float < 0.01) {
@@ -38,6 +64,17 @@ class QuidPostMeta {
       this.outputMessage(e.target.nextElementSibling, "must be more than min price");
     } else if (isNaN(float)) {} else {
       this.maxPrice = float;
+      e.target.nextElementSibling.style.display = 'none';
+    }
+  }
+
+  handlePriceKeypress(e) {
+    let float = parseFloat(e.target.value);
+    if (float > 2.00) {
+      this.outputMessage(e.target.nextElementSibling, "can't be more than $2.00");
+    } else if (float < 0.01) {
+      this.outputMessage(e.target.nextElementSibling, "can't be less than $0.01");
+    } else {
       e.target.nextElementSibling.style.display = 'none';
     }
   }
