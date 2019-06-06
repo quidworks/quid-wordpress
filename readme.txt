@@ -2,8 +2,8 @@
 Contributors: quidworks
 Tags: payment,payments,micropayment,micropayments,donation,donations,paywall,monetization,pay-per-use
 Requires at least: 5.0
-Tested up to: 5.1
-Stable tag: trunk
+Tested up to: 5.2
+Stable tag: 1.1
 Requires PHP: 7.0
 License: MIT
 License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
@@ -32,7 +32,7 @@ QUID is kickstarting the pay-per-use economy by letting users make payments as l
 
 == Installation ==
 
-To start accepting QUID payments on your WordPress site you will need to [signup for a QUID merchant account](https://app.quid.works/signup?profile=developer) and generate API keys to use with this plugin.
+To start accepting QUID payments on your WordPress site you will need to [signup for a QUID merchant account](https://app.quid.works/sell) and generate API keys to use with this plugin.
 
 1.  Download the plugin from our [release page](https://github.com/quidworks/quid-wordpress/releases) or install directly from the WordPress plugin directory.
 1.  Activate the plugin through the ‘Plugins’ screen in WordPress admin
@@ -53,11 +53,11 @@ With QUID, you can actually charge a dollar, or 10 cents, or even a penny for yo
 
 = What countries are currently supported? =
 
-QUID currently supports sellers in Canada, and buyers worldwide. We plan to expand to the US and other countries soon.
+QUID currently supports sellers in Canada and the US, and buyers worldwide. We plan to expand to other countries soon.
 
 = What currencies does it support? =
 
-QUID supports USD and CAD. We will add support for other currencies (including cryptocurrencies) soon.
+QUID supports USD and CAD. We will add support for other currencies soon.
 
 = Are there restrictions on how QUID can be used? =
 
@@ -65,29 +65,36 @@ QUID is meant to be used for the purchase goods and services, not to transfer mo
 
 = Where can I find more information on QUID? =
 
-Check out our [support knowledge base](https://how.quid.works/) or start a support conversation on [our site](https://quid.works/).
+Check out our [support knowledge base](https://how.quid.works/quid-wordpress-plugin/) or start a support conversation on [our site](https://quid.works/).
 
 == Screenshots ==
 
 1. After installing and activating the QUID Payments plugin, navigate to the Settings > QUID Payments settings page and input your Public and Private API keys from your [QUID merchant account](https://app.quid.works/merchant). Your raw Private API key will not be saved in the database, only a hash of the key is saved.
-2. Configure the QUID post settings fields for each post where you want to display the payment button or slider. For detailed instructions on how to use each field visit our [knowledge base](https://how.quid.works/about/quid-wordpress-plugin). Include an excerpt of the post for the plugin to display before a user has paid.
+2. Configure the QUID post settings fields for each post where you want to display the payment button or slider. For detailed instructions on how to use each field visit our [knowledge base](https://how.quid.works/quid-wordpress-plugin/). Include an excerpt of the post for the plugin to display before a user has paid.
 3. Once your post is published, the payment button or slider will be displayed below the excerpt of the post.
 4. Upon clicking the Pay button the user is presented with a payment confirmation screen.
 5. Once the payment succeeds, the full post content is displayed.
 
 == Changelog ==
 
+= 1.1 =
+* Use the new quid-button and quid-slider shortcodes to add a QUID payment button or slider anywhere shortcodes are supported
+* Most required payment fields are now set from the details of the post or page
+* Set the horizontal alignment of the buttons and slider for the entire site from the QUID Settings page
+* Maximum payment value of $2 is enforced
+* Bug fixes
+
 = 1.0 =
 * Initial release.
 
 == Upgrade Notice ==
 
-= 1.0 =
-This is the first version of the plugin.
+= 1.1 =
+Version 1.1 of the QUID Payments plugin makes accepting small payments from within your WordPress site much easier. Use the new [quid-button] and [quid-slider] shortcodes to accept payments from anywhere within a blog post, on a page, or in a widget area. The QUID Payments plugin now gets most of the payment information from WordPress, so there is less to configure when you what to accept a payment.
 
 == Third Party Service ==
 
-The QUID Payments plugin relies on the QUID Payment service hosted at [app.quid.works](https://app.quid.works) for payment processing. In order to accept payments using this plugin you must [create a QUID merchant account](https://app.quid.works/signup?profile=developer) and, in doing so, accept the [Merchant Terms of Use](https://how.quid.works/terms-and-policies/merchant-terms-of-use).
+The QUID Payments plugin relies on the QUID Payment service hosted at [app.quid.works](https://app.quid.works) for payment processing. In order to accept payments using this plugin you must [create a QUID merchant account](https://app.quid.works/sell) and, in doing so, accept the [Merchant Terms of Use](https://how.quid.works/terms-and-policies/merchant-terms-of-use).
 
 Visitors to your site will need a [QUID user account](https://app.quid.works/signup) in order to make payments. Users can use an existing QUID account or can complete the simple Signup & Pay process without leaving your site.
 
@@ -99,7 +106,7 @@ Using the QUID Payments plugin allows you to accept payments from visitors witho
 
 When a visitor completes a purchase using QUID, we provide your WordPress site with a unique, randomly-generated user ID that identifies that user within your site. Each user ID created for the visitor is shared with only one merchant and each merchant will be given a different unique, randomly-generated user ID associated with that user's QUID account. This unique user ID allows the QUID Payments plugin to know which visitors have paid for which posts.
 
-When you [create a QUID Merchant Account](https://app.quid.works/signup?profile=developer) you provide your legal name (either your own name or that of your business). This name will be shared with users that have completed payments on your website using QUID. We may also include your business name or website address to promote your use of the QUID service to current and prospective QUID users.
+When you [create a QUID Merchant Account](https://app.quid.works/sell) you provide your legal name (either your own name or that of your business). This name will be shared with users that have completed payments on your website using QUID. We may also include your business name or website address to promote your use of the QUID service to current and prospective QUID users.
 
 Read the [QUID Privacy Policy](https://how.quid.works/terms-and-policies/quid-privacy-policy) for more information.
 
