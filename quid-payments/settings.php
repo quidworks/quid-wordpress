@@ -80,8 +80,11 @@ namespace QUIDPaymentsSettings {
                 case 'USD':
                     $quidUSD = "selected";
                     break;
-                default:
+                case 'CAD':
                     $quidCAD = "selected";
+                    break;
+                default:
+                    $quidDefaultCurrency = "selected";
                     break;
             }
 
@@ -95,6 +98,7 @@ namespace QUIDPaymentsSettings {
 HTML;
             
                 $html .= '
+                    <option disabled '.$quidDefaultCurrency.' value> -- Select your currency -- </option>
                     <option value="CAD" '.$quidCAD.'>CAD</option>
                     <option value="USD" '.$quidUSD.'>USD</option>
                 ';
