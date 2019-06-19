@@ -54,6 +54,7 @@ namespace QUIDPaymentsInputs {
             $postTitle = Helpers\getPostTitle($post);
             $postSlug = Helpers\getPostSlug($post);
             $microtimeIdentifier = microtime();
+            $currencyOption = get_option('quid-currency');
             $requiredFields = ['price']; // Add required shortcode attributes to array
 
             if (!$meta) {
@@ -83,7 +84,7 @@ HTML;
                         <div id="{$meta['dom-id']}_free"
                             class="quid-pay-already-paid"
                             quid-amount="0"
-                            quid-currency="CAD"
+                            quid-currency="{$currencyOption}"
                             quid-product-id="{$postSlug}"
                             quid-product-url="{$permalink}"
                             quid-product-name="{$postTitle}"
@@ -96,7 +97,7 @@ HTML;
                     $html .= <<<HTML
                     <div id="{$meta['dom-id']}"
                         quid-amount="{$meta['price']}"
-                        quid-currency="CAD"
+                        quid-currency="{$currencyOption}"
                         quid-product-id="{$postSlug}"
                         quid-product-url="{$permalink}"
                         quid-product-name="{$postTitle}"
@@ -117,6 +118,7 @@ HTML;
                     'meta_type' => $meta['type'],
                     'meta_price' => $meta['price'],
                     'meta_paid' => $meta['paid'],
+                    'meta_currency' => $currencyOption,
                 )
             );
 
@@ -137,6 +139,7 @@ HTML;
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],
+                        'meta_currency' => $currencyOption,
                     )
                 );
             }
@@ -151,6 +154,7 @@ HTML;
             $postTitle = Helpers\getPostTitle($post);
             $postSlug = Helpers\getPostSlug($post);
             $microtimeIdentifier = microtime();
+            $currencyOption = get_option('quid-currency');
             $requiredFields = []; // Add required shortcode attributes to array
 
             if (!$meta) {
@@ -182,7 +186,7 @@ HTML;
                     <div
                         id="{$meta['dom-id']}"
                         class="quid-slider"
-                        quid-currency="CAD"
+                        quid-currency="{$currencyOption}"
                         quid-product-id="{$postSlug}"
                         quid-product-url="{$permalink}"
                         quid-product-name="{$postTitle}"
@@ -213,6 +217,7 @@ HTML;
                     'meta_url' => $permalink,
                     'meta_min' => $meta['min'],
                     'meta_max' => $meta['max'],
+                    'meta_currency' => $currencyOption,
                 )
             );
 
@@ -235,6 +240,7 @@ HTML;
                         'meta_description' => $blogTitle,
                         'meta_name' => $postTitle,
                         'meta_url' => $permalink,
+                        'meta_currency' => $currencyOption,
                     )
                 );
             }

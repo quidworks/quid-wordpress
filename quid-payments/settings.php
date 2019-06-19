@@ -28,6 +28,11 @@ namespace QUIDPaymentsSettings {
             $public = sanitize_text_field($_POST['public']);
             $secret = sanitize_text_field($_POST['secret']);
             $align = sanitize_text_field($_POST['align']);
+            $currency = sanitize_text_field($_POST['currency']);
+
+            if ($currency != '') {
+                update_option('quid-currency', $currency);
+            }
 
             if ($public !== '') {
                 update_option('quid-publicKey', $public);
@@ -53,6 +58,7 @@ namespace QUIDPaymentsSettings {
         function renderSettings() {
             $quidPublicKey = get_option('quid-publicKey');
             $quidAlign = get_option('quid-align');
+            $quidCurrency = get_option('quid-currency');
 
             $quidAlignLeft = "";
             $quidAlignRight = "";
@@ -70,10 +76,31 @@ namespace QUIDPaymentsSettings {
                     break;
             }
 
+            switch ($quidCurrency) {
+                case 'USD':
+                    $quidUSD = "selected";
+                    break;
+                default:
+                    $quidCAD = "selected";
+                    break;
+            }
+
 
             $html = <<<HTML
             <div class='quid-pay-settings'>
                 <h1 class='quid-pay-settings-page-title'>QUID Settings</h1>
+
+                <div class='quid-pay-settings-title'>Currency of your Merchant Account</div>
+                <select id='quid-currency' class='quid-pay-settings-dropdown'>
+HTML;
+            
+                $html .= '
+                    <option value="CAD" '.$quidCAD.'>CAD</option>
+                    <option value="USD" '.$quidUSD.'>USD</option>
+                ';
+
+                $html .= <<<HTML
+                </select>
 
                 <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
                 <input id='quid-publicKey' style='margin-bottom: 10px' value='{$quidPublicKey}' placeholder='Public API Key' /><br />
@@ -81,7 +108,7 @@ namespace QUIDPaymentsSettings {
                 <p>secret key is not displayed to keep it extra safe</p>
 
                 <div class='quid-pay-settings-title'>Default Button Alignment</div>
-                <select id='quid-align' class='quid-pay-settings-dropdown'>
+                <select id='quid-align' class='quid-pay-settings-dropdown quid-field-margin'>
 HTML;
             
                 $html .= '

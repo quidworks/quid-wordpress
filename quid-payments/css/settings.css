@@ -35,6 +35,8 @@
     margin: 25px 0px;
 }
 
-.quid-pay-settings-dropdown {
+.quid-pay-settings-dropdown {}
+
+.quid-field-margin {
     margin-bottom: 15px;
 }

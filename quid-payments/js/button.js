@@ -9,7 +9,7 @@ try {
 
   quidPaymentsButton = quid.createButton({
     amount: dataJS.meta_price,
-    currency: "CAD",
+    currency: dataJS.meta_currency,
     theme: "quid",
     palette: "default",
     text: `Pay ${dataJS.meta_price}`,

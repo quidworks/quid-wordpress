@@ -14,7 +14,7 @@ try {
     element: quidPaymentsBaseElement,
     theme: "quid",
     text: dataJS.meta_text,
-    currency: "CAD",
+    currency: dataJS.meta_currency,
     amount: dataJS.meta_initial,
   });
   quidPaymentsSlider.getElementsByClassName("quid-pay-button")[0].setAttribute("onclick", `quidPay('${dataJS.meta_domID}')`);

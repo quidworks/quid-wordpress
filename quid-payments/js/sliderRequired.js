@@ -11,7 +11,7 @@ try {
   quidPaymentsAlreadyPaid.setAttribute("id", `${dataJS.meta_domID}_free`);
   quidPaymentsAlreadyPaid.setAttribute("quid-amount", "0");
   quidPaymentsAlreadyPaid.setAttribute("class", "quid-pay-already-paid");
-  quidPaymentsAlreadyPaid.setAttribute("quid-currency", "CAD");
+  quidPaymentsAlreadyPaid.setAttribute("quid-currency", dataJS.meta_currency);
   quidPaymentsAlreadyPaid.setAttribute("quid-product-id", dataJS.meta_id);
   quidPaymentsAlreadyPaid.setAttribute("quid-product-url", dataJS.meta_url);
   quidPaymentsAlreadyPaid.setAttribute("quid-product-name", dataJS.meta_name);
@@ -21,7 +21,7 @@ try {
 
   quidPaymentsButton = quid.createButton({
     amount: "0",
-    currency: "CAD",
+    currency: dataJS.meta_currency,
     theme: "quid",
     palette: "default",
     text: "Restore Purchase",
