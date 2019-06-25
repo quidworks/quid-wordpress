@@ -49,7 +49,7 @@ namespace QUIDPaymentsInputs {
 
         function quidButton($meta) {
             global $post;
-            $permalink = get_permalink($post);
+            $permalink = Helpers\getPostURL($post);
             $blogTitle = Helpers\getSiteTitle();
             $postTitle = Helpers\getPostTitle($post);
             $postSlug = Helpers\getPostSlug($post);
@@ -149,7 +149,7 @@ HTML;
 
         function quidSlider($meta) {
             global $post;
-            $permalink = get_permalink($post);
+            $permalink = Helpers\getPostURL($post);
             $blogTitle = Helpers\getSiteTitle();
             $postTitle = Helpers\getPostTitle($post);
             $postSlug = Helpers\getPostSlug($post);

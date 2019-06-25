@@ -25,6 +25,14 @@ namespace QUIDHelperFunctions {
         }
         return $postSlug;
     }
+
+    function getPostURL($post) {
+        $permalink = get_permalink($post);
+        if ($permalink == "") {
+            return site_url();
+        }
+        return $permalink;
+    }
     
 }
 
