@@ -1,5 +1,4 @@
 try {
-  
   _quid_wp_global[dataJS.meta_id] = {
     postid: dataJS.post_id,
     required: dataJS.meta_type,
@@ -15,7 +14,26 @@ try {
     text: `Pay ${dataJS.meta_price}`,
   });
 
-  quidPaymentsButton.getElementsByClassName("quid-pay-button")[0].setAttribute("onclick", `quidPay('${dataJS.meta_domID}')`);
-  document.getElementById(dataJS.meta_domID).appendChild(quidPaymentsButton);
+  if (!quidPaymentsButton) {
+    throw `createButton returned an invalid element`;
+  }
 
-} catch(e) {}
+  payButtonElement = quidPaymentsButton.getElementsByClassName("quid-pay-button")[0]
+
+  if (!payButtonElement) {
+    throw `element with class quid-pay-button not found`;
+  }
+
+  payButtonElement.setAttribute("onclick", `quidPay('${dataJS.meta_domID}')`);
+
+  quidPaymentsBaseElement = document.getElementById(dataJS.meta_domID);
+  
+  if (!quidPaymentsBaseElement) {
+    throw `element with ID ${dataJS.meta_domID} does not exist`;
+  }
+
+  quidPaymentsBaseElement.appendChild(quidPaymentsButton);
+
+} catch(e) {
+  if (!e.toString().includes('_quid_wp_global')) console.log(`QUID ERROR: ${e}`);
+}

@@ -109,7 +109,7 @@ HTML;
 
             $this->enqueueJS(
                 'js_quid_button_'.$microtimeIdentifier,
-                plugins_url( 'js/button.js', __FILE__ ),
+                plugins_url( 'js/button.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
                     'post_id' => $post->ID,
                     'meta_name' => $postTitle,
@@ -129,12 +129,13 @@ HTML;
 
                 $this->enqueueJS(
                     'js_quid_button_required_'.$microtimeIdentifier,
-                    plugins_url( 'js/buttonRequired.js', __FILE__ ),
+                    plugins_url( 'js/buttonRequired.js?'.$microtimeIdentifier, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,
                         'meta_name' => $postTitle,
                         'meta_id' => $postSlug,
+                        'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],
@@ -202,7 +203,7 @@ HTML;
 
             $this->enqueueJS(
                 'js_quid_slider'.$microtimeIdentifier,
-                plugins_url( 'js/slider.js', __FILE__ ),
+                plugins_url( 'js/slider.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
                     'post_id' => $post->ID,
                     'meta_id' => $postSlug,
@@ -228,11 +229,12 @@ HTML;
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
                 $this->enqueueJS(
                     'js_quid_button_required'.$microtimeIdentifier,
-                    plugins_url( 'js/sliderRequired.js', __FILE__ ),
+                    plugins_url( 'js/sliderRequired.js?'.$microtimeIdentifier, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,
                         'meta_id' => $postSlug,
+                        'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],

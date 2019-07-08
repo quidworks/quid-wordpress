@@ -1,9 +1,8 @@
 try {
-
   _quid_wp_global[dataJS.meta_id] = {
     postid: dataJS.post_id,
     paidText: dataJS.meta_paid,
-    target: `post-content-${dataJS.meta_id}`,
+    target: `post-content-${dataJS.content_id}`,
     required: dataJS.meta_type,
   };
 
@@ -15,8 +14,19 @@ try {
     text: "Restore Purchase",
   });
 
+  if (!quidPaymentsButton) {
+    throw `createButton returned an invalid element`;
+  }
+
   quidPaymentsButton.setAttribute("onclick", `quidPay('${dataJS.meta_domID}_free', true)`);
-  document.getElementById(`${dataJS.meta_domID}_free`).appendChild(quidPaymentsButton);
+
+  quidPaymentsBaseElement = document.getElementById(`${dataJS.meta_domID}_free`);
+
+  if (!quidPaymentsBaseElement) {
+    throw `element with ID ${dataJS.meta_domID}_free does not exist`;
+  }
+
+  quidPaymentsBaseElement.appendChild(quidPaymentsButton);
 
   (function () {
     const contentDiv = document.getElementById(`post-content-${dataJS.meta_id}`);
@@ -34,4 +44,6 @@ try {
     xhttp.send(`postID=${dataJS.post_id}&productID=${dataJS.meta_id}`);
   })();
 
-} catch(e) {}
+} catch(e) {
+  if (!e.toString().includes('_quid_wp_global')) console.log(`QUID ERROR: ${e}`);
+}
