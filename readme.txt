@@ -2,8 +2,8 @@
 Contributors: quidworks
 Tags: payment,payments,micropayment,micropayments,donation,donations,paywall,monetization,pay-per-use
 Requires at least: 5.0
-Tested up to: 5.2
-Stable tag: 1.1.1
+Tested up to: 5.2.2
+Stable tag: 1.1.2
 Requires PHP: 7.0
 License: MIT
 License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
@@ -77,6 +77,9 @@ Check out our [support knowledge base](https://how.quid.works/quid-wordpress-plu
 
 == Changelog ==
 
+= 1.1.2 =
+* Fixes an issue where payments made outside of a blog post or page (e.g. in a widget area) were failing
+
 = 1.1.1 =
 * Added a setting option for merchant currency
 
@@ -91,6 +94,9 @@ Check out our [support knowledge base](https://how.quid.works/quid-wordpress-plu
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.2 =
+Version 1.1.2 fixes an issue where payments made outside of a blog post or page (e.g. in a widget area) were failing
 
 = 1.1.1 =
 Version 1.1.1 adds a setting for the merchant currency and is required for merchants using USD.
