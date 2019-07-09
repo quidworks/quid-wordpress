@@ -88,6 +88,26 @@ namespace QUIDPaymentsSettings {
                     break;
             }
 
+            function testStorePurchase() {
+                global $wpdb;
+                $table_name = $wpdb->prefix . "quidPurchases";
+    
+                $wpdb->insert( 
+                    $table_name, 
+                    array(
+                        'time' => current_time( 'mysql' ), 
+                        'user' => 'test-user',
+                        'product-id' => 'test-product-id',
+                        'tip' => 'true',
+                    ) 
+                );
+                if($wpdb->last_error !== '') {
+                    echo $wpdb->last_error;
+                    return false;
+                }
+                return true;
+            }
+
 
             $html = <<<HTML
             <div class='quid-pay-settings'>
@@ -128,6 +148,42 @@ HTML;
                 <span class='quid-pay-settings-response'></span>
             </div>
 HTML;
+                if(isset($_GET['quid-debug'])) {
+            
+                    $html .=  <<<HTML
+                    <h1 class='quid-pay-settings-page-title'>QUID Payments Debugging Tools</h1>
+                    <div class='quid-pay-settings-subtitle'>Test QUID payments database table</div>
+HTML;
+
+                    if(isset($_POST['quid-db-test'])){
+
+                        $dbTestResult = testStorePurchase();
+                        if($dbTestResult){
+
+                            $html .=  <<<HTML
+                            DB Connection Test: <font color="green"><strong>Passed</strong></font>
+HTML;
+
+                        } else {
+
+                            global $wpdb;
+                            $table_name = $wpdb->prefix . "quidPurchases";
+                            $html .=  '
+                            DB Connection Test: <font color="red"><strong>Failed</strong></font>
+                            <p>The QUID Payments plugin was unable to write a test payment to your WordPress database table '.$table_name.'.</p>';
+
+                        }
+
+                    } else {
+
+                        $html .=  <<<HTML
+                        <form  method="post">
+                            <input type="submit" name="quid-db-test" value="TEST" class="button button-primary">
+                        </form>
+HTML;
+                    }
+
+                }
             echo $html;
         }
 
