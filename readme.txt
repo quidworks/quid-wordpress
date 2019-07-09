@@ -3,7 +3,7 @@ Contributors: quidworks
 Tags: payment,payments,micropayment,micropayments,donation,donations,paywall,monetization,pay-per-use
 Requires at least: 5.0
 Tested up to: 5.2.2
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 Requires PHP: 7.0
 License: MIT
 License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
@@ -77,6 +77,10 @@ Check out our [support knowledge base](https://how.quid.works/quid-wordpress-plu
 
 == Changelog ==
 
+= 1.1.3 =
+* QUID Payments now works better with caching plugins and services
+* Added debugging tools and error logging
+
 = 1.1.2 =
 * Fixes an issue where payments made outside of a blog post or page (e.g. in a widget area) were failing
 
@@ -95,14 +99,8 @@ Check out our [support knowledge base](https://how.quid.works/quid-wordpress-plu
 
 == Upgrade Notice ==
 
-= 1.1.2 =
-Version 1.1.2 fixes an issue where payments made outside of a blog post or page (e.g. in a widget area) were failing
-
-= 1.1.1 =
-Version 1.1.1 adds a setting for the merchant currency and is required for merchants using USD.
-
-= 1.1 =
-Version 1.1 of the QUID Payments plugin makes accepting small payments from within your WordPress site much easier. Use the new [quid-button] and [quid-slider] shortcodes to accept payments from anywhere within a blog post, on a page, or in a widget area. The QUID Payments plugin now gets most of the payment information from WordPress, so there is less to configure when you what to accept a payment.
+= 1.1.3 =
+Version 1.1.3 works better with content caching plugins and services
 
 == Third Party Service ==
 
