@@ -3,7 +3,7 @@
 /*
 Plugin Name: QUID Payments
 Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for content.
-Version: 1.1.4
+Version: 1.1.3
 Author: QUID Works Inc.
 Author URI: https://quid.works
 License: MIT
@@ -64,7 +64,7 @@ namespace QUIDPayments {
 
     add_action( 'admin_enqueue_scripts', array(new Settings\Settings(), 'addScripts') );
 
-    add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'quid_payments_plugin_action_links' );
+    add_filter( 'plugin_action_links', array(new Settings\Settings(), 'actionLinks' ) );
 }
 
 ?>
