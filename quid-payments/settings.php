@@ -55,6 +55,13 @@ namespace QUIDPaymentsSettings {
             add_submenu_page( 'options-general.php', 'QUID Settings', 'QUID Settings', 'manage_options', 'quid_settings', array($this, 'renderSettings') );
         }
 
+        function actionLinks( $links ) {
+            $links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page=quid_settings') ) .'">Settings</a>';
+            $links[] = '<a href="https://how.quid.works/en/collections/1780630-quid-wordpress-plugin" target="_blank">Documentation</a>';
+            $links[] = '<a href="mailto:support@quid.works?subject=QUID Payments plugin support" target="_blank">Support</a>';
+            return $links;
+        }
+
         function renderSettings() {
             $quidPublicKey = get_option('quid-publicKey');
             $quidAlign = get_option('quid-align');
