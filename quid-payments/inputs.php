@@ -74,7 +74,7 @@ namespace QUIDPaymentsInputs {
                 <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none;">
                     <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
-                        Payment validation failed
+                        <span>Payment validation failed</span>
                     </div>
                 </div>
                 <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons for-product-{$postSlug}" style="display: flex; justify-content: {$this->buttonAlignment($meta['align'])};">
@@ -179,7 +179,7 @@ HTML;
                 <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none;">
                     <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
-                        Payment validation failed
+                        <span>Payment validation failed</span>
                     </div>
                 </div>
 

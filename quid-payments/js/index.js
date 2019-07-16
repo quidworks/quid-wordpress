@@ -16,7 +16,8 @@ class quidSliderPayCallback {
   }
 
   handleRequestError() {
-    if (this.xhttp.responseText === 'error') {
+    if (this.requestResponse.errorMessage !== '') {
+      this.payError.getElementsByTagName('span')[0].innerHTML = this.requestResponse.errorMessage;
       this.payError.style.display = 'block';
       return true;
     }
@@ -32,7 +33,7 @@ class quidSliderPayCallback {
 
   finalizeRequiredPayment() {
     this.excerptContainer.style.display = 'none';
-    this.target.innerHTML = this.xhttp.responseText;
+    this.target.innerHTML = this.requestResponse.content;
     this.removeAllInputsForSameProduct();
     this.payError.style.display = 'none';
   }
@@ -54,6 +55,8 @@ class quidSliderPayCallback {
 
   requestCallback() {
     if (this.xhttp.readyState != 4 || this.xhttp.status != 200) return;
+
+    this.requestResponse = JSON.parse(this.xhttp.responseText);
 
     this.getRelevantElements();
 
@@ -95,7 +98,7 @@ class quidButtonPayCallback {
   }
 
   getReturnedError() {
-    switch (this.xhttp.responseText) {
+    switch (this.requestResponse.errorMessage) {
       case 'validation failed':
         return 'Payment failed to go through';
       case 'database error':
@@ -112,7 +115,7 @@ class quidButtonPayCallback {
     const errorReturned = this.getReturnedError();
     if (errorReturned !== '') {
       this.payError.style.display = 'block';
-      this.validationErrorNode.innerHTML = errorReturned;
+      this.payError.getElementsByTagName('span')[0].innerHTML = errorReturned;
       return true;
     }
     return false;
@@ -138,7 +141,7 @@ class quidButtonPayCallback {
     this.removeAllInputsForSameProduct();
     this.payError.style.display = 'none';
     document.getElementById(_quid_wp_global[this.paymentResponse.productID].postid + '-excerpt').style.display = 'none';
-    this.target.innerHTML = this.xhttp.responseText;
+    this.target.innerHTML = this.requestResponse.content;
   }
 
   paymentCallback(response) {
@@ -149,6 +152,8 @@ class quidButtonPayCallback {
 
   requestCallback() {
     if (this.xhttp.readyState != 4 || this.xhttp.status != 200) return;
+
+    this.requestResponse = JSON.parse(this.xhttp.responseText);
 
     this.getRelevantElements();
 

@@ -6,6 +6,16 @@ namespace QUIDPaymentsPayment {
 
     class Payment {
 
+        function respond($content, $error) {
+            $json = json_encode(
+                array(
+                    'content' => $content,
+                    'errorMessage' => $error,
+                )
+            );
+            print_r($json);
+        }
+
         function paymentCallback() {
             $nonce = $_REQUEST['_wpnonce'];
             if ( ! wp_verify_nonce( $nonce, 'quid-payment-nonce' ) ) {
@@ -16,7 +26,7 @@ namespace QUIDPaymentsPayment {
             // gets POST content
             $json = json_decode(file_get_contents('php://input'));
             if (!$this->validatePaymentResponse($json->paymentResponse)) {
-                print_r("validation failed");
+                $this->respond('', 'validation failed');
                 return;
             };
             setcookie( "quidUserHash", $json->paymentResponse->userHash, time() + (86400 * 30), "/" );
@@ -28,7 +38,7 @@ namespace QUIDPaymentsPayment {
                     $json->paymentResponse->productID,
                     false)
                 ) {
-                    print_r("database error");
+                    $this->respond('', "database error");
                     return;
                 };
             } else {
@@ -36,11 +46,12 @@ namespace QUIDPaymentsPayment {
                     $json->paymentResponse->userHash,
                     $json->paymentResponse->productID
                 )) {
-                    print_r("unpurchased");
+                    $this->respond('', "unpurchased");
                     return;
                 }
             }
-            echo $this->fetchContent($json->postid);
+
+            $this->respond($this->fetchContent($json->postid), '');
         }
 
         function tipCallback() {
@@ -51,7 +62,7 @@ namespace QUIDPaymentsPayment {
             
             $json = json_decode(file_get_contents('php://input'));
             if (!$this->validatePaymentResponse($json->paymentResponse)) {
-                print_r("error");
+                $this->respond('', 'validation failed');
                 return;
             };
 
@@ -64,12 +75,12 @@ namespace QUIDPaymentsPayment {
                     $json->paymentResponse->productID,
                     true)
                 ) {
-                    print_r("error");
+                    $this->respond('', 'failed to store transaction');
                     return;
                 };
             }
 
-            echo "success";
+            $this->respond('', '');
         }
 
         // https://how.quid.works/developer/verifying-payments
