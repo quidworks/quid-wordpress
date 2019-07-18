@@ -63,6 +63,8 @@ namespace QUIDPayments {
     add_action( 'wp_enqueue_scripts', array(new Init\Init(), 'addScripts') );
 
     add_action( 'admin_enqueue_scripts', array(new Settings\Settings(), 'addScripts') );
+
+    add_filter( 'plugin_action_links_'.plugin_basename(__FILE__), array(new Settings\Settings(), 'actionLinks' ) );
 }
 
 ?>
