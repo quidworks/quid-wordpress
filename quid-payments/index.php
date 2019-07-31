@@ -3,7 +3,7 @@
 /*
 Plugin Name: QUID Payments
 Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for content.
-Version: 1.1.4
+Version: 1.1.3
 Author: QUID Works Inc.
 Author URI: https://quid.works
 License: MIT

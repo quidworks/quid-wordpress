@@ -25,28 +25,36 @@ namespace QUIDPaymentsSettings {
                 die( 'Security check' ); 
             }
 
-            $public = sanitize_text_field($_POST['public']);
-            $secret = sanitize_text_field($_POST['secret']);
-            $align = sanitize_text_field($_POST['align']);
-            $currency = sanitize_text_field($_POST['currency']);
+            if (!isset($_POST['data'])) die('data value not set');
 
-            if ($currency != '') {
-                update_option('quid-currency', $currency);
+            $jsonString = str_replace('\\', '', $_POST['data']);
+            $jsonAssoc = json_decode($jsonString, true);
+
+            if (isset($jsonAssoc['quid-currency'])) {
+                update_option('quid-currency', sanitize_text_field($jsonAssoc['quid-currency']));
+                unset($jsonAssoc['quid-currency']);
             }
 
-            if ($public !== '') {
-                update_option('quid-publicKey', $public);
-            }
-            if ($secret !== '') {
-                update_option('quid-secretKey', $this->hashKey($secret));
+            if (isset($jsonAssoc['quid-key-public'])) {
+                update_option('quid-publicKey', sanitize_text_field($jsonAssoc['quid-key-public']));
+                unset($jsonAssoc['quid-key-public']);
             }
 
-            $align = strtolower($align);
-            if ($align == 'centre') {
-                $align = 'center';
+            if (isset($jsonAssoc['quid-key-secret'])) {
+                update_option('quid-secretKey', sanitize_text_field($jsonAssoc['quid-key-secret']));
+                unset($jsonAssoc['quid-key-secret']);
             }
 
-            update_option('quid-align', $align);
+            if (isset($jsonAssoc['quid-button-position'])) {
+                $align = strtolower($jsonAssoc['quid-button-position']);
+                if ($align == 'centre') {
+                    $align = 'center';
+                }
+                update_option('quid-align', sanitize_text_field($align));
+                unset($jsonAssoc['quid-button-position']);
+            }
+
+            update_option('quid-fab-options', sanitize_text_field(json_encode($jsonAssoc)));
 
             echo 'success';
         }
@@ -62,136 +70,32 @@ namespace QUIDPaymentsSettings {
             return $links;
         }
 
+        function testStorePurchase() {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "quidPurchases";
+
+            $wpdb->insert( 
+                $table_name, 
+                array(
+                    'time' => current_time( 'mysql' ), 
+                    'user' => 'test-user',
+                    'product-id' => 'test-product-id',
+                    'tip' => 'true',
+                ) 
+            );
+            if($wpdb->last_error !== '') {
+                echo $wpdb->last_error;
+                return false;
+            }
+            return true;
+        }
+
         function renderSettings() {
             $quidPublicKey = get_option('quid-publicKey');
             $quidAlign = get_option('quid-align');
             $quidCurrency = get_option('quid-currency');
-
-            $quidAlignLeft = "";
-            $quidAlignRight = "";
-            $quidAlignCenter = "";
-
-            switch ($quidAlign) {
-                case 'center':
-                    $quidAlignCenter = "selected";
-                    break;
-                case 'left':
-                    $quidAlignLeft = "selected";
-                    break;
-                default:
-                    $quidAlignRight = "selected";
-                    break;
-            }
-
-            switch ($quidCurrency) {
-                case 'USD':
-                    $quidUSD = "selected";
-                    break;
-                case 'CAD':
-                    $quidCAD = "selected";
-                    break;
-                default:
-                    $quidDefaultCurrency = "selected";
-                    break;
-            }
-
-            function testStorePurchase() {
-                global $wpdb;
-                $table_name = $wpdb->prefix . "quidPurchases";
-    
-                $wpdb->insert( 
-                    $table_name, 
-                    array(
-                        'time' => current_time( 'mysql' ), 
-                        'user' => 'test-user',
-                        'product-id' => 'test-product-id',
-                        'tip' => 'true',
-                    ) 
-                );
-                if($wpdb->last_error !== '') {
-                    echo $wpdb->last_error;
-                    return false;
-                }
-                return true;
-            }
-
-
-            $html = <<<HTML
-            <div class='quid-pay-settings'>
-                <h1 class='quid-pay-settings-page-title'>QUID Settings</h1>
-
-                <div class='quid-pay-settings-title'>Currency of your Merchant Account</div>
-                <select id='quid-currency' class='quid-pay-settings-dropdown'>
-HTML;
-            
-                $html .= '
-                    <option disabled '.$quidDefaultCurrency.' value> -- Select your currency -- </option>
-                    <option value="CAD" '.$quidCAD.'>CAD</option>
-                    <option value="USD" '.$quidUSD.'>USD</option>
-                ';
-
-                $html .= <<<HTML
-                </select>
-
-                <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
-                <input id='quid-publicKey' style='margin-bottom: 10px' value='{$quidPublicKey}' placeholder='Public API Key' /><br />
-                <input id='quid-secretKey' type='password' placeholder='Secret API Key' />
-                <p>secret key is not displayed to keep it extra safe</p>
-
-                <div class='quid-pay-settings-title'>Default Button Alignment</div>
-                <select id='quid-align' class='quid-pay-settings-dropdown quid-field-margin'>
-HTML;
-            
-                $html .= '
-                    <option value="right" '.$quidAlignRight.'>Right</option>
-                    <option value="center" '.$quidAlignCenter.'>Center</option>
-                    <option value="left" '.$quidAlignLeft.'>Left</option>
-                ';
-
-                $html .= <<<HTML
-                </select>
-
-                <div><button class="button button-primary" type='button' onclick='submitQuidSettings()'>Save</button></div>
-                <span class='quid-pay-settings-response'></span>
-            </div>
-HTML;
-                if(isset($_GET['quid-debug'])) {
-            
-                    $html .=  <<<HTML
-                    <h1 class='quid-pay-settings-page-title'>QUID Payments Debugging Tools</h1>
-                    <div class='quid-pay-settings-subtitle'>Test QUID payments database table</div>
-HTML;
-
-                    if(isset($_POST['quid-db-test'])){
-
-                        $dbTestResult = testStorePurchase();
-                        if($dbTestResult){
-
-                            $html .=  <<<HTML
-                            DB Connection Test: <font color="green"><strong>Passed</strong></font>
-HTML;
-
-                        } else {
-
-                            global $wpdb;
-                            $table_name = $wpdb->prefix . "quidPurchases";
-                            $html .=  '
-                            DB Connection Test: <font color="red"><strong>Failed</strong></font>
-                            <p>The QUID Payments plugin was unable to write a test payment to your WordPress database table '.$table_name.'.</p>';
-
-                        }
-
-                    } else {
-
-                        $html .=  <<<HTML
-                        <form  method="post">
-                            <input type="submit" name="quid-db-test" value="TEST" class="button button-primary">
-                        </form>
-HTML;
-                    }
-
-                }
-            echo $html;
+            $quidFabSettings = json_decode(get_option('quid-fab-options'), true);
+            include('settingshtml.php');
         }
 
         // This is the format the key needs to be in to verify the payment

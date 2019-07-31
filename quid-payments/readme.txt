@@ -3,7 +3,7 @@ Contributors: quidworks
 Tags: payment,payments,micropayment,micropayments,donation,donations,paywall,monetization,pay-per-use
 Requires at least: 5.0
 Tested up to: 5.2.2
-Stable tag: 1.1.4
+Stable tag: 1.1.3
 Requires PHP: 7.0
 License: MIT
 License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
@@ -57,7 +57,7 @@ QUID currently supports sellers in Canada and the US, and buyers worldwide. We p
 
 = What currencies does it support? =
 
-QUID supports USD and CAD and will add support for other currencies soon.
+QUID supports USD and CAD. We will add support for other currencies soon.
 
 = Are there restrictions on how QUID can be used? =
 
@@ -65,21 +65,17 @@ QUID is meant to be used for the purchase goods and services, not to transfer mo
 
 = Where can I find more information on QUID? =
 
-Check out our [support knowledge base](https://how.quid.works/en/collections/1780630-quid-wordpress-plugin) or start a support conversation on [our site](https://quid.works/).
+Check out our [support knowledge base](https://how.quid.works/quid-wordpress-plugin/) or start a support conversation on [our site](https://quid.works/).
 
 == Screenshots ==
 
-1. After installing and activating the QUID Payments plugin, navigate to the Settings > QUID Payments settings page and input your API key and secret from your [QUID merchant account](https://app.quid.works/merchant). Your Private API secret will not be saved in the database, only a hash of the key is saved.
+1. After installing and activating the QUID Payments plugin, navigate to the Settings > QUID Payments settings page and input your Public and Private API keys from your [QUID merchant account](https://app.quid.works/merchant). Your raw Private API key will not be saved in the database, only a hash of the key is saved.
 2. Configure the QUID post settings fields for each post where you want to display the payment button or slider. For detailed instructions on how to use each field visit our [knowledge base](https://how.quid.works/quid-wordpress-plugin/). Include an excerpt of the post for the plugin to display before a user has paid.
 3. Once your post is published, the payment button or slider will be displayed below the excerpt of the post.
 4. Upon clicking the Pay button the user is presented with a payment confirmation screen.
 5. Once the payment succeeds, the full post content is displayed.
 
 == Changelog ==
-
-= 1.1.4 =
-* Access plugin settings, documentation, and support directly from your plugin admin page
-* Improved error messages and logging
 
 = 1.1.3 =
 * QUID Payments now works better with caching plugins and services
@@ -105,15 +101,6 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 
 = 1.1.3 =
 Version 1.1.3 works better with content caching plugins and services
-
-= 1.1.2 =
-Version 1.1.2 fixes an issue where payments made outside of a blog post or page (e.g. in a widget area) were failing
-
-= 1.1.1 =
-Version 1.1.1 allows merchants to select their currency
-
-= 1.1 =
-Version 1.1 adds shortcode support and simplifies the per-post payment settings
 
 == Third Party Service ==
 
