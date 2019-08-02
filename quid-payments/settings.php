@@ -41,8 +41,13 @@ namespace QUIDPaymentsSettings {
             }
 
             if (isset($jsonAssoc['quid-key-secret'])) {
-                update_option('quid-secretKey', sanitize_text_field($jsonAssoc['quid-key-secret']));
+                update_option('quid-secretKey', $this->hashKey(sanitize_text_field($jsonAssoc['quid-key-secret'])));
                 unset($jsonAssoc['quid-key-secret']);
+            }
+
+            if (isset($jsonAssoc['quid-fab-enabled'])) {
+                update_option('quid-fab-enabled', sanitize_text_field($jsonAssoc['quid-fab-enabled']));
+                unset($jsonAssoc['quid-fab-enabled']);
             }
 
             if (isset($jsonAssoc['quid-button-position'])) {
@@ -95,7 +100,8 @@ namespace QUIDPaymentsSettings {
             $quidAlign = get_option('quid-align');
             $quidCurrency = get_option('quid-currency');
             $quidFabSettings = json_decode(get_option('quid-fab-options'), true);
-            include('settingshtml.php');
+            $quidFabEnabled = get_option('quid-fab-enabled') === "true";
+            include('settings.html.php');
         }
 
         // This is the format the key needs to be in to verify the payment

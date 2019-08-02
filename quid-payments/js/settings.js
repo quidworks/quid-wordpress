@@ -10,12 +10,9 @@ function submitQuidSettings() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      const messageOutput = document.getElementsByClassName('quid-pay-settings-response')[0];
-      if (xhttp.responseText === 'success') {
-        messageOutput.innerHTML = 'Success';
-      } else {
-        messageOutput.innerHTML = 'Something went wrong';
-      }
+      quidSettings.setAlertElement();
+      if (xhttp.responseText === 'success') quidSettings.showSuccess();
+      else quidSettings.showError();
     }
   }
   xhttp.open('POST', dataSettingsJS.settings_url, true);
@@ -27,6 +24,63 @@ class QuidSettings {
   constructor() {
     this.minPrice = 0.01;
     this.maxPrice = 2.00;
+    this.alertTimeout = null;
+
+    this.toggleSwitch = this.toggleSwitch.bind(this);
+  }
+
+  setAlertElement() {
+    if (this.alertTimeout !== null) window.clearTimeout(this.alertTimeout);
+    this.errorContainer = document.getElementById('quidSettingsErrorContainer');
+  }
+
+  setAlertTimeout() {
+    this.alertTimeout = window.setTimeout(() => {
+      this.clearAlert();
+    }, 2000);
+  }
+
+  showError() {
+    this.errorContainer.classList.add('quid-settings-error-fail');
+    this.errorContainer.innerHTML = 'Something went wrong';
+    this.setAlertTimeout();
+  }
+
+  showSuccess() {
+    this.errorContainer.classList.add('quid-settings-error-success');
+    this.errorContainer.innerHTML = 'Success';
+    this.setAlertTimeout();
+  }
+
+  clearAlert() {
+    this.errorContainer.classList.remove('quid-settings-error-success');
+    this.errorContainer.classList.remove('quid-settings-error-fail');
+  }
+
+  getElements() {
+    this.switch = document.getElementById('quidFabSwitch');
+    this.switchText = this.switch.getElementsByClassName('quid-fab-switch-text')[0];
+    this.switchInput = this.switch.getElementsByTagName('input')[0];
+  }
+
+  toggleSwitch() {
+    this.getElements();
+    if (this.switchText.innerHTML === "ON") this.switchOff();
+    else this.switchOn();
+  }
+
+  switchOn() {
+    this.switchInput.value = "true";
+    this.switch.classList.remove("quid-fab-switched-off");
+    this.switch.classList.add("quid-fab-switched-on");
+    this.switchText.innerHTML = 'ON';
+  }
+
+  switchOff() {
+    this.switchInput.value = "false";
+    this.switch.classList.remove("quid-fab-switched-on");
+    this.switch.classList.add("quid-fab-switched-off");
+    this.switchText.innerHTML = 'OFF';
   }
 
   outputMessage(el, message) {

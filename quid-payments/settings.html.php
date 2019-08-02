@@ -1,3 +1,5 @@
+<div id="quidSettingsErrorContainer" class="quid-settings-error">QUID Error: Something goofed</div>
+
 <div class='quid-pay-settings'>
     <div class="quid-pay-settings-header">
         <h1 class='quid-pay-settings-page-title'>QUID Settings</h1>
@@ -29,6 +31,13 @@
     </select>
 
         <div class='quid-pay-settings-section-title'>Floating Button Settings</div>
+
+        <div id="quidFabSwitch" class="quid-fab-switch <?php echo $quidFabEnabled ? "quid-fab-switched-on" : "quid-fab-switched-off"; ?>" onclick="quidSettings.toggleSwitch()">
+            <input class="quid-field" type="checkbox" name="quid-fab-enabled" value="<?php echo $quidFabEnabled ? "true" : "false"; ?>" />
+            <span class="quid-fab-switch-text"><?php echo $quidFabEnabled ? "ON" : "OFF"; ?></span>
+            <span class="quid-fab-switch-handle"></span>
+        </div>
+
         <div class="quid-fab-settings">
             <div>
                 <label>Position</label>
@@ -125,3 +134,4 @@
         }
 
     }
+?>

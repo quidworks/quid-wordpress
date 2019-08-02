@@ -56,29 +56,13 @@ namespace QUIDPaymentsPayment {
 
         function tipCallback() {
             $nonce = $_REQUEST['_wpnonce'];
-            if ( ! wp_verify_nonce( $nonce, 'quid-payment-nonce' ) ) {
-                die( 'Security check' ); 
+            if ( !wp_verify_nonce( $nonce, 'quid-payment-nonce' ) ) {
+                $this->respond('', 'security error - nonce mismatch');
+                die();
             }
             
             $json = json_decode(file_get_contents('php://input'));
-            if (!$this->validatePaymentResponse($json->paymentResponse)) {
-                $this->respond('', 'validation failed');
-                return;
-            };
-
             setcookie( "quidUserHash", $json->paymentResponse->userHash, time() + (86400 * 30), "/" );
-
-            $cost = (float)$json->paymentResponse->amount;
-            if ($cost != 0.000000000) {
-                if (!$this->storePurchase(
-                    $json->paymentResponse->userHash,
-                    $json->paymentResponse->productID,
-                    true)
-                ) {
-                    $this->respond('', 'failed to store transaction');
-                    return;
-                };
-            }
 
             $this->respond('', '');
         }

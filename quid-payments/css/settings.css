@@ -78,3 +78,102 @@
     display: flex;
     flex-flow: wrap;
 }
+
+.quid-fab-switch {
+    position: relative;
+    width: 80px;
+    height: 30px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    cursor: pointer;
+}
+
+.quid-fab-switch input {
+    height: 100%;
+    background-color: transparent;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.quid-fab-switch .quid-fab-switch-handle {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    height: 30px;
+    width: 30px;
+    border: solid #B0D9DA 0.1px;
+    background-color: #B0D9DA;
+    background-image: url('https://js.quid.works/v1/assets/quid.png');
+    background-size: 60% 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+}
+
+.quid-fab-switch .quid-fab-switch-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+}
+
+.quid-fab-switched-on {
+    background-color: #009089;
+}
+
+.quid-fab-switched-off {
+    background-color: #576066;
+}
+
+.quid-fab-switched-on .quid-fab-switch-handle {
+    left: auto;
+    right: 0px;
+}
+
+.quid-fab-switched-off .quid-fab-switch-handle {
+    left: 0px;
+    right: auto;
+}
+
+.quid-fab-switched-on .quid-fab-switch-text {
+    left: 5px;
+    right: 30px;
+}
+
+.quid-fab-switched-off .quid-fab-switch-text {
+    left: 30px;
+    right: 5px;
+}
+
+.quid-settings-error {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 30px;
+    color: white;
+    border-radius: 4px;
+    font-size: 18px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000000000;
+    opacity: 0;
+    background-color: transparent;
+    transition: opacity 1s, background-color 1s;
+}
+
+.quid-settings-error-success {
+    opacity: 1;
+    background-color: #06B5AC;
+}
+
+.quid-settings-error-fail {
+    opacity: 1;
+    background-color: #DD4B3B;
+}
