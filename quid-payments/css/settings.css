@@ -152,28 +152,17 @@
     right: 5px;
 }
 
-.quid-settings-error {
-    display: inline-flex;
-    align-items: center;
+.quid-settings-message {
+    display: none;
     padding: 10px 30px;
-    color: white;
-    border-radius: 4px;
-    font-size: 18px;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000000000;
+    font-size: 14px;
     opacity: 0;
-    background-color: transparent;
-    transition: opacity 1s, background-color 1s;
+    transition: opacity 1s;
+    margin-top: -20px;
+    margin-left: 0px;
 }
 
-.quid-settings-error-success {
+.quid-settings-message-show {
+    display: block;
     opacity: 1;
-    background-color: #06B5AC;
-}
-
-.quid-settings-error-fail {
-    opacity: 1;
-    background-color: #DD4B3B;
 }

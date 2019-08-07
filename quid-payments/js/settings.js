@@ -1,25 +1,3 @@
-function submitQuidSettings() {
-  const data = {};
-  const fields = document.getElementsByClassName('quid-field');
-  for (let i = 0; i < fields.length; i++) {
-    data[fields[i].getAttribute('name')] = fields[i].value;
-  }
-
-  var json = JSON.stringify(data);
-
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      quidSettings.setAlertElement();
-      if (xhttp.responseText === 'success') quidSettings.showSuccess();
-      else quidSettings.showError();
-    }
-  }
-  xhttp.open('POST', dataSettingsJS.settings_url, true);
-  xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhttp.send('data='+json);
-}
-
 class QuidSettings {
   constructor() {
     this.minPrice = 0.01;
@@ -31,30 +9,30 @@ class QuidSettings {
 
   setAlertElement() {
     if (this.alertTimeout !== null) window.clearTimeout(this.alertTimeout);
-    this.errorContainer = document.getElementById('quidSettingsErrorContainer');
+    this.errorContainer = document.getElementById('quidSettingsMessageContainer');
   }
 
   setAlertTimeout() {
+    window.scrollTo(0, 0);
     this.alertTimeout = window.setTimeout(() => {
       this.clearAlert();
-    }, 2000);
+    }, 5000);
   }
 
   showError() {
-    this.errorContainer.classList.add('quid-settings-error-fail');
+    this.errorContainer.classList.add('quid-settings-message-show', 'notice-error');
     this.errorContainer.innerHTML = 'Something went wrong';
     this.setAlertTimeout();
   }
 
   showSuccess() {
-    this.errorContainer.classList.add('quid-settings-error-success');
+    this.errorContainer.classList.add('quid-settings-message-show', 'notice-success');
     this.errorContainer.innerHTML = 'Success';
     this.setAlertTimeout();
   }
 
   clearAlert() {
-    this.errorContainer.classList.remove('quid-settings-error-success');
-    this.errorContainer.classList.remove('quid-settings-error-fail');
+    this.errorContainer.classList.remove('quid-settings-message-show', 'notice-success', 'notice-error');
   }
 
   getElements() {
@@ -98,6 +76,10 @@ class QuidSettings {
   }
 
   handleMinKeypress(e) {
+    if (e.target.value === "") {
+      this.outputMessage(e.target.nextElementSibling, "this field can't be blank");
+      return;
+    }
     let float = parseFloat(e.target.value);
     if (float < 0.01) {
       this.outputMessage(e.target.nextElementSibling, "can't be less than $0.01");
@@ -110,6 +92,10 @@ class QuidSettings {
   }
 
   handleMaxKeypress(e) {
+    if (e.target.value === "") {
+      this.outputMessage(e.target.nextElementSibling, "this field can't be blank");
+      return;
+    }
     let float = parseFloat(e.target.value);
     if (float > 2.00) {
       this.outputMessage(e.target.nextElementSibling, "can't be more than $2.00");
@@ -122,6 +108,10 @@ class QuidSettings {
   }
 
   handlePriceKeypress(e) {
+    if (e.target.value === "") {
+      this.outputMessage(e.target.nextElementSibling, "this field can't be blank");
+      return;
+    }
     let float = parseFloat(e.target.value);
     if (float > 2.00) {
       this.outputMessage(e.target.nextElementSibling, "can't be more than $2.00");
@@ -138,6 +128,59 @@ class QuidSettings {
 
   setMaxPrice(price) {
     this.maxPrice = price;
+  }
+
+  cleanDollarValues(data) {
+    const minPriceAsFloat = parseFloat(data['quid-fab-min']);
+    const maxPriceAsFloat = parseFloat(data['quid-fab-max']);
+    const initialPriceAsFloat = parseFloat(data['quid-fab-initial']);
+
+    if (minPriceAsFloat < 0.01) {
+      data['quid-fab-min'] = "0.01";
+    }
+
+    if (maxPriceAsFloat > 2.00) {
+      data['quid-fab-max'] = "2.00";
+    }
+    
+    if (maxPriceAsFloat < minPriceAsFloat) {
+      if (minPriceAsFloat !== 2.00) {
+        data['quid-fab-max'] = "2.00";
+      } else {
+        data['quid-fab-max'] = "2.00";
+        data['quid-fab-min'] = "1.99";
+      }
+    }
+
+    if (initialPriceAsFloat > 2.00) {
+      data['quid-fab-initial'] = "2.00";
+    } else if (initialPriceAsFloat < 0.01) {
+      data['quid-fab-initial'] = "0.01";
+    }
+  }
+
+  submitQuidSettings() {
+    const data = {};
+    const fields = document.getElementsByClassName('quid-field');
+    for (let i = 0; i < fields.length; i++) {
+      data[fields[i].getAttribute('name')] = fields[i].value;
+    }
+
+    this.cleanDollarValues(data);
+
+    var json = JSON.stringify(data);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        quidSettings.setAlertElement();
+        if (xhttp.responseText === 'success') quidSettings.showSuccess();
+        else quidSettings.showError();
+      }
+    }
+    xhttp.open('POST', dataSettingsJS.settings_url, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send('data='+json);
   }
 }
 

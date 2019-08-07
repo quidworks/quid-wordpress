@@ -12,6 +12,9 @@ License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 
 namespace QUIDPayments {
 
+    $quidPluginVersion = "1.1.4";
+    $baseURL = 'http://localhost:3000';
+
     require_once dirname( __FILE__ ) .'/database.php';
     require_once dirname( __FILE__ ) .'/payment.php';
     require_once dirname( __FILE__ ) .'/settings.php';
@@ -30,8 +33,6 @@ namespace QUIDPayments {
     use QUIDPaymentsPost as Post;
     use QUIDPaymentsMeta as Meta;
     use QUIDPaymentsSettings as Settings;
-
-    $baseURL = 'https://app.quid.works';
 
     // https://codex.wordpress.org/Creating_Tables_with_Plugins
     register_activation_hook( __FILE__, array(new Database\Database(), 'createPurchaseDatabase') );

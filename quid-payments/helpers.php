@@ -5,7 +5,7 @@ namespace QUIDHelperFunctions {
     function getSiteTitle() {
         $blogTitle = get_bloginfo('name');
         if (strlen($blogTitle) < 5) {
-            $blogTitle .= " website";
+            $blogTitle .= "-website";
         }
         return $blogTitle;
     }
@@ -32,6 +32,21 @@ namespace QUIDHelperFunctions {
             return site_url();
         }
         return $permalink;
+    }
+
+    function buttonAlignment($shortcodeArg) {
+        $alignOption = get_option('quid-align');
+
+        if (!isset($shortcodeArg)) {
+            if ($alignOption == "") $alignOption = 'right';
+            $shortcodeArg = $alignOption;
+        }
+
+        if ($shortcodeArg == 'center') return 'center';
+        if ($shortcodeArg == 'left') return 'flex-start';
+        if ($shortcodeArg == 'right') return 'flex-end';
+
+        return 'flex-end';
     }
     
 }

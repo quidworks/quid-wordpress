@@ -1,10 +1,10 @@
-<div id="quidSettingsErrorContainer" class="quid-settings-error">QUID Error: Something goofed</div>
-
 <div class='quid-pay-settings'>
     <div class="quid-pay-settings-header">
         <h1 class='quid-pay-settings-page-title'>QUID Settings</h1>
-        <div class="quid-pay-settings-save-top"><button class="button button-primary" type='button' onclick='submitQuidSettings()'>Save</button></div>
+        <div class="quid-pay-settings-save-top"><button class="button button-primary" type='button' onclick='quidSettings.submitQuidSettings()'>Save</button></div>
     </div>
+
+    <div id="quidSettingsMessageContainer" class="quid-settings-message notice is-dismissible"></div>
 
     <div class='quid-pay-settings-section-title'>Account Settings</div>
 
@@ -20,6 +20,14 @@
     <input id='quid-publicKey' class="quid-field" name="quid-key-public" style='margin-bottom: 10px' value='<?php echo $quidPublicKey; ?>' placeholder='Public API Key' /><br />
     <input id='quid-secretKey' class="quid-field" name="quid-key-secret" type='password' placeholder='Secret API Key' />
     <p>secret key is not displayed to keep it extra safe</p>
+
+    <div class='quid-pay-settings-section-title'>Post Defaults</div>
+
+    <label>Read More Button</label>
+    <select id='quid-align' class='quid-pay-settings-dropdown quid-field-margin quid-field' name="quid-read-more">
+        <option value="true" <?php echo $quidFabSettings['quid-read-more'] === 'true' || $quidFabSettings['quid-read-more'] === '' ? 'selected' : '' ?>>Enabled</option>
+        <option value="false" <?php echo $quidFabSettings['quid-read-more'] === 'false' ? 'selected' : '' ?>>Disabled</option>
+    </select>
 
     <div class='quid-pay-settings-section-title'>Button Defaults</div>
 
@@ -73,38 +81,37 @@
                 </select>
             </div>
             <div>
-                <label>Text</label>
-                <input class="quid-field" name="quid-fab-text" placeholder="Button Text" value="<?php echo $quidFabSettings['quid-fab-text']; ?>" />
+                <label>Text (Max 45 Characters)</label>
+                <input class="quid-field" name="quid-fab-text" maxlength="45" placeholder="Button Text" value="<?php echo $quidFabSettings['quid-fab-text'] === '' ? 'Slide the Q to leave a tip!' : $quidFabSettings['quid-fab-text']; ?>" />
                 <div class="quid-fab-setting-message" style="display: none;"></div>
             </div>
             <div>
-                <label>Paid Text</label>
-                <input class="quid-field" name="quid-fab-paid" placeholder="Paid Button Text" value="<?php echo $quidFabSettings['quid-fab-paid']; ?>" />
+                <label>Paid Text (Max 25 Characters)</label>
+                <input class="quid-field" name="quid-fab-paid" maxlength="25" placeholder="Paid Button Text" value="<?php echo $quidFabSettings['quid-fab-paid'] === "" ? 'Thank You!' : $quidFabSettings['quid-fab-paid']; ?>" />
                 <div class="quid-fab-setting-message" style="display: none;"></div>
             </div>
             <div>
                 <label>Minimum Price</label>
-                <input class="quid-field" onkeyup="quidSettings.handleMinKeypress(event)" name="quid-fab-min" placeholder="Min Amount ($0.01 or more)" type="number" value="<?php echo $quidFabSettings['quid-fab-min']; ?>" />
+                <input class="quid-field" onkeyup="quidSettings.handleMinKeypress(event)" name="quid-fab-min" placeholder="Min Amount ($0.01 or more)" type="number" value="<?php echo $quidFabSettings['quid-fab-min'] === "" ? "0.01" : $quidFabSettings['quid-fab-min']; ?>" />
                 <div class="quid-fab-setting-message" style="display: none;"></div>
             </div>
             <div>
                 <label>Maximum Price</label>
-                <input class="quid-field" onkeyup="quidSettings.handleMaxKeypress(event)" name="quid-fab-max" placeholder="Max Amount ($2 or less)" type="number" value="<?php echo $quidFabSettings['quid-fab-max']; ?>" />
+                <input class="quid-field" onkeyup="quidSettings.handleMaxKeypress(event)" name="quid-fab-max" placeholder="Max Amount ($2 or less)" type="number" value="<?php echo $quidFabSettings['quid-fab-max'] === "" ? "2.00" : $quidFabSettings['quid-fab-max']; ?>" />
                 <div class="quid-fab-setting-message" style="display: none;"></div>
             </div>
             <div>
                 <label>Default Price</label>
-                <input class="quid-field" onkeyup="quidSettings.handlePriceKeypress(event)" name="quid-fab-initial" placeholder="Initial Amount ($0.01 - $2)" type="number" value="<?php echo $quidFabSettings['quid-fab-initial']; ?>" />
+                <input class="quid-field" onkeyup="quidSettings.handlePriceKeypress(event)" name="quid-fab-initial" placeholder="Initial Amount ($0.01 - $2)" type="number" value="<?php echo $quidFabSettings['quid-fab-initial'] === "" ? "0.01" : $quidFabSettings['quid-fab-initial']; ?>" />
                 <div class="quid-fab-setting-message" style="display: none;"></div>
             </div>
             <div>
                 <label>Payment Description</label>
-                <textarea placeholder="Description..." class="quid-field" name="quid-fab-description" rows="1"><?php echo $quidFabSettings['quid-fab-description']; ?></textarea>
+                <textarea placeholder="Description..." class="quid-field" name="quid-fab-description" rows="1"><?php echo $quidFabSettings['quid-fab-description'] === "" ? 'Thanks for the support!' : $quidFabSettings['quid-fab-description']; ?></textarea>
             </div>
         </div>
 
-    <div class="quid-pay-settings-save-bottom"><button class="button button-primary" type='button' onclick='submitQuidSettings()'>Save</button></div>
-    <span class='quid-pay-settings-response'></span>
+    <div class="quid-pay-settings-save-bottom"><button class="button button-primary" type='button' onclick='quidSettings.submitQuidSettings()'>Save</button></div>
 </div>
 
 <?php

@@ -5,13 +5,14 @@ namespace QUIDPaymentsSettings {
     class Settings {
 
         function addScripts() {
+            global $quidPluginVersion;
             $nonce = wp_create_nonce( 'quid-settings-nonce' );
             $quidSettingsURL = admin_url('admin-post.php?action=quid-settings&_wpnonce='.$nonce);
 
             wp_register_style( 'css_quid_settings', plugins_url( 'css/settings.css', __FILE__ ) );
             wp_enqueue_style( 'css_quid_settings' );
 
-            wp_register_script( 'quid_settings', plugins_url( 'js/settings.js', __FILE__ ) );
+            wp_register_script( 'quid_settings', plugins_url( 'js/settings.js?quid-plugin='.$quidPluginVersion, __FILE__ ) );
             $data = array(
                 'settings_url' => $quidSettingsURL,
             );
@@ -40,7 +41,7 @@ namespace QUIDPaymentsSettings {
                 unset($jsonAssoc['quid-key-public']);
             }
 
-            if (isset($jsonAssoc['quid-key-secret'])) {
+            if (isset($jsonAssoc['quid-key-secret']) && $jsonAssoc['quid-key-secret'] !== "") {
                 update_option('quid-secretKey', $this->hashKey(sanitize_text_field($jsonAssoc['quid-key-secret'])));
                 unset($jsonAssoc['quid-key-secret']);
             }
@@ -48,6 +49,11 @@ namespace QUIDPaymentsSettings {
             if (isset($jsonAssoc['quid-fab-enabled'])) {
                 update_option('quid-fab-enabled', sanitize_text_field($jsonAssoc['quid-fab-enabled']));
                 unset($jsonAssoc['quid-fab-enabled']);
+            }
+
+            if (isset($jsonAssoc['quid-read-more'])) {
+                update_option('quid-read-more', sanitize_text_field($jsonAssoc['quid-read-more']));
+                unset($jsonAssoc['quid-read-more']);
             }
 
             if (isset($jsonAssoc['quid-button-position'])) {

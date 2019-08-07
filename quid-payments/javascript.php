@@ -8,13 +8,14 @@ namespace QUIDPaymentsFooter {
 
         function js() {
             global $baseURL;
+            global $quidPluginVersion;
 
             $publicKey = get_option("quid-publicKey");
             $nonce = wp_create_nonce( 'quid-payment-nonce' );
             $quidArticleURL = admin_url('admin-post.php?action=quid-article&_wpnonce='.$nonce);
             $quidTipURL = admin_url('admin-post.php?action=quid-tip&_wpnonce='.$nonce);
 
-            wp_register_script( 'quid_index', plugins_url( 'js/index.js', __FILE__ ));
+            wp_register_script( 'quid_index', plugins_url( 'js/index.js?quid-plugin='.$quidPluginVersion, __FILE__ ));
             $data = array(
                 'public_key' => get_option("quid-publicKey"),
                 'article_url' => $quidArticleURL,
@@ -28,7 +29,7 @@ namespace QUIDPaymentsFooter {
 
                 $fabOptions = json_decode(get_option('quid-fab-options'), true);
                 
-                wp_register_script( 'js_quid_fab', plugins_url( 'js/fab.js', __FILE__ ) );
+                wp_register_script( 'js_quid_fab', plugins_url( 'js/fab.js?quid-plugin='.$quidPluginVersion, __FILE__ ) );
                 wp_localize_script( 'js_quid_fab', 'dataJS', array(
                     'tip_url' => $quidTipURL,
                     'baseURL' => $baseURL,

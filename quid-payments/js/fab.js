@@ -9,6 +9,11 @@ class QuidFab {
     this.xhttp.open('POST', dataJS.tip_url, true);
     this.xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     this.xhttp.send(JSON.stringify({ paymentResponse }));
+
+    const inputs = document.getElementsByClassName('quid-pay-tip');
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].style.display = 'none';
+    }
   }
 
   createFab() {
