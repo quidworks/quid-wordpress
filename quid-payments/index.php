@@ -13,7 +13,7 @@ License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 namespace QUIDPayments {
 
     $quidPluginVersion = "1.1.4";
-    $baseURL = 'http://localhost:3000';
+    $baseURL = 'https://app.quid.works';
 
     require_once dirname( __FILE__ ) .'/database.php';
     require_once dirname( __FILE__ ) .'/payment.php';
