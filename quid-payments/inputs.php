@@ -69,10 +69,12 @@ namespace QUIDPaymentsInputs {
             }
 
             $quidTipClassAddition = "";
-            if ($meta['type'] != "Required" || $metaInputAndNotShortcode) $quidTipClassAddition = "quid-pay-tip";
+            if (($meta['type'] != "Required" && $metaInputAndNotShortcode) || !$metaInputAndNotShortcode) {
+                $quidTipClassAddition = "quid-pay-tip";
+            }
 
             $html = <<<HTML
-                <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none;">
+                <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none; justify-content: {$justification};">
                     <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
                         <span>Payment validation failed</span>
@@ -191,10 +193,12 @@ HTML;
             }
 
             $quidTipClassAddition = "";
-            if ($meta['type'] != "Required" || $metaInputAndNotShortcode) $quidTipClassAddition = "quid-pay-tip";
+            if (($meta['type'] != "Required" && $metaInputAndNotShortcode) || !$metaInputAndNotShortcode) {
+                $quidTipClassAddition = "quid-pay-tip";
+            }
 
             $html = <<<HTML
-                <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none;">
+                <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none; justify-content: {$justification};">
                     <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
                         <span>Payment validation failed</span>

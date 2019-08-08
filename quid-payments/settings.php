@@ -107,7 +107,7 @@ namespace QUIDPaymentsSettings {
             $quidCurrency = get_option('quid-currency');
             $quidFabSettings = json_decode(get_option('quid-fab-options'), true);
             $quidFabEnabled = get_option('quid-fab-enabled') === "true";
-            include('settings.html.php');
+            include( plugin_dir_path( __FILE__ ) . 'settings.html.php');
         }
 
         // This is the format the key needs to be in to verify the payment

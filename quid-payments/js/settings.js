@@ -131,8 +131,8 @@ class QuidSettings {
   }
 
   cleanDollarValues(data) {
-    const minPriceAsFloat = parseFloat(data['quid-fab-min']);
-    const maxPriceAsFloat = parseFloat(data['quid-fab-max']);
+    let minPriceAsFloat = parseFloat(data['quid-fab-min']);
+    let maxPriceAsFloat = parseFloat(data['quid-fab-max']);
     const initialPriceAsFloat = parseFloat(data['quid-fab-initial']);
 
     if (minPriceAsFloat < 0.01) {
@@ -152,11 +152,13 @@ class QuidSettings {
       }
     }
 
-    if (initialPriceAsFloat > 2.00) {
-      data['quid-fab-initial'] = "2.00";
-    } else if (initialPriceAsFloat < 0.01) {
-      data['quid-fab-initial'] = "0.01";
-    }
+    minPriceAsFloat = parseFloat(data['quid-fab-min']);
+    maxPriceAsFloat = parseFloat(data['quid-fab-max']);
+
+    if (initialPriceAsFloat > minPriceAsFloat && initialPriceAsFloat < maxPriceAsFloat) return;
+
+    const medianPriceValue = (maxPriceAsFloat + minPriceAsFloat) / 2.00;
+    data['quid-fab-initial'] = medianPriceValue.toFixed(2);
   }
 
   submitQuidSettings() {

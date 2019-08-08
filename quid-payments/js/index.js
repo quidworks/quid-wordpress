@@ -17,7 +17,7 @@ class quidSliderPayCallback {
   handleRequestError() {
     if (this.requestResponse.errorMessage !== '') {
       this.payError.getElementsByTagName('span')[0].innerHTML = this.requestResponse.errorMessage;
-      this.payError.style.display = 'block';
+      this.payError.style.display = 'flex';
       return true;
     }
     return false;
@@ -119,7 +119,7 @@ class quidButtonPayCallback {
   returnedError() {
     const errorReturned = this.getReturnedError();
     if (errorReturned !== '') {
-      this.payError.style.display = 'block';
+      this.payError.style.display = 'flex';
       this.payError.getElementsByTagName('span')[0].innerHTML = errorReturned;
       return true;
     }
