@@ -1,7 +1,3 @@
-.quid-pay-settings {
-    margin-top: 30px;
-}
-
 .quid-pay-settings-response {
     padding-left: 5px;
 }
@@ -9,7 +5,6 @@
 .quid-pay-settings input, .quid-pay-settings-dropdown, .quid-fab-settings textarea {
     width: 400px;
     margin: 0;
-    margin-right: 10px;
     max-width: 100%;
     padding: 5px;
     border-radius: 4px;
@@ -20,20 +15,26 @@
     padding: 3.5px;
 }
 
-.quid-pay-settings p {
-    margin-top: 0px;
-    padding: 0px 5px;
+.quid-pay-settings-input-description {
+    margin-top: 2px;
+    padding: 0px 3px;
     opacity: 0.7;
     font-size: 12px;
 }
 
 .quid-pay-settings-header {
-    margin-bottom: 40px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     display: flex;
     align-items: center;
 }
 
 .quid-pay-settings-page-title {
+    margin-top: 30px;
+}
+
+.quid-pay-settings-header .quid-pay-settings-page-title {
+    margin: auto 0px;
     font-size: 24px;
     display: inline-block;
 }
@@ -44,7 +45,7 @@
 }
 
 .quid-pay-settings-subtitle {
-    font-size: 15px;
+    font-size: 14px;
     margin: 25px 0px;
 }
 
@@ -53,16 +54,58 @@
 }
 
 .quid-pay-settings label {
-    width: 100%;
-    display: block;
+    font-weight: 500;
+    display: inline-block;
     margin-top: 10px;
+    margin-left: 3px;
+    margin-bottom: 2px;
+}
+
+.quid-pay-settings .quid-settings-label-tooltip label {
+    margin-top: 0px!important;
+    margin-bottom: 0px!important;
+}
+
+.quid-pay-settings-section-header {
+    margin-top: 20px;
+    margin-bottom: 15px;
 }
 
 .quid-pay-settings-section-title {
-    margin-top: 20px;
-    margin-bottom: 15px;
     font-size: 16px;
     font-weight: bold;
+}
+
+.quid-pay-settings-section-description {
+    font-size: 13px;
+    margin-top: 5px;
+    opacity: 0.8;
+}
+
+.quid-settings-tooltip-container {
+    display: flex;
+    flex-flow: nowrap;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.quid-settings-label-tooltip {
+    margin-bottom: 5px;
+}
+
+.quid-settings-tooltip-icon {
+    cursor: help;
+    margin-left: 8px;
+    background-color: #79848C;
+    border: solid 1px #79848C;
+    color: white;
+    height: 11px;
+    border-radius: 50%;
+    width: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
 }
 
 .quid-pay-settings-save-bottom {

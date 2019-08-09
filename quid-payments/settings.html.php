@@ -6,56 +6,94 @@
 
     <div id="quidSettingsMessageContainer" class="quid-settings-message notice is-dismissible"></div>
 
-    <div class='quid-pay-settings-section-title'>Account Settings</div>
+    <div class='quid-pay-settings-section-header'>
+        <div class='quid-pay-settings-section-title'>General Settings</div>
+        <div class='quid-pay-settings-section-description'>
+            This is a description
+        </div>
+    </div>
 
-    <label>Currency of your Merchant Account</label>
-    <select id='quid-currency' class='quid-pay-settings-dropdown quid-field' name="quid-currency">
-        <option disabled <?php echo $quidCurrency === '' ? 'selected' : '' ?> value> -- Select your currency -- </option>
-        <option value="CAD" <?php echo $quidCurrency === 'CAD' ? 'selected' : '' ?>>CAD</option>
-        <option value="USD" <?php echo $quidCurrency === 'USD' ? 'selected' : '' ?>>USD</option>
-    </select>
+    <div class="quid-settings-tooltip-container quid-settings-label-tooltip">
+        <label>Currency of your Merchant Account</label>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+    </div>
+    <div class="quid-settings-tooltip-container">
+        <select id='quid-currency' class='quid-pay-settings-dropdown quid-field' name="quid-currency">
+            <option disabled <?php echo $quidCurrency === '' ? 'selected' : '' ?> value> -- Select your currency -- </option>
+            <option value="CAD" <?php echo $quidCurrency === 'CAD' ? 'selected' : '' ?>>CAD</option>
+            <option value="USD" <?php echo $quidCurrency === 'USD' ? 'selected' : '' ?>>USD</option>
+        </select>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+    </div>
 
     <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
-    <label>Public and Secret Keys</label>
+
+    <div class="quid-settings-tooltip-container quid-settings-label-tooltip">
+        <label>Public and Secret Keys</label>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+    </div>
     <input id='quid-publicKey' class="quid-field" name="quid-key-public" style='margin-bottom: 10px' value='<?php echo $quidPublicKey; ?>' placeholder='Public API Key' /><br />
     <input id='quid-secretKey' class="quid-field" name="quid-key-secret" type='password' placeholder='Secret API Key' />
-    <p>secret key is not displayed to keep it extra safe</p>
+    <p class="quid-pay-settings-input-description">secret key is not displayed to keep it extra safe</p>
 
-    <div class='quid-pay-settings-section-title'>Post Defaults</div>
+    <div class='quid-pay-settings-section-header'>
+        <div class='quid-pay-settings-section-title'>Post Defaults</div>
+        <div class='quid-pay-settings-section-description'></div>
+    </div>
 
     <label>Read More Button</label>
-    <select id='quid-align' class='quid-pay-settings-dropdown quid-field-margin quid-field' name="quid-read-more">
-        <option value="true" <?php echo $quidFabSettings['quid-read-more'] === 'true' || $quidFabSettings['quid-read-more'] === '' ? 'selected' : '' ?>>Enabled</option>
-        <option value="false" <?php echo $quidFabSettings['quid-read-more'] === 'false' ? 'selected' : '' ?>>Disabled</option>
-    </select>
+    <div class="quid-settings-tooltip-container">
+        <select id='quid-align' class='quid-pay-settings-dropdown quid-field' name="quid-read-more">
+            <option value="true" <?php echo $quidFabSettings['quid-read-more'] === 'true' || $quidFabSettings['quid-read-more'] === '' ? 'selected' : '' ?>>Enabled</option>
+            <option value="false" <?php echo $quidFabSettings['quid-read-more'] === 'false' ? 'selected' : '' ?>>Disabled</option>
+        </select>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+    </div>
 
-    <div class='quid-pay-settings-section-title'>Button Defaults</div>
+    <div class='quid-pay-settings-section-header'>
+        <div class='quid-pay-settings-section-title'>Button Defaults</div>
+        <div class='quid-pay-settings-section-description'></div>
+    </div>
+    
 
     <label>Default Button Alignment</label>
-    <select id='quid-align' class='quid-pay-settings-dropdown quid-field-margin quid-field' name="quid-button-position">
-        <option value="right" <?php echo $quidAlign === 'right' || $quidAlign === '' ? 'selected' : '' ?>>Right</option>
-        <option value="center" <?php echo $quidAlign === 'center' ? 'selected' : '' ?>>Center</option>
-        <option value="left" <?php echo $quidAlign === 'left' ? 'selected' : '' ?>>Left</option>
-    </select>
+    <div class="quid-settings-tooltip-container">
+        <select id='quid-align' class='quid-pay-settings-dropdown quid-field' name="quid-button-position">
+            <option value="right" <?php echo $quidAlign === 'right' || $quidAlign === '' ? 'selected' : '' ?>>Right</option>
+            <option value="center" <?php echo $quidAlign === 'center' ? 'selected' : '' ?>>Center</option>
+            <option value="left" <?php echo $quidAlign === 'left' ? 'selected' : '' ?>>Left</option>
+        </select>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+    </div>
 
+    <div class='quid-pay-settings-section-header'>
         <div class='quid-pay-settings-section-title'>Floating Button Settings</div>
+        <div class='quid-pay-settings-section-description'></div>
+    </div>
 
+    <div class="quid-settings-tooltip-container">
         <div id="quidFabSwitch" class="quid-fab-switch <?php echo $quidFabEnabled ? "quid-fab-switched-on" : "quid-fab-switched-off"; ?>" onclick="quidSettings.toggleSwitch()">
             <input class="quid-field" type="checkbox" name="quid-fab-enabled" value="<?php echo $quidFabEnabled ? "true" : "false"; ?>" />
             <span class="quid-fab-switch-text"><?php echo $quidFabEnabled ? "ON" : "OFF"; ?></span>
             <span class="quid-fab-switch-handle"></span>
         </div>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+    </div>
 
-        <div class="quid-fab-settings">
-            <div>
-                <label>Position</label>
+    <div class="quid-fab-settings">
+        <div>
+            <label>Position</label>
+            <div class="quid-settings-tooltip-container">
                 <select class="quid-pay-settings-dropdown quid-field" name="quid-fab-position">
                     <option <?php echo 'right' == $quidFabSettings['quid-fab-position'] ? 'selected' : '' ?> value="right">Right</option>
                     <option <?php echo 'left' == $quidFabSettings['quid-fab-position'] ? 'selected' : '' ?> value="left">Left</option>
                 </select>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
-            <div>
-                <label>Palette</label>
+        </div>
+        <div>
+            <label>Palette</label>
+            <div class="quid-settings-tooltip-container">
                 <select class="quid-pay-settings-dropdown quid-field" name="quid-fab-palette">
                     <option <?php echo 'default' == $quidFabSettings['quid-fab-palette'] ? 'selected' : '' ?> value="default">Default</option>
                     <option <?php echo 'green' == $quidFabSettings['quid-fab-palette'] ? 'selected' : '' ?> value="green">Green</option>
@@ -65,51 +103,77 @@
                     <option <?php echo 'grey' == $quidFabSettings['quid-fab-palette'] ? 'selected' : '' ?> value="grey">Grey</option>
                     <option <?php echo 'dark' == $quidFabSettings['quid-fab-palette'] ? 'selected' : '' ?> value="dark">Dark</option>
                 </select>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
-            <div>
-                <label>Demo</label>
+        </div>
+        <div>
+            <label>Demo</label>
+            <div class="quid-settings-tooltip-container">
                 <select class="quid-pay-settings-dropdown quid-field" name="quid-fab-demo">
                     <option <?php echo "true" === $quidFabSettings['quid-fab-demo'] ? 'selected' : '' ?> value="true">Enabled</option>
                     <option <?php echo "false" === $quidFabSettings['quid-fab-demo'] ? 'selected' : '' ?> value="false">Disabled</option>
                 </select>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
-            <div>
-                <label>Reminder</label>
+        </div>
+        <div>
+            <label>Reminder</label>
+            <div class="quid-settings-tooltip-container">
                 <select class="quid-pay-settings-dropdown quid-field" name="quid-fab-reminder">
                     <option <?php echo "true" === $quidFabSettings['quid-fab-reminder'] ? 'selected' : '' ?> value="true">Enabled</option>
                     <option <?php echo "false" === $quidFabSettings['quid-fab-reminder'] ? 'selected' : '' ?> value="false">Disabled</option>
                 </select>
-            </div>
-            <div>
-                <label>Text (Max 45 Characters)</label>
-                <input class="quid-field" name="quid-fab-text" maxlength="45" placeholder="Button Text" value="<?php echo $quidFabSettings['quid-fab-text'] === '' ? 'Slide the Q to leave a tip!' : $quidFabSettings['quid-fab-text']; ?>" />
-                <div class="quid-fab-setting-message" style="display: none;"></div>
-            </div>
-            <div>
-                <label>Paid Text (Max 25 Characters)</label>
-                <input class="quid-field" name="quid-fab-paid" maxlength="25" placeholder="Paid Button Text" value="<?php echo $quidFabSettings['quid-fab-paid'] === "" ? 'Thank You!' : $quidFabSettings['quid-fab-paid']; ?>" />
-                <div class="quid-fab-setting-message" style="display: none;"></div>
-            </div>
-            <div>
-                <label>Minimum Price</label>
-                <input class="quid-field" onkeyup="quidSettings.handleMinKeypress(event)" name="quid-fab-min" placeholder="Min Amount ($0.01 or more)" type="number" value="<?php echo $quidFabSettings['quid-fab-min'] === "" ? "0.01" : $quidFabSettings['quid-fab-min']; ?>" />
-                <div class="quid-fab-setting-message" style="display: none;"></div>
-            </div>
-            <div>
-                <label>Maximum Price</label>
-                <input class="quid-field" onkeyup="quidSettings.handleMaxKeypress(event)" name="quid-fab-max" placeholder="Max Amount ($2 or less)" type="number" value="<?php echo $quidFabSettings['quid-fab-max'] === "" ? "2.00" : $quidFabSettings['quid-fab-max']; ?>" />
-                <div class="quid-fab-setting-message" style="display: none;"></div>
-            </div>
-            <div>
-                <label>Default Price</label>
-                <input class="quid-field" onkeyup="quidSettings.handlePriceKeypress(event)" name="quid-fab-initial" placeholder="Initial Amount ($0.01 - $2)" type="number" value="<?php echo $quidFabSettings['quid-fab-initial'] === "" ? "0.01" : $quidFabSettings['quid-fab-initial']; ?>" />
-                <div class="quid-fab-setting-message" style="display: none;"></div>
-            </div>
-            <div>
-                <label>Payment Description</label>
-                <textarea placeholder="Description..." class="quid-field" name="quid-fab-description" rows="1"><?php echo $quidFabSettings['quid-fab-description'] === "" ? 'Thanks for the support!' : $quidFabSettings['quid-fab-description']; ?></textarea>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
         </div>
+        <div>
+            <label>Text (Max 45 Characters)</label>
+            <div class="quid-settings-tooltip-container">
+                <input class="quid-field" name="quid-fab-text" maxlength="45" placeholder="Button Text" value="<?php echo $quidFabSettings['quid-fab-text'] === '' ? 'Slide the Q to leave a tip!' : $quidFabSettings['quid-fab-text']; ?>" />
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+            </div>
+            <div class="quid-fab-setting-message" style="display: none;"></div>
+        </div>
+        <div>
+            <label>Paid Text (Max 25 Characters)</label>
+            <div class="quid-settings-tooltip-container">
+                <input class="quid-field" name="quid-fab-paid" maxlength="25" placeholder="Paid Button Text" value="<?php echo $quidFabSettings['quid-fab-paid'] === "" ? 'Thank You!' : $quidFabSettings['quid-fab-paid']; ?>" />
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+            </div>
+            <div class="quid-fab-setting-message" style="display: none;"></div>
+        </div>
+        <div>
+            <label>Minimum Price</label>
+            <div class="quid-settings-tooltip-container">
+                <input class="quid-field" onkeyup="quidSettings.handleMinKeypress(event)" name="quid-fab-min" placeholder="Min Amount ($0.01 or more)" type="number" value="<?php echo $quidFabSettings['quid-fab-min'] === "" ? "0.01" : $quidFabSettings['quid-fab-min']; ?>" />
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+            </div>
+            <div class="quid-fab-setting-message" style="display: none;"></div>
+        </div>
+        <div>
+            <label>Maximum Price</label>
+            <div class="quid-settings-tooltip-container">
+                <input class="quid-field" onkeyup="quidSettings.handleMaxKeypress(event)" name="quid-fab-max" placeholder="Max Amount ($2 or less)" type="number" value="<?php echo $quidFabSettings['quid-fab-max'] === "" ? "2.00" : $quidFabSettings['quid-fab-max']; ?>" />
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+            </div>
+            <div class="quid-fab-setting-message" style="display: none;"></div>
+        </div>
+        <div>
+            <label>Default Price</label>
+            <div class="quid-settings-tooltip-container">
+                <input class="quid-field" onkeyup="quidSettings.handlePriceKeypress(event)" name="quid-fab-initial" placeholder="Initial Amount ($0.01 - $2)" type="number" value="<?php echo $quidFabSettings['quid-fab-initial'] === "" ? "0.01" : $quidFabSettings['quid-fab-initial']; ?>" />
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+            </div>
+            <div class="quid-fab-setting-message" style="display: none;"></div>
+        </div>
+        <div>
+            <label>Payment Description</label>
+            <div class="quid-settings-tooltip-container">
+                <textarea placeholder="Description..." class="quid-field" name="quid-fab-description" rows="1"><?php echo $quidFabSettings['quid-fab-description'] === "" ? 'Thanks for the support!' : $quidFabSettings['quid-fab-description']; ?></textarea>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+            </div>
+        </div>
+    </div>
 
     <div class="quid-pay-settings-save-bottom"><button class="button button-primary" type='button' onclick='quidSettings.submitQuidSettings()'>Save</button></div>
 </div>
