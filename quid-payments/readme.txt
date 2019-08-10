@@ -66,11 +66,12 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 
 == Screenshots ==
 
-1. After installing and activating the QUID Payments plugin, navigate to the Settings > QUID Payments settings page and input your API key and secret from your [QUID merchant account](https://app.quid.works/merchant). Your Private API secret will not be saved in the database, only a hash of the key is saved.
+1. After installing and activating the QUID Payments plugin, navigate to the Settings > QUID Payments settings page and add your API key and secret from your [QUID merchant account](https://app.quid.works/merchant). Your API secret will not be saved in the database, only a hash of the key is saved.
 2. Configure the QUID post settings fields for each post where you want to display the payment button or slider. For detailed instructions on how to use each field visit our [knowledge base](https://how.quid.works/quid-wordpress-plugin/). Include an excerpt of the post for the plugin to display before a user has paid.
 3. Once your post is published, the payment button or slider will be displayed below the excerpt of the post.
 4. Upon clicking the Pay button the user is presented with a payment confirmation screen.
 5. Once the payment succeeds, the full post content is displayed.
+6. Enable the floating tip button to display the tip button on each page of your site.
 
 == Changelog ==
 
