@@ -32,29 +32,27 @@ namespace QUIDPaymentsInputs {
             else { echo ''; return; }
         }
 
-        private function buttonAlignment($shortcodeArg) {
-            $alignOption = get_option('quid-align');
+        function quidButton($meta, $metaInputAndNotShortcode) {
+            global $post;
 
-            if (!isset($shortcodeArg)) {
-                if ($alignOption == "") $alignOption = 'right';
-                $shortcodeArg = $alignOption;
+            $blogTitle = Helpers\getSiteTitle();
+            $productName = "";
+            $productID = "";
+            $productURL = "";
+
+            if ($metaInputAndNotShortcode) {
+                $productName = Helpers\getPostTitle($post);
+                $productID = Helpers\getPostSlug($post);
+                $productURL = Helpers\getPostURL($post);
+            } else {
+                $productName = $blogTitle."-tip";
+                $productID = $blogTitle."-tip";
+                $productURL = get_site_url();
             }
 
-            if ($shortcodeArg == 'center') return 'center';
-            if ($shortcodeArg == 'left') return 'flex-start';
-            if ($shortcodeArg == 'right') return 'flex-end';
-
-            return 'flex-end';
-        }
-
-        function quidButton($meta) {
-            global $post;
-            $permalink = Helpers\getPostURL($post);
-            $blogTitle = Helpers\getSiteTitle();
-            $postTitle = Helpers\getPostTitle($post);
-            $postSlug = Helpers\getPostSlug($post);
             $microtimeIdentifier = microtime();
             $currencyOption = get_option('quid-currency');
+            $justification = Helpers\buttonAlignment($meta['align']);
             $requiredFields = ['price']; // Add required shortcode attributes to array
 
             if (!$meta) {
@@ -64,20 +62,25 @@ namespace QUIDPaymentsInputs {
             if (!isset($meta['type'])) $meta['type'] = 'Optional';
             if (!isset($meta['paid'])) $meta['paid'] = 'Thanks!';
 
-            $meta['dom-id'] = $postSlug.$microtimeIdentifier;
+            $meta['dom-id'] = $productID.$microtimeIdentifier;
 
             foreach ($requiredFields as $field) {
                 if (!isset($meta[$field])) return "";
             }
 
+            $quidTipClassAddition = "";
+            if (($meta['type'] != "Required" && $metaInputAndNotShortcode) || !$metaInputAndNotShortcode) {
+                $quidTipClassAddition = "quid-pay-tip";
+            }
+
             $html = <<<HTML
-                <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none;">
+                <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none; justify-content: {$justification};">
                     <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
                         <span>Payment validation failed</span>
                     </div>
                 </div>
-                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons for-product-{$postSlug}" style="display: flex; justify-content: {$this->buttonAlignment($meta['align'])};">
+                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons {$quidTipClassAddition} for-product-{$productID}" style="display: flex; justify-content: {$justification};">
 HTML;
                     if ($meta['type'] == "Required") {
                         $html .= <<<HTML
@@ -85,9 +88,9 @@ HTML;
                             class="quid-pay-already-paid"
                             quid-amount="0"
                             quid-currency="{$currencyOption}"
-                            quid-product-id="{$postSlug}"
-                            quid-product-url="{$permalink}"
-                            quid-product-name="{$postTitle}"
+                            quid-product-id="{$productID}"
+                            quid-product-url="{$productURL}"
+                            quid-product-name="{$productName}"
                             quid-product-description="{$blogTitle}"
                             style="display: inline-flex"
                         ></div>
@@ -98,9 +101,9 @@ HTML;
                     <div id="{$meta['dom-id']}"
                         quid-amount="{$meta['price']}"
                         quid-currency="{$currencyOption}"
-                        quid-product-id="{$postSlug}"
-                        quid-product-url="{$permalink}"
-                        quid-product-name="{$postTitle}"
+                        quid-product-id="{$productID}"
+                        quid-product-url="{$productURL}"
+                        quid-product-name="{$productName}"
                         quid-product-description="{$blogTitle}"
                         style="display: inline-flex"
                     ></div>
@@ -112,8 +115,8 @@ HTML;
                 plugins_url( 'js/button.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
                     'post_id' => $post->ID,
-                    'meta_name' => $postTitle,
-                    'meta_id' => $postSlug,
+                    'meta_name' => $productName,
+                    'meta_id' => $productID,
                     'meta_domID' => $meta['dom-id'],
                     'meta_type' => $meta['type'],
                     'meta_price' => $meta['price'],
@@ -133,14 +136,15 @@ HTML;
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,
-                        'meta_name' => $postTitle,
-                        'meta_id' => $postSlug,
+                        'meta_name' => $productName,
+                        'meta_id' => $productID,
                         'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],
                         'meta_currency' => $currencyOption,
+                        'meta_readMore' => get_option('quid-read-more'),
                     )
                 );
             }
@@ -148,14 +152,27 @@ HTML;
             return $html;
         }
 
-        function quidSlider($meta) {
+        function quidSlider($meta, $metaInputAndNotShortcode) {
             global $post;
-            $permalink = Helpers\getPostURL($post);
+
             $blogTitle = Helpers\getSiteTitle();
-            $postTitle = Helpers\getPostTitle($post);
-            $postSlug = Helpers\getPostSlug($post);
+            $productName = "";
+            $productID = "";
+            $productURL = "";
+
+            if ($metaInputAndNotShortcode) {
+                $productName = Helpers\getPostTitle($post);
+                $productID = Helpers\getPostSlug($post);
+                $productURL = Helpers\getPostURL($post);
+            } else {
+                $productName = $blogTitle."-tip";
+                $productID = $blogTitle."-tip";
+                $productURL = get_site_url();
+            }
+            
             $microtimeIdentifier = microtime();
             $currencyOption = get_option('quid-currency');
+            $justification = Helpers\buttonAlignment($meta['align']);
             $requiredFields = []; // Add required shortcode attributes to array
 
             if (!$meta) {
@@ -169,28 +186,33 @@ HTML;
             if (!isset($meta['initial'])) $meta['initial'] = '1.00';
             if (!isset($meta['paid'])) $meta['paid'] = 'Thanks!';
 
-            $meta['dom-id'] = $postSlug.$microtimeIdentifier;
+            $meta['dom-id'] = $productID.$microtimeIdentifier;
 
             foreach ($requiredFields as $field) {
                 if (!isset($meta[$field])) return "";
             }
 
+            $quidTipClassAddition = "";
+            if (($meta['type'] != "Required" && $metaInputAndNotShortcode) || !$metaInputAndNotShortcode) {
+                $quidTipClassAddition = "quid-pay-tip";
+            }
+
             $html = <<<HTML
-                <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none;">
+                <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none; justify-content: {$justification};">
                     <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
                         <span>Payment validation failed</span>
                     </div>
                 </div>
 
-                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons  for-product-{$postSlug}" style="display: flex; justify-content: {$this->buttonAlignment($meta['align'])};">
+                <div id="quid-pay-buttons-{$meta['dom-id']}" class="quid-pay-buttons {$quidTipClassAddition} for-product-{$productID}" style="display: flex; justify-content: {$justification};">
                     <div
                         id="{$meta['dom-id']}"
                         class="quid-slider"
                         quid-currency="{$currencyOption}"
-                        quid-product-id="{$postSlug}"
-                        quid-product-url="{$permalink}"
-                        quid-product-name="{$postTitle}"
+                        quid-product-id="{$productID}"
+                        quid-product-url="{$productURL}"
+                        quid-product-name="{$productName}"
                         quid-product-description="{$blogTitle}"
                         quid-text="{$meta['text']}"
                         quid-text-paid="{$meta['paid']}"
@@ -206,7 +228,7 @@ HTML;
                 plugins_url( 'js/slider.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
                     'post_id' => $post->ID,
-                    'meta_id' => $postSlug,
+                    'meta_id' => $productID,
                     'meta_domID' => $meta['dom-id'],
                     'meta_initial' => $meta['initial'],
                     'meta_type' => $meta['type'],
@@ -214,8 +236,8 @@ HTML;
                     'meta_price' => $meta['price'],
                     'meta_paid' => $meta['paid'],
                     'meta_description' => $blogTitle,
-                    'meta_name' => $postTitle,
-                    'meta_url' => $permalink,
+                    'meta_name' => $productName,
+                    'meta_url' => $productURL,
                     'meta_min' => $meta['min'],
                     'meta_max' => $meta['max'],
                     'meta_currency' => $currencyOption,
@@ -233,16 +255,17 @@ HTML;
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,
-                        'meta_id' => $postSlug,
+                        'meta_id' => $productID,
                         'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],
                         'meta_description' => $blogTitle,
-                        'meta_name' => $postTitle,
-                        'meta_url' => $permalink,
+                        'meta_name' => $productName,
+                        'meta_url' => $productURL,
                         'meta_currency' => $currencyOption,
+                        'meta_readMore' => get_option('quid-read-more'),
                     )
                 );
             }
@@ -251,7 +274,8 @@ HTML;
         }
 
         function enqueueJS($fileIdentifier, $path, $data) {
-            wp_register_script( $fileIdentifier, $path );
+            global $quidPluginVersion;
+            wp_register_script( $fileIdentifier, $path.'&quid-version='.$quidPluginVersion );
             wp_localize_script( $fileIdentifier, 'dataJS', $data );
             wp_enqueue_script( $fileIdentifier );
         }

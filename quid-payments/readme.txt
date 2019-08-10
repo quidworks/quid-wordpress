@@ -3,7 +3,7 @@ Contributors: quidworks
 Tags: payment,payments,micropayment,micropayments,donation,donations,paywall,monetization,pay-per-use
 Requires at least: 5.0
 Tested up to: 5.2.2
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 Requires PHP: 7.0
 License: MIT
 License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
@@ -11,9 +11,6 @@ License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for content.
 
 == Description ==
-
-## LET YOUR FANS SUPPORT YOU
-QUID is kickstarting the pay-per-use economy by letting users make payments as low as 1¢ for articles, podcasts, and donations.
 
 ## QUID WORKS FOR BLOGGERS
 *   Monetize your content with micropayments instead of ads.
@@ -77,6 +74,11 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 
 == Changelog ==
 
+= 1.1.5 =
+* Add a floating tip button to your site so visitors can tip from any page
+* For already puchased content, Control if your theme displays the full post or the excerpt on blog and archive pages
+* Bug fixes
+
 = 1.1.4 =
 * Access plugin settings, documentation, and support directly from your plugin admin page
 * Improved error messages and logging
@@ -102,6 +104,12 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.5 =
+Version 1.1.5 adds the floating tip button feature and a display option for previously purchased content
+
+= 1.1.4 =
+Version 1.1.4 has improved debugging and error logging
 
 = 1.1.3 =
 Version 1.1.3 works better with content caching plugins and services

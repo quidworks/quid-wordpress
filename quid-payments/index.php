@@ -3,7 +3,7 @@
 /*
 Plugin Name: QUID Payments
 Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for content.
-Version: 1.1.4
+Version: 1.1.5
 Author: QUID Works Inc.
 Author URI: https://quid.works
 License: MIT
@@ -11,6 +11,9 @@ License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 */
 
 namespace QUIDPayments {
+
+    $quidPluginVersion = "1.1.5";
+    $baseURL = 'https://app.quid.works';
 
     require_once dirname( __FILE__ ) .'/database.php';
     require_once dirname( __FILE__ ) .'/payment.php';
@@ -30,8 +33,6 @@ namespace QUIDPayments {
     use QUIDPaymentsPost as Post;
     use QUIDPaymentsMeta as Meta;
     use QUIDPaymentsSettings as Settings;
-
-    $baseURL = 'https://app.quid.works';
 
     // https://codex.wordpress.org/Creating_Tables_with_Plugins
     register_activation_hook( __FILE__, array(new Database\Database(), 'createPurchaseDatabase') );

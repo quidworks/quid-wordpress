@@ -11,14 +11,13 @@ class quidSliderPayCallback {
     this.paymentContainer = document.getElementById(`quid-pay-buttons-${this.domID}`);
     this.target = document.getElementById(_quid_wp_global[this.paymentResponse.productID].target);
     this.payError = this.paymentContainer.previousElementSibling;
-    this.excerptContainer = document.getElementById(_quid_wp_global[this.paymentResponse.productID].postid + '-excerpt');
     this.buttonPrice = this.paymentContainer.getElementsByClassName('quid-pay-button-price')[0];
   }
 
   handleRequestError() {
     if (this.requestResponse.errorMessage !== '') {
       this.payError.getElementsByTagName('span')[0].innerHTML = this.requestResponse.errorMessage;
-      this.payError.style.display = 'block';
+      this.payError.style.display = 'flex';
       return true;
     }
     return false;
@@ -31,8 +30,14 @@ class quidSliderPayCallback {
     }
   }
 
+  removeAllTipInputs() {
+    const inputs = document.getElementsByClassName('quid-pay-tip');
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].style.display = 'none';
+    }
+  }
+
   finalizeRequiredPayment() {
-    this.excerptContainer.style.display = 'none';
     this.target.innerHTML = this.requestResponse.content;
     this.removeAllInputsForSameProduct();
     this.payError.style.display = 'none';
@@ -43,7 +48,7 @@ class quidSliderPayCallback {
     this.buttonPrice.innerHTML = _quid_wp_global[this.paymentResponse.productID].paidText;
 
     setTimeout(() => {
-      this.removeAllInputsForSameProduct();
+      this.removeAllTipInputs();
     }, 2000);
   }
 
@@ -114,7 +119,7 @@ class quidButtonPayCallback {
   returnedError() {
     const errorReturned = this.getReturnedError();
     if (errorReturned !== '') {
-      this.payError.style.display = 'block';
+      this.payError.style.display = 'flex';
       this.payError.getElementsByTagName('span')[0].innerHTML = errorReturned;
       return true;
     }
@@ -128,19 +133,25 @@ class quidButtonPayCallback {
     }
   }
 
+  removeAllTipInputs() {
+    const inputs = document.getElementsByClassName('quid-pay-tip');
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].style.display = 'none';
+    }
+  }
+
   finalizeOptionalPayment() {
+    this.payError.style.display = 'none';
     this.payButton[0].getElementsByClassName('quid-pay-button-price')[0].innerHTML = _quid_wp_global[this.paymentResponse.productID].paidText;
     
     setTimeout(() => {
-      this.removeAllInputsForSameProduct();
-      this.payError.style.display = 'none';
+      this.removeAllTipInputs();
     }, 2000);
   }
 
   finalizeRequiredPayment() {
     this.removeAllInputsForSameProduct();
     this.payError.style.display = 'none';
-    document.getElementById(_quid_wp_global[this.paymentResponse.productID].postid + '-excerpt').style.display = 'none';
     this.target.innerHTML = this.requestResponse.content;
   }
 

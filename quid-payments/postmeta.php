@@ -36,6 +36,7 @@ namespace QUIDPaymentsMeta {
         }
 
         public function renderMetaFieldsTemplate($post) {
+            global $quidPluginVersion;
             $meta = $this->getMetaFields($post);
 
             $buttonsReadOnly = "";
@@ -47,10 +48,10 @@ namespace QUIDPaymentsMeta {
                 $sliderReadOnly = "readonly";
             }
             
-            wp_register_style( 'css_quid_meta', plugins_url( 'css/meta.css', __FILE__ ) );
+            wp_register_style( 'css_quid_meta', plugins_url( 'css/meta.css?quid-plugin='.$quidPluginVersion, __FILE__ ) );
             wp_enqueue_style( 'css_quid_meta' );
 
-            wp_register_script( 'js_quid_meta_'.$meta['id'], plugins_url( 'js/meta.js', __FILE__ ) );
+            wp_register_script( 'js_quid_meta_'.$meta['id'], plugins_url( 'js/meta.js?quid-plugin='.$quidPluginVersion, __FILE__ ) );
             wp_localize_script( 'js_quid_meta_'.$meta['id'], 'dataMetaJS', null );
             wp_enqueue_script( 'js_quid_meta_'.$meta['id'] );
             ?>
@@ -102,22 +103,22 @@ namespace QUIDPaymentsMeta {
                     <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)" name="quid_field_initial" placeholder="Initial Amount ($0.01 - $2)" type="number" value="<?php echo $meta['initial'] ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
-                <div>
+                <div style="display: none;">
                     <label>Product ID</label>
                     <input name="quid_field_id" readonly placeholder="Product ID" value="<?php echo Helpers\getPostSlug($post); ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
-                <div>
+                <div style="display: none;">
                     <label>Product Name</label>
                     <input name="quid_field_name" readonly placeholder="Name" value="<?php echo Helpers\getPostTitle($post) ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
-                <div>
+                <div style="display: none;">
                     <label>Product Description</label>
                     <input name="quid_field_description" readonly placeholder="Description" value="<?php echo Helpers\getSiteTitle() ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
-                <div>
+                <div style="display: none;">
                     <label>Product URL</label>
                     <input name="quid_field_url" readonly placeholder="URL" value="<?php echo get_permalink($post) ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>

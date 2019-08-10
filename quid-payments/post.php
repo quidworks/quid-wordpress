@@ -4,6 +4,7 @@ namespace QUIDPaymentsPost {
 
     use QUIDPaymentsInputs as Inputs;
     use QUIDPaymentsMeta as Meta;
+    use QUIDHelperFunctions as Helpers;
 
     class Post {
 
@@ -33,12 +34,18 @@ namespace QUIDPaymentsPost {
 
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
+            $justification = Helpers\buttonAlignment($meta['align']);
 
             $html = <<<HTML
-                <div style="width: 100%;" id="post-content-{$meta['id']}"><p id="{$post->ID}-excerpt">{$post->post_excerpt}</p>
+                <div style="width: 100%;" id="post-content-{$meta['id']}">
+                    <p>{$post->post_excerpt}</p>
+                    <p id="read-more-content-{$meta['id']}" style="display: none;"></p>
+                    <div style="display: flex; justify-content: {$justification}">
+                        <button class="quid-pay-button quid-pay-button-default" id="read-more-button-{$meta['id']}" style="display: none;">Read More</button>
+                    </div>
 HTML;
 
-            $html .= $inputs->quidSlider($meta);
+            $html .= $inputs->quidSlider($meta, true);
             $html .= '</div>';
 
             return $html;
@@ -55,7 +62,7 @@ HTML;
                 <div style="width: 100%;" id="post-content-{$meta['id']}">
 HTML;
 
-            $html .= $content.$inputs->quidSlider($meta);
+            $html .= $content.$inputs->quidSlider($meta, true);
             $html .= `</div>`;
             return $html;
         }
@@ -66,12 +73,17 @@ HTML;
 
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
+            $justification = Helpers\buttonAlignment($meta['align']);
 
             $html = <<<HTML
-                <div style="width: 100%;" id="post-content-{$meta['id']}"><p id="{$post->ID}-excerpt">$post->post_excerpt</p>
+                <div style="width: 100%;" id="post-content-{$meta['id']}">
+                    <p id="read-more-content-{$meta['id']}" style="display: none;"></p>
+                    <div style="display: flex; justify-content: {$justification}">
+                        <button class="quid-pay-button quid-pay-button-default" id="read-more-button-{$meta['id']}" style="display: none;">Read More</button>
+                    </div>
 HTML;
 
-            $html .= $inputs->quidButton($meta);
+            $html .= $inputs->quidButton($meta, true);
             $html .= `</div>`;
             return $html;
         }
@@ -87,7 +99,7 @@ HTML;
                 <div style="width: 100%;" id="post-content-{$meta['id']}">
 HTML;
 
-            $html .= $content.$inputs->quidButton($meta);
+            $html .= $content.$inputs->quidButton($meta, true);
             $html .= `</div>`;
             return $html;
         }
