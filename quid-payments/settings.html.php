@@ -162,7 +162,49 @@
     if(isset($_GET['quid-debug'])) {
         ?>
         <h1 class='quid-pay-settings-page-title'>QUID Payments Debugging Tools</h1>
-        <div class='quid-pay-settings-subtitle'>Test QUID payments database table</div>
+            <div class='quid-pay-settings-section-header'>
+                <div class='quid-pay-settings-section-title'>Debug Info</div>
+            </div>
+            QUID payments plugin version: <?php global $quidPluginVersion; echo $quidPluginVersion; ?><br />
+            PHP version: <?php echo phpversion(); ?><br />
+            <?php $my_theme = wp_get_theme(); ?>
+            Theme name: <?php echo $my_theme->get( 'TextDomain' ) ?><br />
+            Theme version: <?php echo $my_theme->get( 'Version' ) ?><br />
+            Theme URL: <?php echo  $my_theme->get( 'ThemeURI' )?><br />
+            <div class='quid-pay-settings-section-header'>
+                <div class='quid-pay-settings-section-title'>Plugins</div>
+            </div>
+            <?php 
+                if ( ! function_exists( 'get_plugins' ) ) {
+                    require_once ABSPATH . 'wp-admin/includes/plugin.php';
+                }
+                $all_plugins = get_plugins();
+                echo '<table>';
+                echo '<tr>
+                        <th> Plugin </th>
+                        <th> Status </th>
+                        <th> Version </th>
+                        <th> Plugin URI </th>
+                      </tr>';
+                foreach($all_plugins as $pluginName => $plugin) {
+                   echo '<tr>';
+                   echo '<td>' . $plugin['Name'] . '</td>';
+                   if ( is_plugin_active( $pluginName ) ) {
+                        $pluginStatus = "Active";
+                   } 
+                   else {
+                        $pluginStatus = "Inactive";
+                   }
+                   echo '<td>' . $pluginStatus . '</td>';
+                   echo '<td>' . $plugin['Version'] . '</td>';
+                   echo '<td>' . $plugin['PluginURI'] . '</td>';
+                   echo '</tr>';
+                }
+                echo '</table>';
+            ?>
+        <div class='quid-pay-settings-section-header'>
+            <div class='quid-pay-settings-section-title'>Test QUID payments database table</div>
+        </div>
         <?php
         if(isset($_POST['quid-db-test'])){
             $dbTestResult = $this->testStorePurchase();

@@ -212,3 +212,14 @@
   display: block;
   opacity: 1;
 }
+
+table {
+  border-collapse: separate;
+  border-spacing: 0px;
+  margin-top: 10px;
+}
+
+td, th {
+  padding-right: 10px;
+  text-align: left;
+}
