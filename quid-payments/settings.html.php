@@ -167,10 +167,12 @@
             </div>
             QUID payments plugin version: <?php global $quidPluginVersion; echo $quidPluginVersion; ?><br />
             PHP version: <?php echo phpversion(); ?><br />
-            <?php $my_theme = wp_get_theme(); ?>
-            Theme name: <?php echo $my_theme->get( 'TextDomain' ) ?><br />
-            Theme version: <?php echo $my_theme->get( 'Version' ) ?><br />
-            Theme URL: <?php echo  $my_theme->get( 'ThemeURI' )?><br />
+            <?php $wordpressVersion = get_bloginfo( 'version' ); ?>
+            WordPress version: <?php echo $wordpressVersion ?><br />
+            <?php $themeInfo = wp_get_theme(); ?>
+            Theme name: <?php echo $themeInfo->get( 'TextDomain' ) ?><br />
+            Theme version: <?php echo $themeInfo->get( 'Version' ) ?><br />
+            Theme URL: <?php echo  $themeInfo->get( 'ThemeURI' )?><br />
             <div class='quid-pay-settings-section-header'>
                 <div class='quid-pay-settings-section-title'>Plugins</div>
             </div>
