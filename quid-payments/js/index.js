@@ -59,8 +59,12 @@ class quidSliderPayCallback {
 
   finalizeOptionalPayment() {
     this.payError.style.display = "none";
-    this.buttonPrice.innerHTML =
-      _quid_wp_global[this.paymentResponse.productID].paidText;
+    if (this.requestResponse.contentUrl) {
+      window.location.href = this.requestResponse.contentUrl;
+    } else {
+      this.buttonPrice.innerHTML =
+        _quid_wp_global[this.paymentResponse.productID].paidText;
+    }
 
     setTimeout(() => {
       this.removeAllTipInputs();
@@ -177,9 +181,13 @@ class quidButtonPayCallback {
 
   finalizeOptionalPayment() {
     this.payError.style.display = "none";
-    this.payButton[0].getElementsByClassName(
-      "quid-pay-button-price"
-    )[0].innerHTML = _quid_wp_global[this.paymentResponse.productID].paidText;
+    if (this.requestResponse.contentUrl) {
+      window.location.href = this.requestResponse.contentUrl;
+    } else {
+      this.payButton[0].getElementsByClassName(
+        "quid-pay-button-price"
+      )[0].innerHTML = _quid_wp_global[this.paymentResponse.productID].paidText;
+    }
 
     setTimeout(() => {
       this.removeAllTipInputs();

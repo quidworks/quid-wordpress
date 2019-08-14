@@ -58,14 +58,14 @@ namespace QUIDPaymentsPayment {
         function tipCallback() {
             $nonce = $_REQUEST['_wpnonce'];
             if ( !wp_verify_nonce( $nonce, 'quid-payment-nonce' ) ) {
-                $this->respond('', 'security error - nonce mismatch');
+                $this->respond('', '', 'security error - nonce mismatch');
                 die();
             }
             
             $json = json_decode(file_get_contents('php://input'));
             setcookie( "quidUserHash", $json->paymentResponse->userHash, time() + (86400 * 30), "/" );
 
-            $this->respond('', '');
+            $this->respond('', $this->fetchPermalink($json->postid), '');
         }
 
         // https://how.quid.works/developer/verifying-payments
