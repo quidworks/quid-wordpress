@@ -147,6 +147,15 @@ HTML;
                         'meta_displayExcerpts' => get_option('quid-read-more'),
                     )
                 );
+            } else if ($metaInputAndNotShortcode) {
+                $this->enqueueJS(
+                    'js_quid_button_skip_'.$microtimeIdentifier,
+                    plugins_url( 'js/buttonSkip.js?'.$microtimeIdentifier, __FILE__ ),
+                    array(
+                        'meta_postURL' => get_permalink($post),
+                        'meta_displayExcerpts' => get_option('quid-read-more'),
+                    )
+                );
             }
 
             return $html;
@@ -265,6 +274,16 @@ HTML;
                         'meta_name' => $productName,
                         'meta_url' => $productURL,
                         'meta_currency' => $currencyOption,
+                        'meta_displayExcerpts' => get_option('quid-read-more'),
+                    )
+                );
+            } else if ($metaInputAndNotShortcode) {
+                print_r(get_permalink($post));
+                $this->enqueueJS(
+                    'js_quid_slider_skip_'.$microtimeIdentifier,
+                    plugins_url( 'js/sliderSkip.js?'.$microtimeIdentifier, __FILE__ ),
+                    array(
+                        'meta_postURL' => get_permalink($post),
                         'meta_displayExcerpts' => get_option('quid-read-more'),
                     )
                 );
