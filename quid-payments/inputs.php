@@ -131,8 +131,8 @@ HTML;
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
 
                 $this->enqueueJS(
-                    'js_quid_button_required_'.$microtimeIdentifier,
-                    plugins_url( 'js/buttonRequired.js?'.$microtimeIdentifier, __FILE__ ),
+                    'js_quid_button_restore_'.$microtimeIdentifier,
+                    plugins_url( 'js/buttonRestore.js?'.$microtimeIdentifier, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,
@@ -259,8 +259,8 @@ HTML;
                 $nonce = wp_create_nonce( 'quid-cookie-nonce' );
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
                 $this->enqueueJS(
-                    'js_quid_button_required'.$microtimeIdentifier,
-                    plugins_url( 'js/sliderRequired.js?'.$microtimeIdentifier, __FILE__ ),
+                    'js_quid_button_restore_'.$microtimeIdentifier,
+                    plugins_url( 'js/sliderRestore.js?'.$microtimeIdentifier, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,

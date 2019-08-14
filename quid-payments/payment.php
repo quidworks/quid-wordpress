@@ -20,6 +20,7 @@ namespace QUIDPaymentsPayment {
         function paymentCallback() {
             $nonce = $_REQUEST['_wpnonce'];
             if ( ! wp_verify_nonce( $nonce, 'quid-payment-nonce' ) ) {
+                $this->respond('', '', 'nonce check error');
                 die( 'Security check' ); 
             }
 

@@ -1,75 +1,87 @@
 .quid-pay-buttons {
-    margin: 30px 0px 30px 0px !important;
-    text-align: right !important;
-    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif !important;
+  margin: 30px 0px 30px 0px !important;
+  text-align: right !important;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif !important;
 }
 
 .quid-pay-error {
-    font-family: sans-serif;
-    font-size: 15px;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-    color: rgba(0, 0, 0, 0.6);
-    border-radius: 4px;
-    padding: 10px 20px;
-    margin: 10px 0px;
-    background-color: #eee;
-    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
+  font-family: sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin: 10px 0px;
+  background-color: #eee;
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .quid-pay-button.quid-pay-skip {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    color: rgba(0, 0, 0, 0.8) !important;
-    margin-right: 2px;
-    opacity: 1;
-    transition: opacity 1s;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: rgba(0, 0, 0, 0.8) !important;
+  margin-right: 2px;
+  opacity: 1;
+  transition: opacity 1s;
+  letter-spacing: 0px !important;
+  font-size: 10px !important;
 }
 
 .quid-pay-skip:disabled {
-    opacity: 0.3;
-    background-color: none;
+  opacity: 0.3;
+  background-color: none;
+}
+
+.quid-pay-skip:hover {
+  background-color: #eee !important;
+  filter: none !important;
 }
 
 .quid-pay-error-image {
-    height: 25px;
-    width: 25px;
-    margin-right: 20px;
+  height: 25px !important;
+  width: 25px !important;
+  margin-right: 20px !important;
 }
 
 .quid-slider {
-    margin: initial;
+  margin: initial;
 }
 
 .quid-slider-button-flex button {
-    height: 100%;
+  height: 100%;
 }
 
 .quid-slider-wrapper.quid-slider-default {
-    margin: 0px 0px 0px auto;
-    min-width: 150px;
-    display: inline-block;
-    width: auto;
+  margin: 0px 0px 0px auto;
+  min-width: 150px;
+  display: inline-block;
+  width: auto;
 }
 
 .quid-pay-already-paid .quid-pay-button-price {
-    letter-spacing: 0px;
-    font-size: 10px;
+  letter-spacing: 0px;
+  font-size: 10px;
 }
 
 .quid-pay-already-paid .quid-pay-button {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    color: rgba(0, 0, 0, 0.8) !important;
-    margin-right: 2px;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: rgba(0, 0, 0, 0.8) !important;
+  margin-right: 2px;
 }
 
 .quid-pay-already-paid button.quid-pay-button.quid-pay-button-default:hover {
-    background-color: #eee !important;
-    filter: none !important;
+  background-color: #eee !important;
+  filter: none !important;
 }
 
 .quid-pay-already-paid .quid-pay-button-icon {
-    display: none !important;
+  display: none !important;
+}
+
+.quid-pay-button .quid-pay-button-icon img {
+  width: auto !important;
 }

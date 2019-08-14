@@ -6,29 +6,6 @@ try {
     required: dataJS.meta_type
   };
 
-  quidPaymentsAlreadyPaid = document.createElement("DIV");
-  quidPaymentsAlreadyPaid.setAttribute("id", `${dataJS.meta_domID}_free`);
-  quidPaymentsAlreadyPaid.setAttribute("quid-amount", "0");
-  quidPaymentsAlreadyPaid.setAttribute("class", "quid-pay-already-paid");
-  quidPaymentsAlreadyPaid.setAttribute("quid-currency", dataJS.meta_currency);
-  quidPaymentsAlreadyPaid.setAttribute("quid-product-id", dataJS.meta_id);
-  quidPaymentsAlreadyPaid.setAttribute("quid-product-url", dataJS.meta_url);
-  quidPaymentsAlreadyPaid.setAttribute("quid-product-name", dataJS.meta_name);
-  quidPaymentsAlreadyPaid.setAttribute(
-    "quid-product-description",
-    dataJS.meta_description
-  );
-
-  quidSliderContainer = quidPaymentsSlider.getElementsByClassName(
-    "quid-slider-button-flex"
-  )[0];
-
-  if (!quidSliderContainer) {
-    throw "quid-slider-button-flex (slider container) not found";
-  }
-
-  quidSliderContainer.prepend(quidPaymentsAlreadyPaid);
-
   quidPaymentsButton = quid.createButton({
     amount: "0",
     currency: dataJS.meta_currency,
@@ -54,23 +31,23 @@ try {
     throw `element with ID ${dataJS.meta_domID}_free does not exist`;
   }
 
-  quidPaymentsBaseElement.prepend(quidPaymentsButton);
-
-  let quidPaymentsAlreadyPaidButton = quidPaymentsAlreadyPaid.getElementsByClassName(
-    "quid-pay-button"
-  )[0];
-  quidPaymentsAlreadyPaidButton.style.display = "block";
+  quidPaymentsBaseElement.appendChild(quidPaymentsButton);
 
   (function() {
     const contentDiv = document.getElementById(
       `post-content-${dataJS.content_id}`
     );
+    console.log(`QUID dataJS.content_id: ${dataJS.content_id}`);
     const readMore = document.getElementById(
       `read-more-content-${dataJS.content_id}`
     );
+    console.log(`QUID readMore`);
+    console.log(readMore);
     const content_id = dataJS.content_id;
     const excerptsEnabled = dataJS.meta_displayExcerpts === "true";
     const onThePostsPage = window.location.href.includes(dataJS.meta_url);
+    console.log(`QUID dataJS.meta_url: ${dataJS.meta_url}`);
+    console.log(`QUID window.location.href: ${window.location.href}`);
     console.log(`QUID onThePostsPage: ${onThePostsPage}`);
     console.log(`QUID excerptsEnabled: ${excerptsEnabled}`);
     console.log(`QUID meta_url: ${dataJS.meta_url}`);
@@ -80,9 +57,7 @@ try {
       if (this.readyState == 4 && this.status == 200) {
         if (xhttp.responseText !== "") {
           console.log(
-            `QUID onclick onThePostsPage: ${onThePostsPage} excerptsEnabled: ${excerptsEnabled} meta_url: ${
-              dataJS.meta_url
-            }`
+            `QUID onThePostsPage: ${onThePostsPage} excerptsEnabled: ${excerptsEnabled}`
           );
           if (onThePostsPage || !excerptsEnabled) {
             contentDiv.innerHTML = xhttp.responseText;
@@ -94,12 +69,7 @@ try {
           );
           readMoreButton.style.display = "block";
           readMoreButton.onclick = () => {
-            console.log(
-              `QUID onclick onThePostsPage: ${onThePostsPage} excerptsEnabled: ${excerptsEnabled} meta_url: ${
-                dataJS.meta_url
-              }`
-            );
-            const postURL = readMore.getAttribute('posturl');
+            const postURL = readMore.getAttribute("posturl");
             if (!onThePostsPage && excerptsEnabled && postURL !== "") {
               window.location.href = postURL;
             } else {

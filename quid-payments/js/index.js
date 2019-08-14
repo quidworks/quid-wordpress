@@ -48,7 +48,10 @@ class quidSliderPayCallback {
   }
 
   finalizeRequiredPayment() {
-    if (this.requestResponse.contentUrl) {
+    console.log(
+      `QUID ${this.requestResponse.contentUrl}, ${window.location.href}`
+    );
+    if (this.requestResponse.contentUrl !== window.location.href) {
       window.location.href = this.requestResponse.contentUrl;
     } else {
       this.target.innerHTML = this.requestResponse.content;
@@ -59,7 +62,7 @@ class quidSliderPayCallback {
 
   finalizeOptionalPayment() {
     this.payError.style.display = "none";
-    if (this.requestResponse.contentUrl) {
+    if (this.requestResponse.contentUrl !== window.location.href) {
       window.location.href = this.requestResponse.contentUrl;
     } else {
       this.buttonPrice.innerHTML =
@@ -181,10 +184,10 @@ class quidButtonPayCallback {
 
   finalizeOptionalPayment() {
     this.payError.style.display = "none";
-    if (this.requestResponse.contentUrl) {
+    if (this.requestResponse.contentUrl !== window.location.href) {
       window.location.href = this.requestResponse.contentUrl;
     } else {
-      this.payButton[0].getElementsByClassName(
+      this.payButton[1].getElementsByClassName(
         "quid-pay-button-price"
       )[0].innerHTML = _quid_wp_global[this.paymentResponse.productID].paidText;
     }
@@ -195,7 +198,7 @@ class quidButtonPayCallback {
   }
 
   finalizeRequiredPayment() {
-    if (this.requestResponse.contentUrl) {
+    if (this.requestResponse.contentUrl !== window.location.href) {
       window.location.href = this.requestResponse.contentUrl;
     } else {
       this.target.innerHTML = this.requestResponse.content;
@@ -285,10 +288,11 @@ const quidInstance = new quid.Quid({
   onLoad: function() {
     const quidButtons = document.getElementsByClassName("quid-pay-button");
     const quidSliders = document.getElementsByClassName("quid-pay-slider");
-    const quidSkips = document.getElementsByClassName('quid-pay-skip');
+    const quidSkips = document.getElementsByClassName("quid-pay-skip");
     for (let i = 0; i < quidSkips.length; i += 1) {
-      if (window.location.href !== quidSkips[i].getAttribute('posturl')) continue;
-      quidSkips[i].style.display = 'none';
+      if (window.location.href !== quidSkips[i].getAttribute("posturl"))
+        continue;
+      quidSkips[i].style.display = "none";
     }
     for (let i = 0; i < quidButtons.length; i += 1) {
       quidButtons[i].disabled = false;
