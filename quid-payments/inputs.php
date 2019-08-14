@@ -278,7 +278,6 @@ HTML;
                     )
                 );
             } else if ($metaInputAndNotShortcode) {
-                print_r(get_permalink($post));
                 $this->enqueueJS(
                     'js_quid_slider_skip_'.$microtimeIdentifier,
                     plugins_url( 'js/sliderSkip.js?'.$microtimeIdentifier, __FILE__ ),
