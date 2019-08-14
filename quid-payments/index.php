@@ -14,7 +14,7 @@ License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 namespace QUIDPayments {
 
     $quidPluginVersion = "1.1.5";
-    $baseURL = 'https://app.quid.works';
+    $baseURL = 'https://app.qubit.sh';
 
     require_once dirname( __FILE__ ) .'/database.php';
     require_once dirname( __FILE__ ) .'/payment.php';
@@ -44,6 +44,7 @@ namespace QUIDPayments {
     add_shortcode('quid-button', array(new Inputs\Inputs(), 'quidButton'));
     
     add_filter( 'the_content', array(new Post\Post(), 'filterPostContent') );
+    add_filter( 'the_excerpt', array(new Post\Post(), 'filterPostContent') );
 
     add_action( 'admin_post_nopriv_purchase-check', array(new Inputs\Inputs(), 'returnUserCookie') );
     add_action( 'admin_post_purchase-check', array(new Inputs\Inputs(), 'returnUserCookie') );

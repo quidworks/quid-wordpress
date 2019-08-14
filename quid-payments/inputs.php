@@ -144,7 +144,7 @@ HTML;
                         'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],
                         'meta_currency' => $currencyOption,
-                        'meta_readMore' => get_option('quid-read-more'),
+                        'meta_displayExcerpts' => get_option('quid-read-more'),
                     )
                 );
             }
@@ -265,7 +265,7 @@ HTML;
                         'meta_name' => $productName,
                         'meta_url' => $productURL,
                         'meta_currency' => $currencyOption,
-                        'meta_readMore' => get_option('quid-read-more'),
+                        'meta_displayExcerpts' => get_option('quid-read-more'),
                     )
                 );
             }
