@@ -61,8 +61,9 @@ try {
           );
           readMoreButton.style.display = "block";
           readMoreButton.onclick = () => {
-            if (!onThePostsPage && excerptsEnabled) {
-              window.location.href = dataJS.meta_url;
+            const postURL = readMore.getAttribute('posturl');
+            if (!onThePostsPage && excerptsEnabled && postURL !== "") {
+              window.location.href = postURL;
             } else {
               contentDiv.innerHTML = readMore.innerHTML;
             }
