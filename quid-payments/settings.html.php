@@ -7,14 +7,15 @@
     <div id="quidSettingsMessageContainer" class="quid-settings-message notice is-dismissible"></div>
 
     <div class='quid-pay-settings-section-header'>
-        <div class='quid-pay-settings-section-title'>QUID Merchant Account Settings</div>
+        <div class='quid-pay-settings-section-title'>General Settings</div>
         <div class='quid-pay-settings-section-description'>
-        You must have a QUID merchant account to use this plugin. <a target='_blank' href='https://app.quid.works/sell'>Signup for your free account</a> or access <a target='_blank' href='https://app.quid.works/merchant'>your QUID merchant dashboard</a> to create your API key and secret.
+            This is a description
         </div>
     </div>
 
     <div class="quid-settings-tooltip-container quid-settings-label-tooltip">
-        <label>Currency</label>
+        <label>Currency of your Merchant Account</label>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
     </div>
     <div class="quid-settings-tooltip-container">
         <select id='quid-currency' class='quid-pay-settings-dropdown quid-field' name="quid-currency">
@@ -22,29 +23,40 @@
             <option value="CAD" <?php echo $quidCurrency === 'CAD' ? 'selected' : '' ?>>CAD</option>
             <option value="USD" <?php echo $quidCurrency === 'USD' ? 'selected' : '' ?>>USD</option>
         </select>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+        <div class="quid-settings-tooltip-text">industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more</div>
     </div>
+
+    <div class='quid-pay-settings-subtitle'>API Keys can be found on your <a target='_blank' href='https://app.quid.works/merchant'>QUID merchant page</a></div>
 
     <div class="quid-settings-tooltip-container quid-settings-label-tooltip">
-        <label>API Keys</label>
+        <label>Public and Secret Keys</label>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+        <div class="quid-settings-tooltip-text">industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more</div>
     </div>
-    <input id='quid-publicKey' class="quid-field" name="quid-key-public" style='margin-bottom: 10px' value='<?php echo $quidPublicKey; ?>' placeholder='API Key' /><br />
-    <input id='quid-secretKey' class="quid-field" name="quid-key-secret" type='password' placeholder='API Secret' />
-    <p class="quid-pay-settings-input-description">Your secret key is not displayed to keep it extra safe</p>
+    <input id='quid-publicKey' class="quid-field" name="quid-key-public" style='margin-bottom: 10px' value='<?php echo $quidPublicKey; ?>' placeholder='Public API Key' /><br />
+    <input id='quid-secretKey' class="quid-field" name="quid-key-secret" type='password' placeholder='Secret API Key' />
+    <p class="quid-pay-settings-input-description">secret key is not displayed to keep it extra safe</p>
 
     <div class='quid-pay-settings-section-header'>
-        <div class='quid-pay-settings-section-title'>Inline Button Settings</div>
-        <div class='quid-pay-settings-section-description'>
-        Inline buttons are displayed within your blog posts using the <a target='_blank' href='https://how.quid.works/en/articles/3046949-blog-post-payment-fields'>QUID payment fields</a> for each blog post or using <a target='_blank' href='https://how.quid.works/en/articles/3047042-shortcodes'>shortcodes</a>.
-        </div>
+        <div class='quid-pay-settings-section-title'>Post Defaults</div>
+        <div class='quid-pay-settings-section-description'></div>
     </div>
 
-    <label>Display Excerpts for Paid Items</label>
+    <label>Read More Button</label>
     <div class="quid-settings-tooltip-container">
         <select id='quid-align' class='quid-pay-settings-dropdown quid-field' name="quid-read-more">
             <option value="true" <?php echo $quidFabSettings['quid-read-more'] === 'true' || $quidFabSettings['quid-read-more'] === '' ? 'selected' : '' ?>>Enabled</option>
             <option value="false" <?php echo $quidFabSettings['quid-read-more'] === 'false' ? 'selected' : '' ?>>Disabled</option>
         </select>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
     </div>
+
+    <div class='quid-pay-settings-section-header'>
+        <div class='quid-pay-settings-section-title'>Button Defaults</div>
+        <div class='quid-pay-settings-section-description'></div>
+    </div>
+    
 
     <label>Default Button Alignment</label>
     <div class="quid-settings-tooltip-container">
@@ -53,13 +65,12 @@
             <option value="center" <?php echo $quidAlign === 'center' ? 'selected' : '' ?>>Center</option>
             <option value="left" <?php echo $quidAlign === 'left' ? 'selected' : '' ?>>Left</option>
         </select>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
     </div>
 
     <div class='quid-pay-settings-section-header'>
-        <div class='quid-pay-settings-section-title'>Floating Tip Button Settings</div>
-        <div class='quid-pay-settings-section-description'>
-        A <a target='_blank' href='http://how.quid.works/en/articles/3213187-the-floating-tip-button'>floating tip button</a> is displayed in the bottom right or left corner for visitors to your site and is visible in the same location on all pages while the visitor scrolls and navigates through your site.
-        </div>
+        <div class='quid-pay-settings-section-title'>Floating Button Settings</div>
+        <div class='quid-pay-settings-section-description'></div>
     </div>
 
     <div class="quid-settings-tooltip-container">
@@ -68,6 +79,7 @@
             <span class="quid-fab-switch-text"><?php echo $quidFabEnabled ? "ON" : "OFF"; ?></span>
             <span class="quid-fab-switch-handle"></span>
         </div>
+        <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
     </div>
 
     <div class="quid-fab-settings">
@@ -78,6 +90,7 @@
                     <option <?php echo 'right' == $quidFabSettings['quid-fab-position'] ? 'selected' : '' ?> value="right">Right</option>
                     <option <?php echo 'left' == $quidFabSettings['quid-fab-position'] ? 'selected' : '' ?> value="left">Left</option>
                 </select>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
         </div>
         <div>
@@ -92,6 +105,7 @@
                     <option <?php echo 'grey' == $quidFabSettings['quid-fab-palette'] ? 'selected' : '' ?> value="grey">Grey</option>
                     <option <?php echo 'dark' == $quidFabSettings['quid-fab-palette'] ? 'selected' : '' ?> value="dark">Dark</option>
                 </select>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
         </div>
         <div>
@@ -101,6 +115,7 @@
                     <option <?php echo "true" === $quidFabSettings['quid-fab-demo'] ? 'selected' : '' ?> value="true">Enabled</option>
                     <option <?php echo "false" === $quidFabSettings['quid-fab-demo'] ? 'selected' : '' ?> value="false">Disabled</option>
                 </select>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
         </div>
         <div>
@@ -110,12 +125,14 @@
                     <option <?php echo "true" === $quidFabSettings['quid-fab-reminder'] ? 'selected' : '' ?> value="true">Enabled</option>
                     <option <?php echo "false" === $quidFabSettings['quid-fab-reminder'] ? 'selected' : '' ?> value="false">Disabled</option>
                 </select>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
         </div>
         <div>
             <label>Text (Max 45 Characters)</label>
             <div class="quid-settings-tooltip-container">
                 <input class="quid-field" name="quid-fab-text" maxlength="45" placeholder="Button Text" value="<?php echo $quidFabSettings['quid-fab-text'] === '' ? 'Slide the Q to leave a tip!' : $quidFabSettings['quid-fab-text']; ?>" />
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
             <div class="quid-fab-setting-message" style="display: none;"></div>
         </div>
@@ -123,6 +140,7 @@
             <label>Paid Text (Max 25 Characters)</label>
             <div class="quid-settings-tooltip-container">
                 <input class="quid-field" name="quid-fab-paid" maxlength="25" placeholder="Paid Button Text" value="<?php echo $quidFabSettings['quid-fab-paid'] === "" ? 'Thank You!' : $quidFabSettings['quid-fab-paid']; ?>" />
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
             <div class="quid-fab-setting-message" style="display: none;"></div>
         </div>
@@ -130,6 +148,10 @@
             <label>Minimum Price</label>
             <div class="quid-settings-tooltip-container">
                 <input class="quid-field" onkeyup="quidSettings.handleMinKeypress(event)" name="quid-fab-min" placeholder="Min Amount ($0.01 or more)" type="number" value="<?php echo $quidFabSettings['quid-fab-min'] === "" ? "0.01" : $quidFabSettings['quid-fab-min']; ?>" />
+                <div class="quid-settings-tooltip">
+                    <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
+                    <div class="quid-settings-tooltip-text">industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more</div>
+                </div>
             </div>
             <div class="quid-fab-setting-message" style="display: none;"></div>
         </div>
@@ -137,6 +159,7 @@
             <label>Maximum Price</label>
             <div class="quid-settings-tooltip-container">
                 <input class="quid-field" onkeyup="quidSettings.handleMaxKeypress(event)" name="quid-fab-max" placeholder="Max Amount ($2 or less)" type="number" value="<?php echo $quidFabSettings['quid-fab-max'] === "" ? "2.00" : $quidFabSettings['quid-fab-max']; ?>" />
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
             <div class="quid-fab-setting-message" style="display: none;"></div>
         </div>
@@ -144,6 +167,7 @@
             <label>Default Price</label>
             <div class="quid-settings-tooltip-container">
                 <input class="quid-field" onkeyup="quidSettings.handlePriceKeypress(event)" name="quid-fab-initial" placeholder="Initial Amount ($0.01 - $2)" type="number" value="<?php echo $quidFabSettings['quid-fab-initial'] === "" ? "0.01" : $quidFabSettings['quid-fab-initial']; ?>" />
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
             <div class="quid-fab-setting-message" style="display: none;"></div>
         </div>
@@ -151,6 +175,7 @@
             <label>Payment Description</label>
             <div class="quid-settings-tooltip-container">
                 <textarea placeholder="Description..." class="quid-field" name="quid-fab-description" rows="1"><?php echo $quidFabSettings['quid-fab-description'] === "" ? 'Thanks for the support!' : $quidFabSettings['quid-fab-description']; ?></textarea>
+                <div class="quid-settings-tooltip-icon" title="this is a title">?</div>
             </div>
         </div>
     </div>
@@ -162,51 +187,7 @@
     if(isset($_GET['quid-debug'])) {
         ?>
         <h1 class='quid-pay-settings-page-title'>QUID Payments Debugging Tools</h1>
-            <div class='quid-pay-settings-section-header'>
-                <div class='quid-pay-settings-section-title'>Debug Info</div>
-            </div>
-            QUID payments plugin version: <?php global $quidPluginVersion; echo $quidPluginVersion; ?><br />
-            PHP version: <?php echo phpversion(); ?><br />
-            <?php $wordpressVersion = get_bloginfo( 'version' ); ?>
-            WordPress version: <?php echo $wordpressVersion ?><br />
-            <?php $themeInfo = wp_get_theme(); ?>
-            Theme name: <?php echo $themeInfo->get( 'TextDomain' ) ?><br />
-            Theme version: <?php echo $themeInfo->get( 'Version' ) ?><br />
-            Theme URL: <?php echo  $themeInfo->get( 'ThemeURI' )?><br />
-            <div class='quid-pay-settings-section-header'>
-                <div class='quid-pay-settings-section-title'>Plugins</div>
-            </div>
-            <?php 
-                if ( ! function_exists( 'get_plugins' ) ) {
-                    require_once ABSPATH . 'wp-admin/includes/plugin.php';
-                }
-                $all_plugins = get_plugins();
-                echo '<table>';
-                echo '<tr>
-                        <th> Plugin </th>
-                        <th> Status </th>
-                        <th> Version </th>
-                        <th> Plugin URI </th>
-                      </tr>';
-                foreach($all_plugins as $pluginName => $plugin) {
-                   echo '<tr>';
-                   echo '<td>' . $plugin['Name'] . '</td>';
-                   if ( is_plugin_active( $pluginName ) ) {
-                        $pluginStatus = "Active";
-                   } 
-                   else {
-                        $pluginStatus = "Inactive";
-                   }
-                   echo '<td>' . $pluginStatus . '</td>';
-                   echo '<td>' . $plugin['Version'] . '</td>';
-                   echo '<td>' . $plugin['PluginURI'] . '</td>';
-                   echo '</tr>';
-                }
-                echo '</table>';
-            ?>
-        <div class='quid-pay-settings-section-header'>
-            <div class='quid-pay-settings-section-title'>Test QUID payments database table</div>
-        </div>
+        <div class='quid-pay-settings-subtitle'>Test QUID payments database table</div>
         <?php
         if(isset($_POST['quid-db-test'])){
             $dbTestResult = $this->testStorePurchase();

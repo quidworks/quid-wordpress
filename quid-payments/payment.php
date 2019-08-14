@@ -64,7 +64,7 @@ namespace QUIDPaymentsPayment {
             $json = json_decode(file_get_contents('php://input'));
             setcookie( "quidUserHash", $json->paymentResponse->userHash, time() + (86400 * 30), "/" );
 
-            $this->respond('', '');
+            $this->respond($json, '');
         }
 
         // https://how.quid.works/developer/verifying-payments
