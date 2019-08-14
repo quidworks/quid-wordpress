@@ -41,7 +41,6 @@ try {
     const readMore = document.getElementById(
       `read-more-content-${dataJS.content_id}`
     );
-    console.log(`QUID readMore`);
     console.log(readMore);
     const content_id = dataJS.content_id;
     const excerptsEnabled = dataJS.meta_displayExcerpts === "true";
