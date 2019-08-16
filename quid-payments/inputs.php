@@ -121,6 +121,7 @@ HTML;
                     'meta_type' => $meta['type'],
                     'meta_price' => $meta['price'],
                     'meta_paid' => $meta['paid'],
+                    'meta_url' => $productURL,
                     'meta_currency' => $currencyOption,
                 )
             );
@@ -144,6 +145,7 @@ HTML;
                         'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],
                         'meta_currency' => $currencyOption,
+                        'meta_url' => $productURL,
                         'meta_displayExcerpts' => get_option('quid-read-more'),
                     )
                 );
