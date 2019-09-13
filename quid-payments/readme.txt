@@ -3,7 +3,7 @@ Contributors: quidworks
 Tags: payment,payments,micropayment,micropayments,donation,donations,paywall,monetization,pay-per-use
 Requires at least: 5.0
 Tested up to: 5.2.2
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 Requires PHP: 7.0
 License: MIT
 License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
@@ -74,6 +74,9 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 6. Enable the floating tip button to display the tip button on each page of your site.
 
 == Changelog ==
+
+= 1.1.6 =
+* Fixed an issue where decimal values were not permitted in some number fields in WordPress admin
 
 = 1.1.5 =
 * Add a floating tip button to your site so visitors can tip from any page
