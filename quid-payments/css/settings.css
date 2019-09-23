@@ -198,6 +198,11 @@
   right: 5px;
 }
 
+.quid-cat-settings {
+  display: flex;
+  flex-flow: wrap;
+}
+
 .quid-settings-message {
   display: none;
   padding: 10px 30px;
@@ -219,7 +224,8 @@ table {
   margin-top: 10px;
 }
 
-td, th {
+td,
+th {
   padding-right: 10px;
   text-align: left;
 }

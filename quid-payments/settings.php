@@ -67,6 +67,8 @@ namespace QUIDPaymentsSettings {
 
             update_option('quid-fab-options', sanitize_text_field(json_encode($jsonAssoc)));
 
+            update_option('quid-category-options', sanitize_text_field(json_encode($jsonAssoc)));
+
             echo 'success';
         }
 
@@ -106,6 +108,7 @@ namespace QUIDPaymentsSettings {
             $quidAlign = get_option('quid-align');
             $quidCurrency = get_option('quid-currency');
             $quidFabSettings = json_decode(get_option('quid-fab-options'), true);
+            $quidCategorySettings = json_decode(get_option('quid-category-options'), true);
             $quidFabEnabled = get_option('quid-fab-enabled') === "true";
             include('settings.html.php');
         }

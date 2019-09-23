@@ -155,6 +155,59 @@
         </div>
     </div>
 
+    <div class='quid-pay-settings-section-header'>
+        <div class='quid-pay-settings-section-title'>Category Settings</div>
+        <div class='quid-pay-settings-section-description'>
+            <?php
+                print_r($quidCategorySettings);
+                $categories = get_categories();
+                foreach ($categories as $category) {
+                    echo '<div class=\'quid-pay-settings-section-title\'>Category: ' . $category->name . '</div>';
+                    ?>
+                    <label>Payment Type</label>
+                    <div class="quid-category-settings">
+                        <div class="quid-settings-tooltip-container">
+                            <select id='quid-align' class='quid-pay-settings-dropdown quid-category-field' name="quid-category-<?php echo $category->slug ?>-payment-type">
+                                <option value="None" <?php echo $quidCategorySettings['quid-category-' . $category->slug . '-payment-type'] === 'false' || $quidCategorySettings['quid-category-' . $category->slug . '-payment-type'] === '' ? 'selected' : '' ?>>None</option>
+                                <option value="Required" <?php echo $quidCategorySettings['quid-category-' . $category->slug . '-payment-type'] === 'true' ? 'selected' : '' ?>>Required</option>
+                                <option value="Optional" <?php echo $quidCategorySettings['quid-category-' . $category->slug . '-payment-type'] === 'true' ? 'selected' : '' ?>>Optional</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Input Type</label>
+                            <div class="quid-settings-tooltip-container">
+                                <select class="quid-pay-settings-dropdown quid-category-field" name="quid-category-<?php echo $category->slug ?>-input-type">
+                                    <option <?php echo 'Buttons' == $quidCategorySettings['quid-category-' . $category->slug . '-input-type'] ? 'selected' : '' ?> value="Buttons">Buttons</option>
+                                    <option <?php echo 'Slider' == $quidCategorySettings['quid-category-' . $category->slug . '-input-type'] ? 'selected' : '' ?> value="Slider">Slider</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Button Text</label>
+                            <div class="quid-settings-tooltip-container">
+                            <input class="quid-category-field" name="quid-category-<?php echo $category->slug ?>-button-text" placeholder="Button Text" value="<?php echo $quidCategorySettings['quid-category-' . $category->slug . '-button-text'] === '' ? 'Pay' : $quidCategorySettings['quid-category-' . $category->slug . '-button-text']; ?>" />
+                            </div>
+                        </div>
+                        <div>
+                            <label>Paid Text</label>
+                            <div class="quid-settings-tooltip-container">
+                            <input class="quid-category-field" name="quid-category-<?php echo $category->slug ?>-paid-text" placeholder="Paid Button Text" value="<?php echo $quidCategorySettings['quid-category-' . $category->slug . '-paid-text'] === '' ? 'Thanks!' : $quidCategorySettings['quid-category-' . $category->slug . '-paid-text']; ?>" />
+                            </div>
+                        </div>
+                        <div>
+                            <label>Slider Minimum Price</label>
+                            <div class="quid-settings-tooltip-container">
+                                <input class="quid-category-field" onkeyup="quidSettings.handleMinKeypress(event)" name="quid-category-<?php echo $category->slug ?>-min" placeholder="Min Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings['quid-category-' . $category->slug . '-min'] === "" ? "0.01" : $quidCategorySettings['quid-category-' . $category->slug . '-min']; ?>" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php
+                }
+            ?>
+        </div>
+    </div>
+
     <div class="quid-pay-settings-save-bottom"><button class="button button-primary" type='button' onclick='quidSettings.submitQuidSettings()'>Save</button></div>
 </div>
 
