@@ -26,9 +26,7 @@ namespace QUIDPaymentsFooter {
             wp_enqueue_script( 'quid_index' );
 
             if (get_option('quid-fab-enabled') === "true") {
-
                 $fabOptions = json_decode(get_option('quid-fab-options'), true);
-                
                 wp_register_script( 'js_quid_fab', plugins_url( 'js/fab.js?quid-plugin='.$quidPluginVersion, __FILE__ ) );
                 wp_localize_script( 'js_quid_fab', 'dataJS', array(
                     'tip_url' => $quidTipURL,

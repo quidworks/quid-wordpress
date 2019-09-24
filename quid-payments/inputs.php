@@ -25,11 +25,10 @@ namespace QUIDPaymentsInputs {
             if (isset($quidUserHash)) $userCookie = $quidUserHash;
             else { echo ''; return; }
 
-            if ($database->hasPurchasedAlready($userCookie, $productID)) $purchased = true;
-            else { echo ''; return; }
-
-            if ($purchased) echo do_shortcode(get_post_field('post_content', $postID));
-            else { echo ''; return; }
+            if ($database->hasPurchasedAlready($userCookie, $productID)) {
+                $purchased = true;
+                echo do_shortcode(get_post_field('post_content', $postID));
+            } else { echo ''; return; }
         }
 
         function quidButton($meta, $metaInputAndNotShortcode) {
@@ -121,6 +120,7 @@ HTML;
                     'meta_type' => $meta['type'],
                     'meta_price' => $meta['price'],
                     'meta_paid' => $meta['paid'],
+                    'meta_url' => $productURL,
                     'meta_currency' => $currencyOption,
                 )
             );
@@ -131,8 +131,8 @@ HTML;
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
 
                 $this->enqueueJS(
-                    'js_quid_button_required_'.$microtimeIdentifier,
-                    plugins_url( 'js/buttonRequired.js?'.$microtimeIdentifier, __FILE__ ),
+                    'js_quid_button_restore_'.$microtimeIdentifier,
+                    plugins_url( 'js/buttonRestore.js?'.$microtimeIdentifier, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,
@@ -143,8 +143,18 @@ HTML;
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],
+                        'meta_url' => $productURL,
                         'meta_currency' => $currencyOption,
-                        'meta_readMore' => get_option('quid-read-more'),
+                        'meta_displayExcerpts' => get_option('quid-read-more'),
+                    )
+                );
+            } else if ($metaInputAndNotShortcode) {
+                $this->enqueueJS(
+                    'js_quid_button_skip_'.$microtimeIdentifier,
+                    plugins_url( 'js/buttonSkip.js?'.$microtimeIdentifier, __FILE__ ),
+                    array(
+                        'meta_postURL' => get_permalink($post),
+                        'meta_displayExcerpts' => get_option('quid-read-more'),
                     )
                 );
             }
@@ -250,8 +260,8 @@ HTML;
                 $nonce = wp_create_nonce( 'quid-cookie-nonce' );
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
                 $this->enqueueJS(
-                    'js_quid_button_required'.$microtimeIdentifier,
-                    plugins_url( 'js/sliderRequired.js?'.$microtimeIdentifier, __FILE__ ),
+                    'js_quid_button_restore_'.$microtimeIdentifier,
+                    plugins_url( 'js/sliderRestore.js?'.$microtimeIdentifier, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
                         'post_id' => $post->ID,
@@ -265,7 +275,16 @@ HTML;
                         'meta_name' => $productName,
                         'meta_url' => $productURL,
                         'meta_currency' => $currencyOption,
-                        'meta_readMore' => get_option('quid-read-more'),
+                        'meta_displayExcerpts' => get_option('quid-read-more'),
+                    )
+                );
+            } else if ($metaInputAndNotShortcode) {
+                $this->enqueueJS(
+                    'js_quid_slider_skip_'.$microtimeIdentifier,
+                    plugins_url( 'js/sliderSkip.js?'.$microtimeIdentifier, __FILE__ ),
+                    array(
+                        'meta_postURL' => get_permalink($post),
+                        'meta_displayExcerpts' => get_option('quid-read-more'),
                     )
                 );
             }

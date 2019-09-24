@@ -4,7 +4,7 @@
 Plugin Name: QUID Payments
 Plugin URI: https://quid.works
 Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for content.
-Version: 1.1.6
+Version: 1.1.5
 Author: QUID Works Inc.
 Author URI: https://quid.works
 License: MIT
@@ -14,14 +14,14 @@ License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 namespace QUIDPayments {
 
     $quidPluginVersion = "1.1.5";
-    $baseURL = 'https://app.quid.works';
+    $baseURL = 'http://localhost:3000'; // 'https://app.qubit.sh';
 
     require_once dirname( __FILE__ ) .'/database.php';
     require_once dirname( __FILE__ ) .'/payment.php';
     require_once dirname( __FILE__ ) .'/settings.php';
     require_once dirname( __FILE__ ) .'/init.php';
     require_once dirname( __FILE__ ) .'/postmeta.php';
-    require_once dirname( __FILE__ ) .'/javascript.php';
+    require_once dirname( __FILE__ ) .'/footer.php';
     require_once dirname( __FILE__ ) .'/inputs.php';
     require_once dirname(__FILE__) .'/post.php';
     require_once dirname(__FILE__) .'/helpers.php';
@@ -44,6 +44,7 @@ namespace QUIDPayments {
     add_shortcode('quid-button', array(new Inputs\Inputs(), 'quidButton'));
     
     add_filter( 'the_content', array(new Post\Post(), 'filterPostContent') );
+    add_filter( 'the_excerpt', array(new Post\Post(), 'filterPostContent') );
 
     add_action( 'admin_post_nopriv_purchase-check', array(new Inputs\Inputs(), 'returnUserCookie') );
     add_action( 'admin_post_purchase-check', array(new Inputs\Inputs(), 'returnUserCookie') );
