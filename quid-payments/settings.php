@@ -116,6 +116,7 @@ namespace QUIDPaymentsSettings {
         function renderSettings() {
             $quidPublicKey = get_option('quid-publicKey');
             $quidAlign = get_option('quid-align');
+            $quidReadMore = get_option('quid-read-more');
             $quidCurrency = get_option('quid-currency');
             $quidFabSettings = json_decode(get_option('quid-fab-options'), true);
             $quidCategorySettings = json_decode(get_option('quid-category-options'), true);

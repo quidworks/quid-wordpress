@@ -20,6 +20,7 @@ namespace QUIDPaymentsMeta {
                 "min" => get_post_meta($post->ID, 'quid_field_min', true),
                 "max" => get_post_meta($post->ID, 'quid_field_max', true),
                 "initial" => get_post_meta($post->ID, 'quid_field_initial', true),
+                "location" => get_post_meta($post->ID, 'quid_field_location', true),
             );
         }
 
@@ -103,6 +104,15 @@ namespace QUIDPaymentsMeta {
                     <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)" name="quid_field_initial" placeholder="Initial Amount ($0.01 - $2)" type="number" step="0.01" value="<?php echo $meta['initial'] ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
+                <div>
+                    <label>Location</label>
+                    <select onchange="quidPostMeta.handleInputTypeChange(this)" name="quid_field_location">
+                        <option class="quid-slider-option" <?php if ($meta['location'] == "Bottom") echo "selected"; ?> value="Bottom">Bottom</option>
+                        <option class="quid-button-option" <?php if ($meta['location'] == "Top") echo "selected"; ?> value="Top">Top</option>
+                        <option class="quid-slider-option" <?php if ($meta['location'] == "Both") echo "selected"; ?> value="Both">Both</option>
+                    </select>
+                    <div class="quid-post-meta-message" style="display: none;"></div>
+                </div>
                 <div style="display: none;">
                     <label>Product ID</label>
                     <input name="quid_field_id" readonly placeholder="Product ID" value="<?php echo Helpers\getPostSlug($post); ?>" />
@@ -130,7 +140,7 @@ namespace QUIDPaymentsMeta {
         public function save_postdata($post_id) {
             $this->maxAndMinMustBeDifferent($_POST['quid_field_min'], $_POST['quid_field_max']);
 
-            $names = ['type', 'input', 'id', 'name', 'description', 'url', 'text', 'paid', 'price', 'min', 'max', 'initial'];
+            $names = ['type', 'input', 'id', 'name', 'description', 'url', 'text', 'paid', 'price', 'min', 'max', 'initial', 'location'];
             foreach ($names as $name) {
 
                 $value = $_POST['quid_field_'.$name];

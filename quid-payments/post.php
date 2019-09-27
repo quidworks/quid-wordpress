@@ -54,11 +54,14 @@ namespace QUIDPaymentsPost {
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
             
-            if ($this->postCategoryOptions !== null && $meta['type'] === "None") {
+            if ($this->postCategoryOptions !== null && ($meta['type'] === "None" || empty(meta['type']))) {
                 $meta['type'] = $this->postCategoryOptions['payment-type'];
-                $meta['text'] = $this->postCategoryOptions['button-text'];
+                $meta['text'] = $this->postCategoryOptions['text'];
                 $meta['paid'] = $this->postCategoryOptions['paid-text'];
-                $meta['min'] = $this->postCategoryOptions['min-price'];
+                $meta['min'] = $this->postCategoryOptions['min'];
+                $meta['max'] = $this->postCategoryOptions['max'];
+                $meta['initial'] = $this->postCategoryOptions['initial'];
+                $meta['location'] = $this->postCategoryOptions['location'];
             }
 
             $justification = Helpers\buttonAlignment($meta['align']);
@@ -85,18 +88,30 @@ HTML;
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
 
-            if ($this->postCategoryOptions !== null && $meta['type'] === "None") {
+            if ($this->postCategoryOptions !== null && ($meta['type'] === "None" || empty($meta['type']))) {
                 $meta['type'] = $this->postCategoryOptions['payment-type'];
-                $meta['text'] = $this->postCategoryOptions['button-text'];
+                $meta['text'] = $this->postCategoryOptions['text'];
                 $meta['paid'] = $this->postCategoryOptions['paid-text'];
-                $meta['min'] = $this->postCategoryOptions['min-price'];
+                $meta['min'] = $this->postCategoryOptions['min'];
+                $meta['max'] = $this->postCategoryOptions['max'];
+                $meta['initial'] = $this->postCategoryOptions['initial'];
+                $meta['location'] = $this->postCategoryOptions['location'];
             }
 
             $html = <<<HTML
                 <div style="width: 100%;" id="post-content-{$meta['id']}">
 HTML;
 
-            $html .= $content.$inputs->quidSlider($meta, true);
+            if ($meta['location'] === "Top" || $meta['location'] === "Both") {
+                $html .= $inputs->quidSlider($meta, true);
+            }
+
+            $html .= $content;
+
+            if ($meta['location'] === "Bottom" || $meta['location'] === "Both") {
+                $html .= $inputs->quidSlider($meta, true);
+            }
+
             $html .= `</div>`;
             return $html;
         }
@@ -108,11 +123,12 @@ HTML;
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
 
-            if ($this->postCategoryOptions !== null && $meta['type'] === "None") {
+            if ($this->postCategoryOptions !== null && ($meta['type'] === "None" || empty(meta['type']))) {
                 $meta['type'] = $this->postCategoryOptions['payment-type'];
-                $meta['text'] = $this->postCategoryOptions['button-text'];
+                $meta['text'] = $this->postCategoryOptions['text'];
                 $meta['paid'] = $this->postCategoryOptions['paid-text'];
-                $meta['min'] = $this->postCategoryOptions['min-price'];
+                $meta['price'] = $this->postCategoryOptions['price'];
+                $meta['location'] = $this->postCategoryOptions['location'];
             }
 
             $justification = Helpers\buttonAlignment($meta['align']);
@@ -138,18 +154,28 @@ HTML;
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
 
-            if ($this->postCategoryOptions !== null && $meta['type'] === "None") {
+            if ($this->postCategoryOptions !== null && ($meta['type'] === "None" || empty(meta['type']))) {
                 $meta['type'] = $this->postCategoryOptions['payment-type'];
-                $meta['text'] = $this->postCategoryOptions['button-text'];
+                $meta['text'] = $this->postCategoryOptions['text'];
                 $meta['paid'] = $this->postCategoryOptions['paid-text'];
-                $meta['min'] = $this->postCategoryOptions['min-price'];
+                $meta['price'] = $this->postCategoryOptions['price'];
+                $meta['location'] = $this->postCategoryOptions['location'];
             }
 
             $html = <<<HTML
                 <div style="width: 100%;" id="post-content-{$meta['id']}">
 HTML;
 
-            $html .= $content.$inputs->quidButton($meta, true);
+            if ($meta['location'] === "Top" || $meta['location'] === "Both") {
+                $html .= $inputs->quidButton($meta, true);
+            }
+
+            $html .= $content;
+
+            if ($meta['location'] === "Bottom" || $meta['location'] === "Both") {
+                $html .= $inputs->quidButton($meta, true);
+            }
+
             $html .= `</div>`;
             return $html;
         }

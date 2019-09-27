@@ -55,8 +55,8 @@
             <label>Display Excerpts for Paid Items</label>
             <div class="quid-settings-tooltip-container">
                 <select id='quid-align' class='quid-pay-settings-dropdown quid-field' name="quid-read-more">
-                    <option value="true" <?php echo $quidFabSettings['quid-read-more'] === 'true' || $quidFabSettings['quid-read-more'] === '' ? 'selected' : '' ?>>Enabled</option>
-                    <option value="false" <?php echo $quidFabSettings['quid-read-more'] === 'false' ? 'selected' : '' ?>>Disabled</option>
+                    <option value="true" <?php echo $quidReadMore === 'true' || $quidReadMore === '' ? 'selected' : '' ?>>Enabled</option>
+                    <option value="false" <?php echo $quidReadMore === 'false' ? 'selected' : '' ?>>Disabled</option>
                 </select>
             </div>
 
@@ -177,14 +177,16 @@
                     <div class='quid-pay-settings-section-header'>
                         <div class='quid-pay-settings-section-title'><?php echo $category->name ?></div>
                     </div>
-                    <label>Payment Type</label>
                     <div class="quid-category-settings" category-slug="<?php echo $category->slug ?>">
-                        <div class="quid-settings-tooltip-container">
-                            <select id='quid-align' class='quid-pay-settings-dropdown quid-category-field' name="payment-type">
-                                <option value="None" <?php echo $quidCategorySettings[$category->slug]['payment-type'] === 'false' || $quidCategorySettings[$category->slug]['payment-type'] === '' ? 'selected' : '' ?>>None</option>
-                                <option value="Required" <?php echo $quidCategorySettings[$category->slug]['payment-type'] === 'Required' ? 'selected' : '' ?>>Required</option>
-                                <option value="Optional" <?php echo $quidCategorySettings[$category->slug]['payment-type'] === 'Optional' ? 'selected' : '' ?>>Optional</option>
-                            </select>
+                        <div>
+                            <label>Payment Type</label>
+                            <div class="quid-settings-tooltip-container">
+                                <select id='quid-align' class='quid-pay-settings-dropdown quid-category-field' name="payment-type">
+                                    <option value="None" <?php echo $quidCategorySettings[$category->slug]['payment-type'] === 'false' || $quidCategorySettings[$category->slug]['payment-type'] === '' ? 'selected' : '' ?>>None</option>
+                                    <option value="Required" <?php echo $quidCategorySettings[$category->slug]['payment-type'] === 'Required' ? 'selected' : '' ?>>Required</option>
+                                    <option value="Optional" <?php echo $quidCategorySettings[$category->slug]['payment-type'] === 'Optional' ? 'selected' : '' ?>>Optional</option>
+                                </select>
+                        </div>
                         </div>
                         <div>
                             <label>Input Type</label>
@@ -198,7 +200,7 @@
                         <div>
                             <label>Button Text</label>
                             <div class="quid-settings-tooltip-container">
-                            <input class="quid-category-field" name="button-text" placeholder="Button Text" value="<?php echo $quidCategorySettings[$category->slug]['button-text'] === '' ? 'Pay' : $quidCategorySettings[$category->slug]['button-text']; ?>" />
+                            <input class="quid-category-field" name="text" placeholder="Button Text" value="<?php echo $quidCategorySettings[$category->slug]['text'] === '' ? 'Pay' : $quidCategorySettings[$category->slug]['text']; ?>" />
                             </div>
                         </div>
                         <div>
@@ -208,10 +210,41 @@
                             </div>
                         </div>
                         <div>
-                            <label>Slider Minimum Price</label>
+                            <label>Price</label>
                             <div class="quid-settings-tooltip-container">
-                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)" name="min-price" placeholder="Min Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings[$category->slug]['min-price'] === "" ? "0.01" : $quidCategorySettings[$category->slug]['min-price']; ?>" />
+                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)" name="price" placeholder="Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings[$category->slug]['price'] === "" ? "1.00" : $quidCategorySettings[$category->slug]['price']; ?>" />
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Minimum Slider Price</label>
+                            <div class="quid-settings-tooltip-container">
+                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)" name="min" placeholder="Min Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings[$category->slug]['min'] === "" ? "0.01" : $quidCategorySettings[$category->slug]['min']; ?>" />
+                                <div class="quid-fab-setting-message" style="display: none;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Maximum Slider Price</label>
+                            <div class="quid-settings-tooltip-container">
+                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)" name="max" placeholder="Max Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings[$category->slug]['max'] === "" ? "2.00" : $quidCategorySettings[$category->slug]['max']; ?>" />
+                                <div class="quid-fab-setting-message" style="display: none;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Initial Slider Value</label>
+                            <div class="quid-settings-tooltip-container">
+                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)" name="initial" placeholder="Initial Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings[$category->slug]['initial'] === "" ? "1.00" : $quidCategorySettings[$category->slug]['initial']; ?>" />
+                                <div class="quid-fab-setting-message" style="display: none;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Location</label>
+                            <div class="quid-settings-tooltip-container">
+                                <select class="quid-pay-settings-dropdown quid-category-field" name="location">
+                                    <option <?php echo 'Bottom' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Bottom">Bottom</option>
+                                    <option <?php echo 'Top' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Top">Top</option>
+                                    <option <?php echo 'Both' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Both">Both</option>
+                                </select>
                             </div>
                         </div>
                     </div>

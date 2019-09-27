@@ -4,7 +4,7 @@
 Plugin Name: QUID Payments
 Plugin URI: https://quid.works
 Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for content.
-Version: 1.1.6
+Version: 1.2
 Author: QUID Works Inc.
 Author URI: https://quid.works
 License: MIT
@@ -13,9 +13,8 @@ License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 
 namespace QUIDPayments {
 
-    $quidPluginVersion = "1.1.5";
-    //$baseURL = 'https://app.quid.works';
-    $baseURL = 'http://localhost:3000';
+    $quidPluginVersion = "1.2";
+    $baseURL = 'https://app.quid.works';
 
     require_once dirname( __FILE__ ) .'/database.php';
     require_once dirname( __FILE__ ) .'/payment.php';
