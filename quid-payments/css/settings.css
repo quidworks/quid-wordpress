@@ -69,8 +69,12 @@
 }
 
 .quid-pay-settings-section-header {
-  margin-top: 32px;
+  margin-top: 0px;
   margin-bottom: 15px;
+}
+
+.quid-pay-settings-section-header:not(:first-of-type) {
+  margin-top: 32px;
 }
 
 .quid-pay-settings-section-title {
@@ -86,9 +90,10 @@
 
 .quid-settings-tooltip-container {
   display: flex;
-  flex-flow: nowrap;
+  flex-flow: wrap;
   align-items: center;
   margin-right: 10px;
+  width: 400px;
 }
 
 .quid-settings-label-tooltip {
@@ -116,8 +121,8 @@
 }
 
 .quid-pay-settings-save-top {
-  display: inline-block;
-  margin-left: 10px;
+  display: block;
+  margin-bottom: 30px;
 }
 
 .quid-fab-settings {
@@ -218,6 +223,10 @@
   opacity: 1;
 }
 
+.quid-fab-setting-message {
+  color: red;
+}
+
 table {
   border-collapse: separate;
   border-spacing: 0px;
@@ -228,4 +237,59 @@ td,
 th {
   padding-right: 10px;
   text-align: left;
+}
+
+.quid-pay-settings-container {
+    margin-top: 60px;
+    background-color: white;
+    margin-right: 20px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 20px 20px;
+    position: relative;
+}
+
+.quid-pay-settings-tabs {
+    position: absolute;
+    height: 35px;
+    top: calc(0px - 35px);
+    right: 0px;
+    left: 0px;
+    background-color: transparent;
+    display: flex;
+    flex-flow: nowrap;
+}
+
+.quid-pay-settings-tab {
+    margin-right: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 15px;
+    padding: 0px 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #009089;
+    color: rgba(0, 0, 0, 0.6);
+    text-decoration: none;
+    color: white;
+}
+
+.quid-pay-settings-tab:hover {
+  cursor: pointer;
+  color: white;
+  background-color: rgba(0, 144, 137, 0.8);
+}
+
+.quid-pay-settings-tab-active {
+   background-color: white;
+   color: black;
+}
+
+.quid-pay-settings-tab-active:hover {
+   background-color: white;
+   color: black;
 }
