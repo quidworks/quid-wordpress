@@ -20,7 +20,7 @@ namespace QUIDPaymentsSettings {
             wp_enqueue_script( 'quid_settings' );
         }
 
-        function saveButtonsTab($data) {
+        function saveMerchantTab($data) {
             if (isset($data['quid-currency'])) {
                 update_option('quid-currency', sanitize_text_field($data['quid-currency']));
                 unset($data['quid-currency']);
@@ -35,7 +35,9 @@ namespace QUIDPaymentsSettings {
                 update_option('quid-secretKey', $this->hashKey(sanitize_text_field($data['quid-key-secret'])));
                 unset($data['quid-key-secret']);
             }
+        }
 
+        function saveButtonsTab($data) {
             if (isset($data['quid-fab-enabled'])) {
                 update_option('quid-fab-enabled', sanitize_text_field($data['quid-fab-enabled']));
                 unset($data['quid-fab-enabled']);
@@ -66,6 +68,8 @@ namespace QUIDPaymentsSettings {
 
             $jsonString = str_replace('\\', '', $_POST['data']);
             $jsonAssoc = json_decode($jsonString, true);
+
+            if (isset($jsonAssoc['quid-merchant'])) $this->saveMerchantTab($jsonAssoc['quid-merchant']);
 
             if (isset($jsonAssoc['quid-buttons'])) $this->saveButtonsTab($jsonAssoc['quid-buttons']);
 
