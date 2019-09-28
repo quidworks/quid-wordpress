@@ -241,9 +241,10 @@
                             <label>Location</label>
                             <div class="quid-settings-tooltip-container">
                                 <select class="quid-pay-settings-dropdown quid-category-field" name="location">
-                                    <option <?php echo 'Bottom' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Bottom">Bottom</option>
                                     <option <?php echo 'Top' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Top">Top</option>
-                                    <option <?php echo 'Both' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Both">Both</option>
+                                    <option <?php echo 'Near Top' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Near Top">Near Top</option>
+                                    <option <?php echo 'Near Bottom' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Near Bottom">Near Bottom</option>
+                                    <option <?php echo 'Bottom' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Bottom">Bottom</option>
                                 </select>
                             </div>
                         </div>

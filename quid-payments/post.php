@@ -98,17 +98,33 @@ HTML;
                 $meta['location'] = $this->postCategoryOptions['location'];
             }
 
+            $postLength = strlen($content);
+            $replacementString = '</p>' . $inputs->quidSlider($meta, true); 
+            error_log('Length: ' . $postLength . '; 10%: ' . $tenPercent . '; 90%: ' . $nintyPercent . '; Near top: ' . $nearTop . '; Near bottom: ' . $nearBottom);
+
             $html = <<<HTML
                 <div style="width: 100%;" id="post-content-{$meta['id']}">
 HTML;
 
-            if ($meta['location'] === "Top" || $meta['location'] === "Both") {
+            if ($meta['location'] === "Top" ) {
                 $html .= $inputs->quidSlider($meta, true);
             }
 
-            $html .= $content;
+            if ($meta['location'] === "Near Top" ) {
+                $fivePercentLocation = round($postLength * 0.05);
+                $nearTop = strpos($content, '</p>', $fivePercentLocation);
+                $newContent = substr_replace($content, $replacementString, $nearTop, 4);
+            } else if ($meta['location'] === "Near Bottom" ) {
+                $nintyFivePercentLocation = round($postLength * 0.95);
+                $nearBottom = strpos($content, '</p>', $nintyFivePercentLocation);
+                $newContent = substr_replace($content, $replacementString, $nearBottom, 4);
+            } else {
+                $newContent = $content;
+            }
 
-            if ($meta['location'] === "Bottom" || $meta['location'] === "Both") {
+            $html .= $newContent;
+
+            if ($meta['location'] === "Bottom") {
                 $html .= $inputs->quidSlider($meta, true);
             }
 
