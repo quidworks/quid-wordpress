@@ -197,6 +197,7 @@ HTML;
                 $quidTipClassAddition = "quid-pay-tip";
             }
 
+            error_log('$post->ID: '.$post->ID);
             $html = <<<HTML
                 <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none; justify-content: {$justification};">
                     <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">

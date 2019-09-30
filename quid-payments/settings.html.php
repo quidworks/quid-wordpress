@@ -200,40 +200,50 @@
                         <div>
                             <label>Button Text</label>
                             <div class="quid-settings-tooltip-container">
-                            <input class="quid-category-field" name="text" placeholder="Button Text" value="<?php echo $quidCategorySettings[$category->slug]['text'] === '' ? 'Pay' : $quidCategorySettings[$category->slug]['text']; ?>" />
+                            <input class="quid-category-field" name="text" placeholder="Button Text"
+                                value="<?php echo $quidCategorySettings[$category->slug]['text'] === '' ? 'Pay' : $quidCategorySettings[$category->slug]['text']; ?>" />
                             </div>
                         </div>
                         <div>
                             <label>Paid Text</label>
                             <div class="quid-settings-tooltip-container">
-                            <input class="quid-category-field" name="paid-text" placeholder="Paid Button Text" value="<?php echo $quidCategorySettings[$category->slug]['paid-text'] === '' ? 'Thanks!' : $quidCategorySettings[$category->slug]['paid-text']; ?>" />
+                            <input class="quid-category-field" name="paid-text" placeholder="Paid Button Text"
+                                value="<?php echo $quidCategorySettings[$category->slug]['paid-text'] === '' ? 'Thanks!' : $quidCategorySettings[$category->slug]['paid-text']; ?>" />
                             </div>
                         </div>
                         <div>
                             <label>Price</label>
                             <div class="quid-settings-tooltip-container">
-                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)" name="price" placeholder="Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings[$category->slug]['price'] === "" ? "1.00" : $quidCategorySettings[$category->slug]['price']; ?>" />
+                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)"
+                                    name="price" placeholder="Amount ($0.01 or more)" type="number" step="0.01"
+                                    value="<?php echo $quidCategorySettings[$category->slug]['price'] === "" ? "1.00" : $quidCategorySettings[$category->slug]['price']; ?>" />
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
                             </div>
                         </div>
                         <div>
                             <label>Minimum Slider Price</label>
                             <div class="quid-settings-tooltip-container">
-                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)" name="min" placeholder="Min Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings[$category->slug]['min'] === "" ? "0.01" : $quidCategorySettings[$category->slug]['min']; ?>" />
+                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)"
+                                    name="min" placeholder="Min Amount ($0.01 or more)" type="number" step="0.01"
+                                    value="<?php echo $quidCategorySettings[$category->slug]['min'] === "" ? "0.01" : $quidCategorySettings[$category->slug]['min']; ?>" />
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
                             </div>
                         </div>
                         <div>
                             <label>Maximum Slider Price</label>
                             <div class="quid-settings-tooltip-container">
-                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)" name="max" placeholder="Max Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings[$category->slug]['max'] === "" ? "2.00" : $quidCategorySettings[$category->slug]['max']; ?>" />
+                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)"
+                                    name="max" placeholder="Max Amount ($0.01 or more)" type="number" step="0.01"
+                                    value="<?php echo $quidCategorySettings[$category->slug]['max'] === "" ? "2.00" : $quidCategorySettings[$category->slug]['max']; ?>" />
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
                             </div>
                         </div>
                         <div>
                             <label>Initial Slider Value</label>
                             <div class="quid-settings-tooltip-container">
-                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)" name="initial" placeholder="Initial Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $quidCategorySettings[$category->slug]['initial'] === "" ? "1.00" : $quidCategorySettings[$category->slug]['initial']; ?>" />
+                                <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)"
+                                    name="initial" placeholder="Initial Amount ($0.01 or more)" type="number" step="0.01"
+                                    value="<?php echo $quidCategorySettings[$category->slug]['initial'] === "" ? "1.00" : $quidCategorySettings[$category->slug]['initial']; ?>" />
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
                             </div>
                         </div>
@@ -246,6 +256,16 @@
                                     <option <?php echo 'Near Bottom' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Near Bottom">Near Bottom</option>
                                     <option <?php echo 'Bottom' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Bottom">Bottom</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Locations</label>
+                            <div class="quid-settings-tooltip-container">
+                                <div>Top</div><input class="quid-pay-settings-category-location-checkbox" name="top" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['top'] === true) { echo 'checked'; } ?> />
+                                <div>Near top</div><input class="quid-pay-settings-category-location-checkbox" name="nearTop" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearTop'] === true) { echo 'checked'; } ?> />
+                                <div>Near middle</div><input class="quid-pay-settings-category-location-checkbox" name="nearMiddle" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearMiddle'] === true) { echo 'checked'; } ?> />
+                                <div>Near bottom</div><input class="quid-pay-settings-category-location-checkbox" name="nearBottom" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearBottom'] === true) { echo 'checked'; } ?> />
+                                <div>Bottom</div><input class="quid-pay-settings-category-location-checkbox" name="bottom" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['bottom'] === true) { echo 'checked'; } ?> />
                             </div>
                         </div>
                     </div>

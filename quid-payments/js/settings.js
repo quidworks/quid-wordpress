@@ -265,6 +265,19 @@ class QuidSettings {
           section_data[category_fields[j].getAttribute("name")] =
             category_fields[j].value;
         }
+        const categoryCheckboxes = category_sections[i].getElementsByClassName(
+          "quid-pay-settings-category-location-checkbox"
+        );
+        console.log(categoryCheckboxes);
+        const locationsData = {};
+        for (let k = 0; k < categoryCheckboxes.length; k++) {
+          if (categoryCheckboxes[k].checked) {
+            locationsData[categoryCheckboxes[k].getAttribute("name")] = true;
+          } else {
+            locationsData[categoryCheckboxes[k].getAttribute("name")] = false;
+          }
+          section_data["locations"] = locationsData;
+        }
         categoryData[
           category_sections[i].getAttribute("category-slug")
         ] = section_data;
