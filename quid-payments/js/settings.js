@@ -272,9 +272,9 @@ class QuidSettings {
         const locationsData = {};
         for (let k = 0; k < categoryCheckboxes.length; k++) {
           if (categoryCheckboxes[k].checked) {
-            locationsData[categoryCheckboxes[k].getAttribute("name")] = true;
+            locationsData[categoryCheckboxes[k].getAttribute("name")] = "true";
           } else {
-            locationsData[categoryCheckboxes[k].getAttribute("name")] = false;
+            locationsData[categoryCheckboxes[k].getAttribute("name")] = "false";
           }
           section_data["locations"] = locationsData;
         }

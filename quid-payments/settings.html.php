@@ -179,21 +179,30 @@
                     </div>
                     <div class="quid-category-settings" category-slug="<?php echo $category->slug ?>">
                         <div>
+                            <label>Override post settings</label>
+                            <div class="quid-settings-tooltip-container">
+                                <select class='quid-pay-settings-dropdown quid-category-field' name="post-override">
+                                    <option value="Off" <?php echo $quidCategorySettings[$category->slug]['post-override'] === 'Off' || $quidCategorySettings[$category->slug]['post-override'] === '' ? 'selected' : '' ?>>Off</option>
+                                    <option value="On" <?php echo $quidCategorySettings[$category->slug]['post-override'] === 'On' ? 'selected' : '' ?>>On</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
                             <label>Payment Type</label>
                             <div class="quid-settings-tooltip-container">
-                                <select id='quid-align' class='quid-pay-settings-dropdown quid-category-field' name="payment-type">
-                                    <option value="None" <?php echo $quidCategorySettings[$category->slug]['payment-type'] === 'false' || $quidCategorySettings[$category->slug]['payment-type'] === '' ? 'selected' : '' ?>>None</option>
-                                    <option value="Required" <?php echo $quidCategorySettings[$category->slug]['payment-type'] === 'Required' ? 'selected' : '' ?>>Required</option>
-                                    <option value="Optional" <?php echo $quidCategorySettings[$category->slug]['payment-type'] === 'Optional' ? 'selected' : '' ?>>Optional</option>
+                                <select class='quid-pay-settings-dropdown quid-category-field' name="type">
+                                    <option value="None" <?php echo $quidCategorySettings[$category->slug]['type'] === 'false' || $quidCategorySettings[$category->slug]['type'] === '' ? 'selected' : '' ?>>None</option>
+                                    <option value="Required" <?php echo $quidCategorySettings[$category->slug]['type'] === 'Required' ? 'selected' : '' ?>>Required</option>
+                                    <option value="Optional" <?php echo $quidCategorySettings[$category->slug]['type'] === 'Optional' ? 'selected' : '' ?>>Optional</option>
                                 </select>
-                        </div>
+                            </div>
                         </div>
                         <div>
                             <label>Input Type</label>
                             <div class="quid-settings-tooltip-container">
-                                <select class="quid-pay-settings-dropdown quid-category-field" name="input-type">
-                                    <option <?php echo 'Buttons' == $quidCategorySettings[$category->slug]['input-type'] ? 'selected' : '' ?> value="Buttons">Buttons</option>
-                                    <option <?php echo 'Slider' == $quidCategorySettings[$category->slug]['input-type'] ? 'selected' : '' ?> value="Slider">Slider</option>
+                                <select class="quid-pay-settings-dropdown quid-category-field" name="input">
+                                    <option <?php echo 'Buttons' == $quidCategorySettings[$category->slug]['input'] ? 'selected' : '' ?> value="Buttons">Buttons</option>
+                                    <option <?php echo 'Slider' == $quidCategorySettings[$category->slug]['input'] ? 'selected' : '' ?> value="Slider">Slider</option>
                                 </select>
                             </div>
                         </div>
@@ -248,24 +257,13 @@
                             </div>
                         </div>
                         <div>
-                            <label>Location</label>
-                            <div class="quid-settings-tooltip-container">
-                                <select class="quid-pay-settings-dropdown quid-category-field" name="location">
-                                    <option <?php echo 'Top' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Top">Top</option>
-                                    <option <?php echo 'Near Top' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Near Top">Near Top</option>
-                                    <option <?php echo 'Near Bottom' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Near Bottom">Near Bottom</option>
-                                    <option <?php echo 'Bottom' == $quidCategorySettings[$category->slug]['location'] ? 'selected' : '' ?> value="Bottom">Bottom</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
                             <label>Locations</label>
                             <div class="quid-settings-tooltip-container">
-                                <div>Top</div><input class="quid-pay-settings-category-location-checkbox" name="top" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['top'] === true) { echo 'checked'; } ?> />
-                                <div>Near top</div><input class="quid-pay-settings-category-location-checkbox" name="nearTop" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearTop'] === true) { echo 'checked'; } ?> />
-                                <div>Near middle</div><input class="quid-pay-settings-category-location-checkbox" name="nearMiddle" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearMiddle'] === true) { echo 'checked'; } ?> />
-                                <div>Near bottom</div><input class="quid-pay-settings-category-location-checkbox" name="nearBottom" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearBottom'] === true) { echo 'checked'; } ?> />
-                                <div>Bottom</div><input class="quid-pay-settings-category-location-checkbox" name="bottom" type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['bottom'] === true) { echo 'checked'; } ?> />
+                                <div>Top</div><input class="quid-pay-settings-category-location-checkbox" name="top" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['top'] === true) { echo 'checked'; } ?> />
+                                <div>Near top</div><input class="quid-pay-settings-category-location-checkbox" name="nearTop" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearTop'] === true) { echo 'checked'; } ?> />
+                                <div>Near middle</div><input class="quid-pay-settings-category-location-checkbox" name="nearMiddle" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearMiddle'] === true) { echo 'checked'; } ?> />
+                                <div>Near bottom</div><input class="quid-pay-settings-category-location-checkbox" name="nearBottom" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearBottom'] === true) { echo 'checked'; } ?> />
+                                <div>Bottom</div><input class="quid-pay-settings-category-location-checkbox" name="bottom" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['bottom'] === true) { echo 'checked'; } ?> />
                             </div>
                         </div>
                     </div>
