@@ -18,7 +18,8 @@ namespace QUIDPaymentsPost {
             if ($pagenow == 'post.php') return $content;
             if ($post->post_type != 'post') return $content;
 
-            if ($meta['type'] == "Required") {
+            $readMore = get_option('quid-read-more');
+            if ($meta['type'] == "Required" || $readMore) {
                 if ($meta['input'] == "Buttons") {
                     return $this->handleButtonWithExcerpt();
                 } else {

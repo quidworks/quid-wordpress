@@ -22,6 +22,9 @@ namespace QUIDPaymentsInputs {
             $purchased = false;
             $userCookie = '';
 
+            if ($meta['type'] == "Optional") $optional = true;
+            else { echo ''; return; }
+
             if (isset($quidUserHash)) $userCookie = $quidUserHash;
             else { echo ''; return; }
 
@@ -110,10 +113,13 @@ HTML;
                 </div>
 HTML;
 
+            $nonce = wp_create_nonce( 'quid-cookie-nonce' );
+            $optionalCheckURL = admin_url("admin-post.php?action=optional-check&_wpnonce=".$nonce);
             $this->enqueueJS(
                 'js_quid_button_'.$microtimeIdentifier,
                 plugins_url( 'js/button.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
+                    'optional_check_url' => $optionalCheckURL,
                     'post_id' => $post->ID,
                     'meta_name' => $productName,
                     'meta_id' => $productID,
@@ -122,6 +128,7 @@ HTML;
                     'meta_price' => $meta['price'],
                     'meta_paid' => $meta['paid'],
                     'meta_currency' => $currencyOption,
+                    'meta_readMore' => get_option('quid-read-more'),
                 )
             );
 
@@ -223,10 +230,13 @@ HTML;
             wp_register_style( 'css_quid_init', plugins_url( 'css/init.css', __FILE__ ) );
             wp_enqueue_style( 'css_quid_init' );
 
+            $nonce = wp_create_nonce( 'quid-cookie-nonce' );
+            $optionalCheckURL = admin_url("admin-post.php?action=optional-check&_wpnonce=".$nonce);
             $this->enqueueJS(
                 'js_quid_slider'.$microtimeIdentifier,
                 plugins_url( 'js/slider.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
+                    'optional_check_url' => $optionalCheckURL,
                     'post_id' => $post->ID,
                     'meta_id' => $productID,
                     'meta_domID' => $meta['dom-id'],
@@ -241,6 +251,7 @@ HTML;
                     'meta_min' => $meta['min'],
                     'meta_max' => $meta['max'],
                     'meta_currency' => $currencyOption,
+                    'meta_readMore' => get_option('quid-read-more'),
                 )
             );
 
