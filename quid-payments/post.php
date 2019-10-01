@@ -44,15 +44,6 @@ namespace QUIDPaymentsPost {
             
             error_log('QUID: handleSliderWithExcerpt');
 
-            if ($this->postCategoryOptions !== null && ($meta['type'] === "None" || empty($meta['type']))) {
-                $meta['type'] = $this->postCategoryOptions['type'];
-                $meta['text'] = $this->postCategoryOptions['text'];
-                $meta['paid'] = $this->postCategoryOptions['paid-text'];
-                $meta['min'] = $this->postCategoryOptions['min'];
-                $meta['max'] = $this->postCategoryOptions['max'];
-                $meta['initial'] = $this->postCategoryOptions['initial'];
-            }
-
             $justification = Helpers\buttonAlignment($meta['align']);
 
             $html = <<<HTML
@@ -175,8 +166,6 @@ HTML;
 
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
-
-            error_log(print_r($meta, true));
 
             if ($meta['type'] == 'None' or empty($meta['type'])) {
                 return $content;

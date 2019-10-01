@@ -23,11 +23,9 @@ namespace QUIDPaymentsMeta {
                 error_log('QUID: Using category metadata for post ' . $post->ID);
                 $postSettings = $categorySettings[$categorySlug];
                 $postSettings['id'] = $post->ID;
-                error_log(print_r($postSettings, true));
                 return $postSettings;
             } else {
                 $postSettings = json_decode(get_post_meta($post->ID, 'quid_post_settings', true), true);
-                $postSettings['id'] = $post->ID;
                 if ( empty($postSettings)) {
                     error_log('QUID: Using old post metadata for post ' . $post->ID);
                     $postSettings = array(
@@ -44,6 +42,7 @@ namespace QUIDPaymentsMeta {
                 } else {
                     error_log('QUID: Using new post metadata for post ' . $post->ID);
                 }
+                $postSettings['id'] = $post->ID;
                 return $postSettings;
             }
         }
