@@ -27,16 +27,40 @@ namespace QUIDPaymentsPost {
                 $this->postCategoryOptions = null;
             }
 
-            $type = get_post_meta($post->ID, 'quid_field_type', true);
-            $input = get_post_meta($post->ID, 'quid_field_input', true);
+            $metaInstance = new Meta\Meta();
+            $meta = $metaInstance->getMetaFields($post);
 
-            if ($type == "Required") return $this->handleSliderWithExcerpt();
-            if ($type == "Optional") return $this->handleSliderWithExcerpt($content);
-            
-            if ($this->postCategoryOptions['payment-type'] === "Required") return $this->handleSliderWithExcerpt();
-            if ($this->postCategoryOptions['payment-type'] == "Optional") return $this->handleSliderWithExcerpt($content);
+            if ($categoriesOverride ) {
+                $handlerResult = $this->categoryHandler();
+                if ($handlerResult !== null) return $handlerResult;
+                $handlerResult = $this->metaHandler($meta);
+                if ($handlerResult !== null) return $handlerResult;
+            } else {
+                $handlerResult = $this->metaHandler($meta);
+                if ($handlerResult !== null) return $handlerResult;
+                $handlerResult = $this->categoryHandler();
+                if ($handlerResult !== null) return $handlerResult;
+            }
             
             return $content;
+        }
+
+        function metaHandler($meta) {
+            if ($meta['type'] === "Required" || $meta['type'] === "Optional") {
+                if ($meta['input'] === "Buttons") return $this->handleButtonWithExcerpt();
+                if ($meta['input'] === "Slider") {
+                    return $this->handleSliderWithExcerpt();
+                }
+            }
+            return null;
+        }
+
+        function categoryHandler() {
+            if ($this->postCategoryOptions['input-type'] === "Required" || $this->postCategoryOptions['input-type'] === "Optional") {
+                if ($this->postCategoryOptions['input-type'] === "Buttons") return $this->handleButtonWithExcerpt();
+                if ($this->postCategoryOptions['input-type'] === "Slider") return $this->handleSliderWithExcerpt();
+            }
+            return null;
         }
 
         function handleSliderWithExcerpt() {
@@ -58,6 +82,7 @@ namespace QUIDPaymentsPost {
             $justification = Helpers\buttonAlignment($meta['align']);
 
             $html = <<<HTML
+            <div style="width: 100%" id="post-container-{$meta['id']}">
                 <div style="width: 100%;" id="post-content-{$meta['id']}">
                     <p>{$post->post_excerpt}</p>
                     <p id="read-more-content-{$meta['id']}" style="display: none;"></p>
@@ -65,7 +90,7 @@ namespace QUIDPaymentsPost {
                         <button class="quid-pay-button quid-pay-button-default" id="read-more-button-{$meta['id']}" style="display: none;">Read More</button>
                     </div>
 HTML;
-
+            $html .= '</div>';
             $html .= $inputs->quidSlider($meta, true);
             $html .= '</div>';
 
@@ -164,6 +189,7 @@ HTML;
             $justification = Helpers\buttonAlignment($meta['align']);
 
             $html = <<<HTML
+            <div style="width: 100%" id="post-container-{$meta['id']}">
                 <div style="width: 100%;" id="post-content-{$meta['id']}">
                     <p>{$post->post_excerpt}</p>
                     <p id="read-more-content-{$meta['id']}" style="display: none;"></p>
@@ -171,9 +197,9 @@ HTML;
                         <button class="quid-pay-button quid-pay-button-default" id="read-more-button-{$meta['id']}" style="display: none;">Read More</button>
                     </div>
 HTML;
-
+            $html .= '</div>';
             $html .= $inputs->quidButton($meta, true);
-            $html .= `</div>`;
+            $html .= '</div>';
             return $html;
         }
 

@@ -15,7 +15,8 @@ namespace QUIDPayments {
 
     $quidPluginVersion = "1.2";
     // $baseURL = 'https://app.quid.works';
-    $baseURL = 'https://app.qubit.sh';
+    //$baseURL = 'https://app.qubit.sh';
+    $baseURL = 'http://localhost:3000';
 
     require_once dirname( __FILE__ ) .'/database.php';
     require_once dirname( __FILE__ ) .'/payment.php';

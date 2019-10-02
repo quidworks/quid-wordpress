@@ -177,17 +177,17 @@
                     <div class='quid-pay-settings-section-header'>
                         <div class='quid-pay-settings-section-title'><?php echo $category->name ?></div>
                     </div>
-                    <div class="quid-category-settings" category-slug="<?php echo $category->slug ?>">
-                        <div>
-                            <label>Override post settings</label>
-                            <div class="quid-settings-tooltip-container">
-                                <select class='quid-pay-settings-dropdown quid-category-field' name="post-override">
-                                    <option value="Off" <?php echo $quidCategorySettings[$category->slug]['post-override'] === 'Off' || $quidCategorySettings[$category->slug]['post-override'] === '' ? 'selected' : '' ?>>Off</option>
-                                    <option value="On" <?php echo $quidCategorySettings[$category->slug]['post-override'] === 'On' ? 'selected' : '' ?>>On</option>
-                                </select>
-                            </div>
+                    <div class="quid-category-override">
+                        <label>Override post settings</label>
+                        <div class="quid-settings-tooltip-container">
+                            <select class='quid-pay-settings-dropdown quid-category-field' name="post-override">
+                                <option value="Off" <?php echo $quidCategorySettings[$category->slug]['post-override'] === 'Off' || $quidCategorySettings[$category->slug]['post-override'] === '' ? 'selected' : '' ?>>Off</option>
+                                <option value="On" <?php echo $quidCategorySettings[$category->slug]['post-override'] === 'On' ? 'selected' : '' ?>>On</option>
+                            </select>
                         </div>
-                        <div>
+                    </div>
+                    <div class="quid-category-settings" category-slug="<?php echo $category->slug ?>">
+                        <div class="quid-category-setting">
                             <label>Payment Type</label>
                             <div class="quid-settings-tooltip-container">
                                 <select class='quid-pay-settings-dropdown quid-category-field' name="type">
@@ -197,7 +197,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div>
+                        <div class="quid-category-setting">
                             <label>Input Type</label>
                             <div class="quid-settings-tooltip-container">
                                 <select class="quid-pay-settings-dropdown quid-category-field" name="input">
@@ -206,21 +206,21 @@
                                 </select>
                             </div>
                         </div>
-                        <div>
+                        <div class="quid-category-setting">
                             <label>Button Text</label>
                             <div class="quid-settings-tooltip-container">
                             <input class="quid-category-field" name="text" placeholder="Button Text"
                                 value="<?php echo $quidCategorySettings[$category->slug]['text'] === '' ? 'Pay' : $quidCategorySettings[$category->slug]['text']; ?>" />
                             </div>
                         </div>
-                        <div>
+                        <div class="quid-category-setting">
                             <label>Paid Text</label>
                             <div class="quid-settings-tooltip-container">
                             <input class="quid-category-field" name="paid-text" placeholder="Paid Button Text"
                                 value="<?php echo $quidCategorySettings[$category->slug]['paid-text'] === '' ? 'Thanks!' : $quidCategorySettings[$category->slug]['paid-text']; ?>" />
                             </div>
                         </div>
-                        <div>
+                        <div class="quid-category-setting">
                             <label>Price</label>
                             <div class="quid-settings-tooltip-container">
                                 <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)"
@@ -229,7 +229,7 @@
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
                             </div>
                         </div>
-                        <div>
+                        <div class="quid-category-setting">
                             <label>Minimum Slider Price</label>
                             <div class="quid-settings-tooltip-container">
                                 <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)"
@@ -238,7 +238,7 @@
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
                             </div>
                         </div>
-                        <div>
+                        <div class="quid-category-setting">
                             <label>Maximum Slider Price</label>
                             <div class="quid-settings-tooltip-container">
                                 <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)"
@@ -247,7 +247,7 @@
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
                             </div>
                         </div>
-                        <div>
+                        <div class="quid-category-setting">
                             <label>Initial Slider Value</label>
                             <div class="quid-settings-tooltip-container">
                                 <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)"
@@ -256,9 +256,9 @@
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
                             </div>
                         </div>
-                        <div>
+                        <div class="quid-category-setting">
                             <label>Locations</label>
-                            <div class="quid-settings-tooltip-container">
+                            <div class="quid-settings-checkbox-container">
                                 <div>Top</div><input class="quid-pay-settings-category-location-checkbox" name="top" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['top'] === true) { echo 'checked'; } ?> />
                                 <div>Near top</div><input class="quid-pay-settings-category-location-checkbox" name="nearTop" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearTop'] === true) { echo 'checked'; } ?> />
                                 <div>Near middle</div><input class="quid-pay-settings-category-location-checkbox" name="nearMiddle" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearMiddle'] === true) { echo 'checked'; } ?> />

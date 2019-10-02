@@ -60,6 +60,7 @@ namespace QUIDPaymentsDatabase {
             }
 
             $postID = sanitize_text_field($_POST["postID"]);
+            if (get_post_meta($post->ID, 'quid_field_type', true) === "Required") return;
 
             echo do_shortcode(get_post_field('post_content', $postID));
         }

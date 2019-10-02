@@ -35,6 +35,8 @@ try {
   quidPaymentsBaseElement.appendChild(quidPaymentsButton);
 
   (function () {
+    if (dataJS.meta_type === "Required") return;
+    const containerDiv = document.getElementById(`post-container-${dataJS.content_id}`);
     const contentDiv = document.getElementById(`post-content-${dataJS.content_id}`);
     const readMore = document.getElementById(`read-more-content-${dataJS.content_id}`);
     const content_id = dataJS.content_id;
@@ -51,11 +53,15 @@ try {
           }
 
           const readMoreButton = document.getElementById(`read-more-button-${content_id}`);
+          
+          const payButtons = containerDiv.getElementsByClassName('quid-pay-buttons');
+          payButtons[0].style.display = 'none';
+
           readMoreButton.style.display = 'block';
           readMoreButton.onclick = () => {
             contentDiv.innerHTML = readMore.innerHTML;
+            payButtons[payButtons.length - 1].style.display = 'block';
           }
-          contentDiv.getElementsByClassName('quid-pay-buttons')[0].style.display = 'none';
           readMore.innerHTML = xhttp.responseText;
         }
       }

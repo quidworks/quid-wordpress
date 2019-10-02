@@ -50,6 +50,7 @@ try {
   quidPaymentsAlreadyPaidButton.style.display = "block";
 
   (function () {
+    const containerDiv = document.getElementById(`post-container-${dataJS.content_id}`);
     const contentDiv = document.getElementById(`post-content-${dataJS.content_id}`);
     const readMore = document.getElementById(`read-more-content-${dataJS.content_id}`);
     const content_id = dataJS.content_id;
@@ -70,7 +71,7 @@ try {
           readMoreButton.onclick = () => {
             contentDiv.innerHTML = readMore.innerHTML;
           }
-          contentDiv.getElementsByClassName('quid-pay-buttons')[0].style.display = 'none';
+          containerDiv.getElementsByClassName('quid-pay-buttons')[0].style.display = 'none';
           readMore.innerHTML = xhttp.responseText;
         }
       }

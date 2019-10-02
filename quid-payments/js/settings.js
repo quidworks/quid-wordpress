@@ -107,7 +107,7 @@ class QuidSettings {
       );
       return;
     }
-    if (float > 2.0) {
+    if (float > 2.00) {
       this.outputMessage(
         e.target.nextElementSibling,
         "must be less than $2.00"
@@ -246,25 +246,20 @@ class QuidSettings {
   submitQuidSettings() {
     const data = {};
     const currentTab = this.getCurrentTabID();
-    const tabPanel = document.getElementsByClassName(
-      `quid-pay-settings-${currentTab.id}`
-    )[0];
+    const tabPanel = document.getElementsByClassName(`quid-pay-settings-${currentTab.id}`)[0];
     const tabName = currentTab.name;
 
-    if (tabName === "quid-categories") {
+    if (tabName === 'quid-categories') {
+
       const categoryData = {};
-      const category_sections = tabPanel.getElementsByClassName(
-        "quid-category-settings"
-      );
+      const category_sections = tabPanel.getElementsByClassName('quid-category-settings');
       for (let i = 0; i < category_sections.length; i++) {
-        const category_fields = category_sections[i].getElementsByClassName(
-          "quid-category-field"
-        );
+        const category_fields = category_sections[i].getElementsByClassName("quid-category-field");
         const section_data = {};
         for (let j = 0; j < category_fields.length; j++) {
-          section_data[category_fields[j].getAttribute("name")] =
-            category_fields[j].value;
+          section_data[category_fields[j].getAttribute("name")] = category_fields[j].value; 
         }
+
         const categoryCheckboxes = category_sections[i].getElementsByClassName(
           "quid-pay-settings-category-location-checkbox"
         );
@@ -278,20 +273,21 @@ class QuidSettings {
           }
           section_data["locations"] = locationsData;
         }
-        categoryData[
-          category_sections[i].getAttribute("category-slug")
-        ] = section_data;
+
+        categoryData[category_sections[i].getAttribute("category-slug")] = section_data;
       }
       data[tabName] = categoryData;
+
     } else {
-      if (tabName === "quid-buttons") {
+
+      if (tabName === 'quid-buttons') {
         const fields = tabPanel.getElementsByClassName("quid-fab-field");
         const fabData = {};
         for (let i = 0; i < fields.length; i++) {
           fabData[fields[i].getAttribute("name")] = fields[i].value;
         }
-        data["quid-fab"] = fabData;
-        this.cleanDollarValues(data["quid-fab"]);
+        data['quid-fab'] = fabData;
+        this.cleanDollarValues(data['quid-fab']);
       }
 
       const fields = tabPanel.getElementsByClassName("quid-field");
@@ -300,6 +296,7 @@ class QuidSettings {
         tabData[fields[i].getAttribute("name")] = fields[i].value;
       }
       data[tabName] = tabData;
+      
     }
 
     var json = JSON.stringify(data);
@@ -318,34 +315,26 @@ class QuidSettings {
   }
 
   getCurrentTabID() {
-    var activeTab = document.getElementsByClassName(
-      "quid-pay-settings-tab-active"
-    )[0];
+    var activeTab = document.getElementsByClassName('quid-pay-settings-tab-active')[0];
     return {
-      id: activeTab.getAttribute("tab-id"),
-      name: activeTab.getAttribute("tab-name")
-    };
+      id: activeTab.getAttribute('tab-id'),
+      name: activeTab.getAttribute('tab-name'),
+    }
   }
 
   selectTab(e) {
-    var tabs = document.getElementsByClassName("quid-pay-settings-tab");
+    var tabs = document.getElementsByClassName('quid-pay-settings-tab');
     for (let i = 0; i < tabs.length; i++) {
-      tabs[i].classList.remove("quid-pay-settings-tab-active");
+      tabs[i].classList.remove('quid-pay-settings-tab-active');
     }
-    e.classList.add("quid-pay-settings-tab-active");
+    e.classList.add('quid-pay-settings-tab-active');
 
-    var sections = document.getElementsByClassName(
-      "quid-pay-settings-tab-content"
-    );
+    var sections = document.getElementsByClassName('quid-pay-settings-tab-content');
     for (let i = 0; i < sections.length; i++) {
-      if (
-        sections[i].classList.contains(
-          `quid-pay-settings-${e.getAttribute("tab-id")}`
-        )
-      ) {
-        sections[i].style.display = "block";
+      if (sections[i].classList.contains(`quid-pay-settings-${e.getAttribute('tab-id')}`)) {
+        sections[i].style.display = 'block';
       } else {
-        sections[i].style.display = "none";
+        sections[i].style.display = 'none';
       }
     }
   }
