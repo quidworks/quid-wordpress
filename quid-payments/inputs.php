@@ -8,21 +8,42 @@ namespace QUIDPaymentsInputs {
 
     class Inputs {
 
+        function returnUserCookie() {
+            $nonce = $_REQUEST['_wpnonce'];
+            if ( ! wp_verify_nonce( $nonce, 'quid-cookie-nonce' ) ) {
+                die( 'Security check' ); 
+            }
+
+            $productID = sanitize_text_field($_POST["productID"]);
+            $postID = sanitize_text_field($_POST["postID"]);
+            $quidUserHash = sanitize_text_field($_COOKIE["quidUserHash"]);
+
+            $database = new Database\Database();
+            $purchased = false;
+            $userCookie = '';
+
+            if (isset($quidUserHash)) $userCookie = $quidUserHash;
+            else { echo ''; return; }
+
+            if ($database->hasPurchasedAlready($userCookie, $productID)) $purchased = true;
+            else { echo ''; return; }
+
+            if ($purchased) echo do_shortcode(get_post_field('post_content', $postID));
+            else { echo ''; return; }
+        }
+
         function quidButton($meta, $metaInputAndNotShortcode) {
             global $post;
-            $nonce = wp_create_nonce( 'quid-cookie-nonce' );
 
             $blogTitle = Helpers\getSiteTitle();
             $productName = "";
             $productID = "";
             $productURL = "";
-            $id = "";
 
             if ($metaInputAndNotShortcode) {
                 $productName = Helpers\getPostTitle($post);
                 $productID = Helpers\getPostSlug($post);
                 $productURL = Helpers\getPostURL($post);
-                $id = $post->ID;
             } else {
                 $productName = $blogTitle."-tip";
                 $productID = $blogTitle."-tip";
@@ -93,7 +114,6 @@ HTML;
                 'js_quid_button_'.$microtimeIdentifier,
                 plugins_url( 'js/button.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
-                    'content_url' => admin_url("admin-post.php?action=post-content&_wpnonce=".$nonce),
                     'post_id' => $post->ID,
                     'meta_name' => $productName,
                     'meta_id' => $productID,
@@ -102,12 +122,12 @@ HTML;
                     'meta_price' => $meta['price'],
                     'meta_paid' => $meta['paid'],
                     'meta_currency' => $currencyOption,
-                    'meta_readMore' => get_option('quid-read-more'),
                 )
             );
 
             # If required, add already paid button beside the pay button.
             if ($meta['type'] == "Required") {
+                $nonce = wp_create_nonce( 'quid-cookie-nonce' );
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
 
                 $this->enqueueJS(
@@ -118,6 +138,7 @@ HTML;
                         'post_id' => $post->ID,
                         'meta_name' => $productName,
                         'meta_id' => $productID,
+                        'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],
@@ -133,19 +154,16 @@ HTML;
 
         function quidSlider($meta, $metaInputAndNotShortcode) {
             global $post;
-            $nonce = wp_create_nonce( 'quid-cookie-nonce' );
 
             $blogTitle = Helpers\getSiteTitle();
             $productName = "";
             $productID = "";
             $productURL = "";
-            $id = "";
 
             if ($metaInputAndNotShortcode) {
                 $productName = Helpers\getPostTitle($post);
                 $productID = Helpers\getPostSlug($post);
                 $productURL = Helpers\getPostURL($post);
-                $id = $post->ID;
             } else {
                 $productName = $blogTitle."-tip";
                 $productID = $blogTitle."-tip";
@@ -209,8 +227,7 @@ HTML;
                 'js_quid_slider'.$microtimeIdentifier,
                 plugins_url( 'js/slider.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
-                    'content_url' => admin_url("admin-post.php?action=post-content&_wpnonce=".$nonce),
-                    'post_id' => $id,
+                    'post_id' => $post->ID,
                     'meta_id' => $productID,
                     'meta_domID' => $meta['dom-id'],
                     'meta_initial' => $meta['initial'],
@@ -224,21 +241,22 @@ HTML;
                     'meta_min' => $meta['min'],
                     'meta_max' => $meta['max'],
                     'meta_currency' => $currencyOption,
-                    'meta_readMore' => get_option('quid-read-more'),
                 )
             );
 
 
             # If required, add already paid button beside the pay button.
             if ($meta['type'] == "Required") {
+                $nonce = wp_create_nonce( 'quid-cookie-nonce' );
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
                 $this->enqueueJS(
                     'js_quid_button_required'.$microtimeIdentifier,
                     plugins_url( 'js/sliderRequired.js?'.$microtimeIdentifier, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
-                        'post_id' => $id,
+                        'post_id' => $post->ID,
                         'meta_id' => $productID,
+                        'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_price' => $meta['price'],

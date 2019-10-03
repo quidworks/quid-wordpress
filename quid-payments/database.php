@@ -30,41 +30,6 @@ namespace QUIDPaymentsDatabase {
             }
         }
 
-        function returnUserCookie() {
-            $nonce = $_REQUEST['_wpnonce'];
-            if ( ! wp_verify_nonce( $nonce, 'quid-cookie-nonce' ) ) {
-                die( 'Security check' ); 
-            }
-
-            $productID = sanitize_text_field($_POST["productID"]);
-            $postID = sanitize_text_field($_POST["postID"]);
-            $quidUserHash = sanitize_text_field($_COOKIE["quidUserHash"]);
-
-            $purchased = false;
-            $userCookie = '';
-
-            if (isset($quidUserHash)) $userCookie = $quidUserHash;
-            else { echo ''; return; }
-
-            if ($this->hasPurchasedAlready($userCookie, $productID)) $purchased = true;
-            else { echo ''; return; }
-
-            if ($purchased) echo do_shortcode(get_post_field('post_content', $postID));
-            else { echo ''; return; }
-        }
-
-        function returnPostContent() {
-            $nonce = $_REQUEST['_wpnonce'];
-            if ( ! wp_verify_nonce( $nonce, 'quid-cookie-nonce' ) ) {
-                die( 'Security check' ); 
-            }
-
-            $postID = sanitize_text_field($_POST["postID"]);
-            if (get_post_meta($post->ID, 'quid_field_type', true) === "Required") return;
-
-            echo do_shortcode(get_post_field('post_content', $postID));
-        }
-
     }
 
 }

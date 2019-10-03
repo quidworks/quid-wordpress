@@ -38,7 +38,7 @@ namespace QUIDPaymentsFooter {
                     'text' => $fabOptions['quid-fab-text'],
                     'paid' => $fabOptions['quid-fab-paid'],
                     'id' => 'id_'.Helpers\getSiteTitle(),
-                    'description' => $fabOptions['quid-fab-description'],
+                    'description' => get_option("quid-fab-description"),
                     'name' => Helpers\getSiteTitle(),
                     'url' => site_url(),
                     'min' => $fabOptions['quid-fab-min'],
