@@ -11,7 +11,6 @@ namespace QUIDPaymentsMeta {
             global $pagenow;
 
             $postCategoriesArray = get_the_category($post);
-            // error_log(print_r($postCategoriesArray, true));
             $categorySlug = $postCategoriesArray[0]->slug;
             $categorySettings = json_decode(get_option('quid-category-options'), true);
             if (isset($categorySettings[$categorySlug])) {
@@ -22,13 +21,15 @@ namespace QUIDPaymentsMeta {
                 }
             }
 
+            $settingSource = "";
+
             if ($postOverride == "On" && $pagenow != 'post.php') {
-                error_log('QUID: Using category metadata for post ' . $post->ID);
+                $settingSource = "Category";
                 $postSettings = $categorySettings[$categorySlug];
             } else {
                 $postSettings = json_decode(get_post_meta($post->ID, 'quid_post_settings', true), true);
                 if ( empty($postSettings)) {
-                    error_log('QUID: Using old post metadata for post ' . $post->ID);
+                    $settingSource = "Old post metadata";
                     $postSettings = array(
                         "type" => get_post_meta($post->ID, 'quid_field_type', true),
                         "input" => get_post_meta($post->ID, 'quid_field_input', true),
@@ -41,12 +42,12 @@ namespace QUIDPaymentsMeta {
                         "locations" => json_decode(get_post_meta($post->ID, 'quid_field_locations', true), true),
                     );
                 } else {
-                    error_log('QUID: Using new post metadata for post ' . $post->ID);
+                    $settingSource = "New post json";
                 }
-                $postSettings['id'] = $post->ID;
-                error_log('QUID: Using settings: ' . json_encode($postSettings));
-                return $postSettings;
             }
+            $postSettings['id'] = $post->ID;
+            error_log('QUID: Using setting source: ' . $settingSource . '; with values: ' . json_encode($postSettings));
+            return $postSettings;
         }
 
         public function addMetaFields() {

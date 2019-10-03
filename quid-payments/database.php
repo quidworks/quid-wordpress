@@ -2,6 +2,8 @@
 
 namespace QUIDPaymentsDatabase {
 
+    use QUIDPaymentsMeta as Meta;
+
     class Database {
 
         function hasPurchasedAlready($userHash, $productID) {
@@ -41,26 +43,20 @@ namespace QUIDPaymentsDatabase {
             $quidUserHash = sanitize_text_field($_COOKIE["quidUserHash"]);
 
             $purchased = false;
-            $userCookie = '';
 
-            if (isset($quidUserHash)) $userCookie = $quidUserHash;
-            else { echo ''; return; }
+            if ($meta['type'] == "Required") {
 
-            if ($this->hasPurchasedAlready($userCookie, $productID)) $purchased = true;
-            else { echo ''; return; }
+                $userCookie = '';
 
-            if ($purchased) echo do_shortcode(get_post_field('post_content', $postID));
-            else { echo ''; return; }
-        }
+                if (isset($quidUserHash)) {
+                    $userCookie = $quidUserHash;
+                } else {
+                    return;
+                }
 
-        function returnPostContent() {
-            $nonce = $_REQUEST['_wpnonce'];
-            if ( ! wp_verify_nonce( $nonce, 'quid-cookie-nonce' ) ) {
-                die( 'Security check' ); 
+                if (!$this->hasPurchasedAlready($userCookie, $productID)) { return; }
+
             }
-
-            $postID = sanitize_text_field($_POST["postID"]);
-            if (get_post_meta($post->ID, 'quid_field_type', true) === "Required") return;
 
             echo do_shortcode(get_post_field('post_content', $postID));
         }

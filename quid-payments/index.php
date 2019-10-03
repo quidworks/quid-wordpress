@@ -50,9 +50,6 @@ namespace QUIDPayments {
     add_action( 'admin_post_nopriv_purchase-check', array(new Database\Database(), 'returnUserCookie') );
     add_action( 'admin_post_purchase-check', array(new Database\Database(), 'returnUserCookie') );
 
-    add_action( 'admin_post_nopriv_post-content', array(new Database\Database(), 'returnPostContent') );
-    add_action( 'admin_post_post-content', array(new Database\Database(), 'returnPostContent') );
-
     add_action( 'admin_post_nopriv_quid-settings', array(new Settings\Settings(), 'saveSettings') );
     add_action( 'admin_post_quid-settings', array(new Settings\Settings(), 'saveSettings') );
 
