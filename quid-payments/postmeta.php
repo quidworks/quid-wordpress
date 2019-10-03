@@ -7,20 +7,46 @@ namespace QUIDPaymentsMeta {
     class Meta {
 
         public function getMetaFields($post) {
-            return array(
-                "type" => get_post_meta($post->ID, 'quid_field_type', true),
-                "input" => get_post_meta($post->ID, 'quid_field_input', true),
-                "id" => get_post_meta($post->ID, 'quid_field_id', true),
-                "name" => get_post_meta($post->ID, 'quid_field_name', true),
-                "description" => get_post_meta($post->ID, 'quid_field_description', true),
-                "url" => get_post_meta($post->ID, 'quid_field_url', true),
-                "text" => get_post_meta($post->ID, 'quid_field_text', true),
-                "paid" => get_post_meta($post->ID, 'quid_field_paid', true),
-                "price" => get_post_meta($post->ID, 'quid_field_price', true),
-                "min" => get_post_meta($post->ID, 'quid_field_min', true),
-                "max" => get_post_meta($post->ID, 'quid_field_max', true),
-                "initial" => get_post_meta($post->ID, 'quid_field_initial', true),
-            );
+
+            global $pagenow;
+
+            $postCategoriesArray = get_the_category($post);
+            // error_log(print_r($postCategoriesArray, true));
+            $categorySlug = $postCategoriesArray[0]->slug;
+            $categorySettings = json_decode(get_option('quid-category-options'), true);
+            if (isset($categorySettings[$categorySlug])) {
+                if (!isset($categorySettings[$categorySlug]['post-override'])) {
+                    $postOverride = "Off";
+                } else {
+                    $postOverride = $categorySettings[$categorySlug]['post-override'];
+                }
+            }
+
+            if ($postOverride == "On" && $pagenow != 'post.php') {
+                error_log('QUID: Using category metadata for post ' . $post->ID);
+                $postSettings = $categorySettings[$categorySlug];
+            } else {
+                $postSettings = json_decode(get_post_meta($post->ID, 'quid_post_settings', true), true);
+                if ( empty($postSettings)) {
+                    error_log('QUID: Using old post metadata for post ' . $post->ID);
+                    $postSettings = array(
+                        "type" => get_post_meta($post->ID, 'quid_field_type', true),
+                        "input" => get_post_meta($post->ID, 'quid_field_input', true),
+                        "text" => get_post_meta($post->ID, 'quid_field_text', true),
+                        "paid" => get_post_meta($post->ID, 'quid_field_paid', true),
+                        "price" => get_post_meta($post->ID, 'quid_field_price', true),
+                        "min" => get_post_meta($post->ID, 'quid_field_min', true),
+                        "max" => get_post_meta($post->ID, 'quid_field_max', true),
+                        "initial" => get_post_meta($post->ID, 'quid_field_initial', true),
+                        "locations" => json_decode(get_post_meta($post->ID, 'quid_field_locations', true), true),
+                    );
+                } else {
+                    error_log('QUID: Using new post metadata for post ' . $post->ID);
+                }
+                $postSettings['id'] = $post->ID;
+                error_log('QUID: Using settings: ' . json_encode($postSettings));
+                return $postSettings;
+            }
         }
 
         public function addMetaFields() {
@@ -41,11 +67,16 @@ namespace QUIDPaymentsMeta {
 
             $buttonsReadOnly = "";
             $sliderReadOnly = "";
+            $requiredReadOnly = "";
 
             if ($meta['input'] == 'Buttons') {
                 $buttonsReadOnly = "readonly";
             } else if ($meta['input'] == 'Slider') {
                 $sliderReadOnly = "readonly";
+            }
+
+            if ($meta['type'] == 'Required') {
+                $requiredReadOnly = "readonly";
             }
             
             wp_register_style( 'css_quid_meta', plugins_url( 'css/meta.css?quid-plugin='.$quidPluginVersion, __FILE__ ) );
@@ -58,7 +89,7 @@ namespace QUIDPaymentsMeta {
             <div class="quid-post-meta">
                 <div>
                     <label>Payment Type</label>
-                    <select name="quid_field_type">
+                    <select onchange="quidPostMeta.handlePaymentTypeChange(this)" name="quid_field_type">
                         <option <?php if ($meta['type'] == "None") echo "selected"; ?> value="None">None</option>
                         <option <?php if ($meta['type'] == "Required") echo "selected"; ?> value="Required">Required</option>
                         <option <?php if ($meta['type'] == "Optional") echo "selected"; ?> value="Optional">Optional</option>
@@ -85,23 +116,40 @@ namespace QUIDPaymentsMeta {
                 </div>
                 <div>
                     <label>Price</label>
-                    <input class="quid-post-meta-button-only" <?php echo $sliderReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)" name="quid_field_price" placeholder="Price ($0.01 - $2)" type="number" step="0.01" value="<?php echo $meta['price'] ?>" />
+                    <input class="quid-post-meta-button-only" <?php echo $sliderReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)"
+                        name="quid_field_price" placeholder="Price ($0.01 - $2)" type="number" step="0.01" value="<?php echo $meta['price'] ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>
                     <label>Minimum Slider Value</label>
-                    <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handleMinKeypress(event)" name="quid_field_min" placeholder="Min Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $meta['min'] != '' ? $meta['min'] : '0.01' ?>" />
+                    <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handleMinKeypress(event)"
+                        name="quid_field_min" placeholder="Min Amount ($0.01 or more)" type="number" step="0.01" value="<?php echo $meta['min'] != '' ? $meta['min'] : '0.01' ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>
                     <label>Maximum Slider Value</label>
-                    <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handleMaxKeypress(event)" name="quid_field_max" placeholder="Max Amount ($2 or less)" type="number" step="0.01" value="<?php echo $meta['max'] != '' ? $meta['max'] : '2.00' ?>" />
+                    <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handleMaxKeypress(event)"
+                        name="quid_field_max" placeholder="Max Amount ($2 or less)" type="number" step="0.01" value="<?php echo $meta['max'] != '' ? $meta['max'] : '2.00' ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>
                     <label>Initial Slider Value</label>
-                    <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)" name="quid_field_initial" placeholder="Initial Amount ($0.01 - $2)" type="number" step="0.01" value="<?php echo $meta['initial'] ?>" />
+                    <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)"
+                        name="quid_field_initial" placeholder="Initial Amount ($0.01 - $2)" type="number" step="0.01" value="<?php echo $meta['initial'] ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
+                </div>
+                <div>
+                    <label>Locations</label>
+                    <div>Top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[top]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['top'])) { if ($meta['locations']['top']) { echo 'checked'; } } ?> />
+                    <div>Near top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearTop]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearTop'])) { if ($meta['locations']['nearTop']) { echo 'checked'; } } ?> />
+                    <div>Near middle</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearMiddle]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearMiddle'])) { if ($meta['locations']['nearMiddle']) { echo 'checked'; } } ?> />
+                    <div>Near bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearBottom]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearBottom'])) { if ($meta['locations']['nearBottom']) { echo 'checked'; } } ?> />
+                    <div>Bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[bottom]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['bottom'])) { if ($meta['locations']['bottom']) { echo 'checked'; } } ?> />
                 </div>
                 <div style="display: none;">
                     <label>Product ID</label>
@@ -130,7 +178,7 @@ namespace QUIDPaymentsMeta {
         public function save_postdata($post_id) {
             $this->maxAndMinMustBeDifferent($_POST['quid_field_min'], $_POST['quid_field_max']);
 
-            $names = ['type', 'input', 'id', 'name', 'description', 'url', 'text', 'paid', 'price', 'min', 'max', 'initial'];
+            $names = ['type', 'input', 'text', 'paid', 'price', 'min', 'max', 'initial', 'locations'];
             foreach ($names as $name) {
 
                 $value = $_POST['quid_field_'.$name];
@@ -139,14 +187,19 @@ namespace QUIDPaymentsMeta {
                     $value = $this->limitPrice($value, false);
                 }
 
-                if (array_key_exists('quid_field_'.$name, $_POST)) {
-                    update_post_meta(
-                        $post_id,
-                        'quid_field_'.$name,
-                        sanitize_text_field($value)
-                    );
+                if (gettype($value) == 'string') {
+                    $postSettings[$name] = stripslashes(sanitize_text_field($value));
+                } else {
+                    $postSettings[$name] = $value;
                 }
+
             }
+
+            update_post_meta(
+                $post_id,
+                'quid_post_settings',
+                json_encode($postSettings, JSON_UNESCAPED_SLASHES)
+            );
         }
 
         private function limitMinPrice($value, $allowBlank) {
