@@ -8,7 +8,10 @@ namespace QUIDPaymentsMeta {
 
         public function getMetaFields($post) {
 
+            global $pagenow;
+
             $postCategoriesArray = get_the_category($post);
+            // error_log(print_r($postCategoriesArray, true));
             $categorySlug = $postCategoriesArray[0]->slug;
             $categorySettings = json_decode(get_option('quid-category-options'), true);
             if (isset($categorySettings[$categorySlug])) {
@@ -19,11 +22,9 @@ namespace QUIDPaymentsMeta {
                 }
             }
 
-            if ($postOverride == "On") {
+            if ($postOverride == "On" && $pagenow != 'post.php') {
                 error_log('QUID: Using category metadata for post ' . $post->ID);
                 $postSettings = $categorySettings[$categorySlug];
-                $postSettings['id'] = $post->ID;
-                return $postSettings;
             } else {
                 $postSettings = json_decode(get_post_meta($post->ID, 'quid_post_settings', true), true);
                 if ( empty($postSettings)) {
@@ -43,6 +44,7 @@ namespace QUIDPaymentsMeta {
                     error_log('QUID: Using new post metadata for post ' . $post->ID);
                 }
                 $postSettings['id'] = $post->ID;
+                error_log('QUID: Using settings: ' . json_encode($postSettings));
                 return $postSettings;
             }
         }
@@ -65,11 +67,16 @@ namespace QUIDPaymentsMeta {
 
             $buttonsReadOnly = "";
             $sliderReadOnly = "";
+            $requiredReadOnly = "";
 
             if ($meta['input'] == 'Buttons') {
                 $buttonsReadOnly = "readonly";
             } else if ($meta['input'] == 'Slider') {
                 $sliderReadOnly = "readonly";
+            }
+
+            if ($meta['type'] == 'Required') {
+                $requiredReadOnly = "readonly";
             }
             
             wp_register_style( 'css_quid_meta', plugins_url( 'css/meta.css?quid-plugin='.$quidPluginVersion, __FILE__ ) );
@@ -82,7 +89,7 @@ namespace QUIDPaymentsMeta {
             <div class="quid-post-meta">
                 <div>
                     <label>Payment Type</label>
-                    <select name="quid_field_type">
+                    <select onchange="quidPostMeta.handlePaymentTypeChange(this)" name="quid_field_type">
                         <option <?php if ($meta['type'] == "None") echo "selected"; ?> value="None">None</option>
                         <option <?php if ($meta['type'] == "Required") echo "selected"; ?> value="Required">Required</option>
                         <option <?php if ($meta['type'] == "Optional") echo "selected"; ?> value="Optional">Optional</option>
@@ -133,11 +140,16 @@ namespace QUIDPaymentsMeta {
                 </div>
                 <div>
                     <label>Locations</label>
-                    <div>Top</div><input class="quid-pay-settings-location-checkbox" name="quid_field_locations[top]" value=true type="checkbox" <?php if ($meta['locations']['top']) { echo 'checked'; } ?> />
-                    <div>Near top</div><input class="quid-pay-settings-location-checkbox" name="quid_field_locations[nearTop]" value=true type="checkbox" <?php if ($meta['locations']['nearTop']) { echo 'checked'; } ?> />
-                    <div>Near middle</div><input class="quid-pay-settings-location-checkbox" name="quid_field_locations[nearMiddle]" value=true type="checkbox" <?php if ($meta['locations']['nearMiddle']) { echo 'checked'; } ?> />
-                    <div>Near bottom</div><input class="quid-pay-settings-location-checkbox" name="quid_field_locations[nearBottom]" value=true type="checkbox" <?php if ($meta['locations']['nearBottom']) { echo 'checked'; } ?> />
-                    <div>Bottom</div><input class="quid-pay-settings-location-checkbox" name="quid_field_locations[bottom]" value=true type="checkbox" <?php if ($meta['locations']['bottom']) { echo 'checked'; } ?> />
+                    <div>Top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[top]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['top'])) { if ($meta['locations']['top']) { echo 'checked'; } } ?> />
+                    <div>Near top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearTop]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearTop'])) { if ($meta['locations']['nearTop']) { echo 'checked'; } } ?> />
+                    <div>Near middle</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearMiddle]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearMiddle'])) { if ($meta['locations']['nearMiddle']) { echo 'checked'; } } ?> />
+                    <div>Near bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearBottom]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearBottom'])) { if ($meta['locations']['nearBottom']) { echo 'checked'; } } ?> />
+                    <div>Bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[bottom]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['bottom'])) { if ($meta['locations']['bottom']) { echo 'checked'; } } ?> />
                 </div>
                 <div style="display: none;">
                     <label>Product ID</label>

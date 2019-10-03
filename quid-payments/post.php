@@ -12,55 +12,28 @@ namespace QUIDPaymentsPost {
             global $post;
             global $pagenow;
             $inputs = new Inputs\Inputs();
-
-            if ($pagenow == 'post.php') return $content;
-            if ($post->post_type != 'post') return $content;
-            $postCategoriesArray = get_the_category($post);
-            
-            $categorySlug = $postCategoriesArray[0]->slug;
-
-            $categoryOptionsJSON = get_option('quid-category-options');
-            $categoryOptions = json_decode($categoryOptionsJSON, true);
-            if (isset($categoryOptions[$categorySlug])) {
-                $this->postCategoryOptions = $categoryOptions[$categorySlug];
-            } else {
-                $this->postCategoryOptions = null;
-            }
-
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
 
-            if ($categoriesOverride ) {
-                $handlerResult = $this->categoryHandler();
-                if ($handlerResult !== null) return $handlerResult;
-                $handlerResult = $this->metaHandler($meta);
-                if ($handlerResult !== null) return $handlerResult;
-            } else {
-                $handlerResult = $this->metaHandler($meta);
-                if ($handlerResult !== null) return $handlerResult;
-                $handlerResult = $this->categoryHandler();
-                if ($handlerResult !== null) return $handlerResult;
-            }
-            
-            return $content;
-        }
+            if ($pagenow == 'post.php') return $content;
+            if ($post->post_type != 'post') return $content;
 
-        function metaHandler($meta) {
-            if ($meta['type'] === "Required" || $meta['type'] === "Optional") {
-                if ($meta['input'] === "Buttons") return $this->handleButtonWithExcerpt();
-                if ($meta['input'] === "Slider") {
+            $readMore = get_option('quid-read-more');
+            if ($meta['type'] == "Required" || $readMore) {
+                if ($meta['input'] == "Buttons") {
+                    return $this->handleButtonWithExcerpt();
+                } else {
                     return $this->handleSliderWithExcerpt();
                 }
+            } else if ($meta['type'] == "Optional") {
+                if ($meta['input'] == "Buttons") {
+                    return $this->handleButtonWithoutExcerpt($content);
+                } else {
+                    return $this->handleSliderWithoutExcerpt($content);
+                }
+            } else {
+                return $content;
             }
-            return null;
-        }
-
-        function categoryHandler() {
-            if ($this->postCategoryOptions['input-type'] === "Required" || $this->postCategoryOptions['input-type'] === "Optional") {
-                if ($this->postCategoryOptions['input-type'] === "Buttons") return $this->handleButtonWithExcerpt();
-                if ($this->postCategoryOptions['input-type'] === "Slider") return $this->handleSliderWithExcerpt();
-            }
-            return null;
         }
 
         function handleSliderWithExcerpt() {
@@ -72,13 +45,6 @@ namespace QUIDPaymentsPost {
 
             error_log('QUID: handleSliderWithExcerpt');
             
-            if ($this->postCategoryOptions !== null && $meta['type'] === "None") {
-                $meta['type'] = $this->postCategoryOptions['type'];
-                $meta['text'] = $this->postCategoryOptions['text'];
-                $meta['paid'] = $this->postCategoryOptions['paid-text'];
-                $meta['price'] = $this->postCategoryOptions['price'];
-            }
-
             $justification = Helpers\buttonAlignment($meta['align']);
 
             $html = <<<HTML
@@ -108,57 +74,46 @@ HTML;
 
             $newContent = $content;
 
-            if ($this->postCategoryOptions !== null && $meta['type'] === "None") {
-                $meta['type'] = $this->postCategoryOptions['type'];
-                $meta['text'] = $this->postCategoryOptions['text'];
-                $meta['paid'] = $this->postCategoryOptions['paid-text'];
-                $meta['price'] = $this->postCategoryOptions['price'];
-
-                $newContent = $content.$inputs->quidSlider($meta, true);
-            } else {
-
-                if (isset($meta['locations']['top'])) {
-                    if ($meta['locations']['top']) {
-                        $newContent = $inputs->quidSlider($meta, true) . $newContent;
-                    }
+            if (isset($meta['locations']['top'])) {
+                if ($meta['locations']['top']) {
+                    $newContent = $inputs->quidSlider($meta, true) . $newContent;
                 }
+            }
 
-                if (isset($meta['locations']['nearTop'])) {
-                    if ($meta['locations']['nearTop']) {
-                        $postLength = strlen($newContent);
-                        $locationCharacters = round($postLength * 0.05);
-                        $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
-                        $replacementString = '</p>' . $inputs->quidSlider($meta, true); 
-                        $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
-                    }
+            if (isset($meta['locations']['nearTop'])) {
+                if ($meta['locations']['nearTop']) {
+                    $postLength = strlen($newContent);
+                    $locationCharacters = round($postLength * 0.05);
+                    $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
+                    $replacementString = '</p>' . $inputs->quidSlider($meta, true); 
+                    $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
                 }
+            }
 
-                if (isset($meta['locations']['nearMiddle'])) {
-                    if ($meta['locations']['nearMiddle']) {
-                        $postLength = strlen($newContent);
-                        $locationCharacters = round($postLength * 0.50);
-                        $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
-                        $replacementString = '</p>' . $inputs->quidSlider($meta, true); 
-                        $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
-                    }
+            if (isset($meta['locations']['nearMiddle'])) {
+                if ($meta['locations']['nearMiddle']) {
+                    $postLength = strlen($newContent);
+                    $locationCharacters = round($postLength * 0.50);
+                    $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
+                    $replacementString = '</p>' . $inputs->quidSlider($meta, true); 
+                    $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
                 }
+            }
 
-                if (isset($meta['locations']['nearBottom'])) {
-                    if ($meta['locations']['nearBottom']) {
-                        $postLength = strlen($newContent);
-                        $locationCharacters = round($postLength * 0.95);
-                        $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
-                        $replacementString = '</p>' . $inputs->quidSlider($meta, true); 
-                        $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
-                    }
+            if (isset($meta['locations']['nearBottom'])) {
+                if ($meta['locations']['nearBottom']) {
+                    $postLength = strlen($newContent);
+                    $locationCharacters = round($postLength * 0.95);
+                    $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
+                    $replacementString = '</p>' . $inputs->quidSlider($meta, true); 
+                    $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
                 }
+            }
 
-                if (isset($meta['locations']['bottom'])) {
-                    if ($meta['locations']['bottom']) {
-                        $newContent .= $inputs->quidSlider($meta, true);
-                    }
+            if (isset($meta['locations']['bottom'])) {
+                if ($meta['locations']['bottom']) {
+                    $newContent .= $inputs->quidSlider($meta, true);
                 }
-
             }
 
             $html = <<<HTML
@@ -178,13 +133,6 @@ HTML;
 
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
-
-            if ($this->postCategoryOptions !== null && ($meta['type'] === "None" || empty($meta['type']))) {
-                $meta['type'] = $this->postCategoryOptions['type'];
-                $meta['text'] = $this->postCategoryOptions['text'];
-                $meta['paid'] = $this->postCategoryOptions['paid-text'];
-                $meta['price'] = $this->postCategoryOptions['price'];
-            }
 
             $justification = Helpers\buttonAlignment($meta['align']);
 
@@ -214,51 +162,40 @@ HTML;
 
             $newContent = $content;
 
-            if ($this->postCategoryOptions !== null && $meta['type'] === "None") {
-                $meta['type'] = $this->postCategoryOptions['type'];
-                $meta['text'] = $this->postCategoryOptions['text'];
-                $meta['paid'] = $this->postCategoryOptions['paid-text'];
-                $meta['price'] = $this->postCategoryOptions['price'];
-
-                $newContent = $content.$inputs->quidButton($meta, true);
-            } else {
-                
-                if (isset($meta['locations']['nearTop'])) {
-                    if ($meta['locations']['nearTop']) {
-                        $postLength = strlen($newContent);
-                        $locationCharacters = round($postLength * 0.05);
-                        $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
-                        $replacementString = '</p>' . $inputs->quidButton($meta, true); 
-                        $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
-                    }
+            if (isset($meta['locations']['nearTop'])) {
+                if ($meta['locations']['nearTop']) {
+                    $postLength = strlen($newContent);
+                    $locationCharacters = round($postLength * 0.05);
+                    $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
+                    $replacementString = '</p>' . $inputs->quidButton($meta, true); 
+                    $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
                 }
+            }
 
-                if (isset($meta['locations']['nearMiddle'])) {
-                    if ($meta['locations']['nearMiddle']) {
-                        $postLength = strlen($newContent);
-                        $locationCharacters = round($postLength * 0.50);
-                        $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
-                        $replacementString = '</p>' . $inputs->quidButton($meta, true); 
-                        $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
-                    }
+            if (isset($meta['locations']['nearMiddle'])) {
+                if ($meta['locations']['nearMiddle']) {
+                    $postLength = strlen($newContent);
+                    $locationCharacters = round($postLength * 0.50);
+                    $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
+                    $replacementString = '</p>' . $inputs->quidButton($meta, true); 
+                    $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
                 }
+            }
 
-                if (isset($meta['locations']['nearBottom'])) {
-                    if ($meta['locations']['nearBottom']) {
-                        $postLength = strlen($newContent);
-                        $locationCharacters = round($postLength * 0.95);
-                        $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
-                        $replacementString = '</p>' . $inputs->quidButton($meta, true); 
-                        $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
-                    }
+            if (isset($meta['locations']['nearBottom'])) {
+                if ($meta['locations']['nearBottom']) {
+                    $postLength = strlen($newContent);
+                    $locationCharacters = round($postLength * 0.95);
+                    $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
+                    $replacementString = '</p>' . $inputs->quidButton($meta, true); 
+                    $newContent = substr_replace($newContent, $replacementString, $locationParagraph, 4);
                 }
+            }
 
-                if (isset($meta['locations']['bottom'])) {
-                    if ($meta['locations']['bottom']) {
-                        $newContent .= $inputs->quidButton($meta, true);
-                    }
+            if (isset($meta['locations']['bottom'])) {
+                if ($meta['locations']['bottom']) {
+                    $newContent .= $inputs->quidButton($meta, true);
                 }
-
             }
 
             $html = <<<HTML
