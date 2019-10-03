@@ -48,12 +48,12 @@ namespace QUIDPaymentsPost {
             $justification = Helpers\buttonAlignment($meta['align']);
 
             $html = <<<HTML
-            <div style="width: 100%" id="post-container-{$meta['id']}">
-                <div style="width: 100%;" id="post-content-{$meta['id']}">
+            <div style="width: 100%" id="post-container-{$post->ID}">
+                <div style="width: 100%;" id="post-content-{$post->ID}">
                     <p>{$post->post_excerpt}</p>
-                    <p id="read-more-content-{$meta['id']}" style="display: none;"></p>
+                    <p id="read-more-content-{$post->ID}" style="display: none;"></p>
                     <div style="display: flex; justify-content: {$justification}">
-                        <button class="quid-pay-button quid-pay-button-default" id="read-more-button-{$meta['id']}" style="display: none;">Read More</button>
+                        <button class="quid-pay-button quid-pay-button-default" id="read-more-button-{$post->ID}" style="display: none;">Read More</button>
                     </div>
 HTML;
             $html .= '</div>';
@@ -117,7 +117,7 @@ HTML;
             }
 
             $html = <<<HTML
-                <div style="width: 100%;" id="post-content-{$meta['id']}">
+                <div style="width: 100%;" id="post-content-{$post->ID}">
 HTML;
 
             $html .= $newContent;
@@ -137,12 +137,12 @@ HTML;
             $justification = Helpers\buttonAlignment($meta['align']);
 
             $html = <<<HTML
-            <div style="width: 100%" id="post-container-{$meta['id']}">
-                <div style="width: 100%;" id="post-content-{$meta['id']}">
+            <div style="width: 100%" id="post-container-{$post->ID}">
+                <div style="width: 100%;" id="post-content-{$post->ID}">
                     <p>{$post->post_excerpt}</p>
-                    <p id="read-more-content-{$meta['id']}" style="display: none;"></p>
+                    <p id="read-more-content-{$post->ID}" style="display: none;"></p>
                     <div style="display: flex; justify-content: {$justification}">
-                        <button class="quid-pay-button quid-pay-button-default" id="read-more-button-{$meta['id']}" style="display: none;">Read More</button>
+                        <button class="quid-pay-button quid-pay-button-default" id="read-more-button-{$post->ID}" style="display: none;">Read More</button>
                     </div>
 HTML;
             $html .= '</div>';
@@ -199,7 +199,7 @@ HTML;
             }
 
             $html = <<<HTML
-                <div style="width: 100%;" id="post-content-{$meta['id']}">
+                <div style="width: 100%;" id="post-content-{$post->ID}">
 HTML;
 
             $html .= $newContent;

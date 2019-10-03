@@ -34,42 +34,46 @@ try {
 
   quidPaymentsBaseElement.appendChild(quidPaymentsButton);
 
-  (function () {
-    if (dataJS.meta_type === "Required") return;
-    const containerDiv = document.getElementById(`post-container-${dataJS.content_id}`);
-    const contentDiv = document.getElementById(`post-content-${dataJS.content_id}`);
-    const readMore = document.getElementById(`read-more-content-${dataJS.content_id}`);
-    const content_id = dataJS.content_id;
-    const readMoreDisabled = dataJS.meta_readMore === "false";
-    const onThePostsPage = window.location.href.includes(dataJS.meta_url);
-    if (!contentDiv) return;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        if (xhttp.responseText !== '') {
-          if (onThePostsPage || readMoreDisabled) {
-            contentDiv.innerHTML = xhttp.responseText;
-            return;
-          }
+  if (dataJS.post_id !== "") {
 
-          const readMoreButton = document.getElementById(`read-more-button-${content_id}`);
-          
-          const payButtons = containerDiv.getElementsByClassName('quid-pay-buttons');
-          payButtons[0].style.display = 'none';
+    (function () {
+      if (dataJS.meta_type === "Required") return;
+      const containerDiv = document.getElementById(`post-container-${dataJS.post_id}`);
+      const contentDiv = document.getElementById(`post-content-${dataJS.post_id}`);
+      const readMore = document.getElementById(`read-more-content-${dataJS.post_id}`);
+      const post_id = dataJS.post_id;
+      const readMoreDisabled = dataJS.meta_readMore === "false";
+      const onThePostsPage = window.location.href.includes(dataJS.meta_url);
+      if (!contentDiv) return;
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          if (xhttp.responseText !== '') {
+            if (onThePostsPage || readMoreDisabled) {
+              contentDiv.innerHTML = xhttp.responseText;
+              return;
+            }
 
-          readMoreButton.style.display = 'block';
-          readMoreButton.onclick = () => {
-            contentDiv.innerHTML = readMore.innerHTML;
-            payButtons[payButtons.length - 1].style.display = 'block';
+            const readMoreButton = document.getElementById(`read-more-button-${post_id}`);
+            
+            const payButtons = containerDiv.getElementsByClassName('quid-pay-buttons');
+            payButtons[0].style.display = 'none';
+
+            readMoreButton.style.display = 'block';
+            readMoreButton.onclick = () => {
+              contentDiv.innerHTML = readMore.innerHTML;
+              payButtons[payButtons.length - 1].style.display = 'block';
+            }
+            readMore.innerHTML = xhttp.responseText;
           }
-          readMore.innerHTML = xhttp.responseText;
         }
       }
-    }
-    xhttp.open('POST', dataJS.content_url, true);
-    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhttp.send(`postID=${dataJS.post_id}`);
-  })();
+      xhttp.open('POST', dataJS.content_url, true);
+      xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      xhttp.send(`postID=${dataJS.post_id}`);
+    })();
+
+  }
 
 } catch(e) {
   if (!e.toString().includes('_quid_wp_global')) console.log(`QUID ERROR: ${e}`);
