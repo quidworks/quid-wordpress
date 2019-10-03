@@ -294,6 +294,14 @@ th {
    color: black;
 }
 
+.quid-pay-settings-category-container {
+  margin-bottom: 30px;
+}
+
+.quid-category-locations label {
+  padding: 5px 0px 8px;
+}
+
 .quid-category-settings {
   display: flex;
   flex-flow: wrap;
@@ -306,6 +314,7 @@ th {
 .quid-settings-checkbox-container {
   display: flex;
   align-items: center;
+  margin-left: 3px;
 }
 
 .quid-settings-checkbox-container input {

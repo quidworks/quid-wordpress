@@ -16,11 +16,13 @@ namespace QUIDPaymentsInputs {
             $productName = "";
             $productID = "";
             $productURL = "";
+            $id = "";
 
             if ($metaInputAndNotShortcode) {
                 $productName = Helpers\getPostTitle($post);
                 $productID = Helpers\getPostSlug($post);
                 $productURL = Helpers\getPostURL($post);
+                $id = $post->ID;
             } else {
                 $productName = $blogTitle."-tip";
                 $productID = $blogTitle."-tip";
@@ -91,7 +93,6 @@ HTML;
                 'js_quid_button_'.$microtimeIdentifier,
                 plugins_url( 'js/button.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
-                    'content_id' => $meta['id'],
                     'content_url' => admin_url("admin-post.php?action=post-content&_wpnonce=".$nonce),
                     'post_id' => $post->ID,
                     'meta_name' => $productName,
@@ -117,7 +118,6 @@ HTML;
                         'post_id' => $post->ID,
                         'meta_name' => $productName,
                         'meta_id' => $productID,
-                        'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_paid' => $meta['paid'],
@@ -138,11 +138,13 @@ HTML;
             $productName = "";
             $productID = "";
             $productURL = "";
+            $id = "";
 
             if ($metaInputAndNotShortcode) {
                 $productName = Helpers\getPostTitle($post);
                 $productID = Helpers\getPostSlug($post);
                 $productURL = Helpers\getPostURL($post);
+                $id = $post->ID;
             } else {
                 $productName = $blogTitle."-tip";
                 $productID = $blogTitle."-tip";
@@ -207,8 +209,7 @@ HTML;
                 plugins_url( 'js/slider.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
                     'content_url' => admin_url("admin-post.php?action=post-content&_wpnonce=".$nonce),
-                    'content_id' => $meta['id'],
-                    'post_id' => $post->ID,
+                    'post_id' => $id,
                     'meta_id' => $productID,
                     'meta_domID' => $meta['dom-id'],
                     'meta_initial' => $meta['initial'],
@@ -234,9 +235,8 @@ HTML;
                     plugins_url( 'js/sliderRequired.js?'.$microtimeIdentifier, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
-                        'post_id' => $post->ID,
+                        'post_id' => $id,
                         'meta_id' => $productID,
-                        'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
                         'meta_paid' => $meta['paid'],
