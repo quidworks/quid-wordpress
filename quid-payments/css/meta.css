@@ -5,16 +5,46 @@
 
 .quid-post-meta div {
     width: 25%;
+    min-width: 200px;
     box-sizing: border-box;
     padding: 5px;
 }
 
 .quid-post-meta input, .quid-post-meta select {
+    height: 40px!important;
     width: 100%;
     border-radius: 4px;
+    margin: 0px;
     border: solid 1px rgba(0, 0, 0, 0.25);
 }
 
 .quid-post-meta-message {
     font-size: 12px;
+}
+
+.quid-post-meta-location-label {
+    margin: 10px 10px 5px 10px;
+    font-weight: bold;
+}
+
+.quid-post-meta-locations {
+    display: flex;
+}
+
+.quid-post-meta-location {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+}
+
+.quid-post-meta-location div {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.quid-post-meta-location input {
+    text-align: center;
+    border-radius: 4px;
+    margin: 0px;
 }

@@ -138,19 +138,6 @@ namespace QUIDPaymentsMeta {
                         name="quid_field_initial" placeholder="Initial Amount ($0.01 - $2)" type="number" step="0.01" value="<?php echo $meta['initial'] ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
-                <div>
-                    <label>Locations</label>
-                    <div>Top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[top]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['top'])) { if ($meta['locations']['top']) { echo 'checked'; } } ?> />
-                    <div>Near top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearTop]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearTop'])) { if ($meta['locations']['nearTop']) { echo 'checked'; } } ?> />
-                    <div>Near middle</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearMiddle]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearMiddle'])) { if ($meta['locations']['nearMiddle']) { echo 'checked'; } } ?> />
-                    <div>Near bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearBottom]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearBottom'])) { if ($meta['locations']['nearBottom']) { echo 'checked'; } } ?> />
-                    <div>Bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[bottom]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['bottom'])) { if ($meta['locations']['bottom']) { echo 'checked'; } } ?> />
-                </div>
                 <div style="display: none;">
                     <label>Product ID</label>
                     <input name="quid_field_id" readonly placeholder="Product ID" value="<?php echo Helpers\getPostSlug($post); ?>" />
@@ -170,6 +157,34 @@ namespace QUIDPaymentsMeta {
                     <label>Product URL</label>
                     <input name="quid_field_url" readonly placeholder="URL" value="<?php echo get_permalink($post) ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="quid-post-meta-location-label"><label>Locations</label></div>
+            <div class="quid-post-meta-locations">
+                <div class="quid-post-meta-location">
+                    <div>Top</div>
+                    <input class="quid-post-meta-optional-only" name="quid_field_locations[top]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['top'])) { if ($meta['locations']['top']) { echo 'checked'; } } ?> />
+                </div>
+                <div class="quid-post-meta-location">
+                    <div>Near top</div>
+                    <input class="quid-post-meta-optional-only" name="quid_field_locations[nearTop]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearTop'])) { if ($meta['locations']['nearTop']) { echo 'checked'; } } ?> />
+                </div>
+                <div class="quid-post-meta-location">
+                    <div>Near middle</div>
+                    <input class="quid-post-meta-optional-only" name="quid_field_locations[nearMiddle]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearMiddle'])) { if ($meta['locations']['nearMiddle']) { echo 'checked'; } } ?> />
+                </div>
+                <div class="quid-post-meta-location">
+                    <div>Near bottom</div>
+                    <input class="quid-post-meta-optional-only" name="quid_field_locations[nearBottom]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearBottom'])) { if ($meta['locations']['nearBottom']) { echo 'checked'; } } ?> />
+                </div>
+                <div class="quid-post-meta-location">
+                    <div>Bottom</div>
+                    <input class="quid-post-meta-optional-only" name="quid_field_locations[bottom]" value=true type="checkbox"
+                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['bottom'])) { if ($meta['locations']['bottom']) { echo 'checked'; } } ?> />
                 </div>
             </div>
             <?php
