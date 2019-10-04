@@ -182,16 +182,18 @@ namespace QUIDPaymentsMeta {
             $names = ['type', 'input', 'text', 'paid', 'price', 'min', 'max', 'initial', 'locations'];
             foreach ($names as $name) {
 
-                $value = $_POST['quid_field_'.$name];
+                if (isset($_POST['quid_field_'.$name])) {
+                    $value = $_POST['quid_field_'.$name];
 
-                if ($name == 'initial' || $name == 'price') {
-                    $value = $this->limitPrice($value, false);
-                }
+                    if ($name == 'initial' || $name == 'price') {
+                        $value = $this->limitPrice($value, false);
+                    }
 
-                if (gettype($value) == 'string') {
-                    $postSettings[$name] = stripslashes(sanitize_text_field($value));
-                } else {
-                    $postSettings[$name] = $value;
+                    if (gettype($value) == 'string') {
+                        $postSettings[$name] = stripslashes(sanitize_text_field($value));
+                    } else {
+                        $postSettings[$name] = $value;
+                    }
                 }
 
             }
