@@ -13,6 +13,7 @@ namespace QUIDPaymentsInputs {
             $nonce = wp_create_nonce( 'quid-cookie-nonce' );
 
             $blogTitle = Helpers\getSiteTitle();
+            $blogTitleSlug = Helpers\getSiteTitleSlug();
             $productName = "";
             $productID = "";
             $productURL = "";
@@ -24,14 +25,20 @@ namespace QUIDPaymentsInputs {
                 $productURL = Helpers\getPostURL($post);
                 $id = $post->ID;
             } else {
-                $productName = $blogTitle."-tip";
-                $productID = $blogTitle."-tip";
+                $productName = "Tip for " . $blogTitle;
+                $productID = $blogTitleSlug."-tip";
                 $productURL = get_site_url();
+                $id = $blogTitleSlug;
             }
 
             $microtimeIdentifier = microtime();
             $currencyOption = get_option('quid-currency');
-            $justification = Helpers\buttonAlignment($meta['align']);
+            if (isset($meta['align'])) {
+                $alignOption = $meta['align'];
+            } else {
+                $alignOption = get_option('quid-align');
+            }
+            $justification = Helpers\buttonAlignment($alignOption);
             $requiredFields = ['price']; // Add required shortcode attributes to array
 
             if (!$meta) {
@@ -54,7 +61,7 @@ namespace QUIDPaymentsInputs {
 
             $html = <<<HTML
                 <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none; justify-content: {$justification};">
-                    <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
+                    <div id="quid-error-{$id}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
                         <span>Payment validation failed</span>
                     </div>
@@ -94,7 +101,7 @@ HTML;
                 plugins_url( 'js/button.js?'.$microtimeIdentifier, __FILE__ ),
                 array(
                     'content_url' => admin_url("admin-post.php?action=post-content&_wpnonce=".$nonce),
-                    'post_id' => $post->ID,
+                    'post_id' => $id,
                     'meta_name' => $productName,
                     'meta_id' => $productID,
                     'meta_domID' => $meta['dom-id'],
@@ -115,7 +122,7 @@ HTML;
                     plugins_url( 'js/buttonRequired.js?'.$microtimeIdentifier, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
-                        'post_id' => $post->ID,
+                        'post_id' => $id,
                         'meta_name' => $productName,
                         'meta_id' => $productID,
                         'meta_domID' => $meta['dom-id'],
@@ -135,6 +142,7 @@ HTML;
             $nonce = wp_create_nonce( 'quid-cookie-nonce' );
 
             $blogTitle = Helpers\getSiteTitle();
+            $blogTitleSlug = Helpers\getSiteTitleSlug();
             $productName = "";
             $productID = "";
             $productURL = "";
@@ -146,14 +154,20 @@ HTML;
                 $productURL = Helpers\getPostURL($post);
                 $id = $post->ID;
             } else {
-                $productName = $blogTitle."-tip";
-                $productID = $blogTitle."-tip";
+                $productName = "Tip for " . $blogTitle;
+                $productID = $blogTitleSlug."-tip";
                 $productURL = get_site_url();
+                $id = $blogTitleSlug;
             }
             
             $microtimeIdentifier = microtime();
             $currencyOption = get_option('quid-currency');
-            $justification = Helpers\buttonAlignment($meta['align']);
+            if (isset($meta['align'])) {
+                $alignOption = $meta['align'];
+            } else {
+                $alignOption = get_option('quid-align');
+            }
+            $justification = Helpers\buttonAlignment($alignOption);
             $requiredFields = []; // Add required shortcode attributes to array
 
             if (!$meta) {
@@ -180,7 +194,7 @@ HTML;
 
             $html = <<<HTML
                 <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none; justify-content: {$justification};">
-                    <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
+                    <div id="quid-error-{$productID}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
                         <span>Payment validation failed</span>
                     </div>

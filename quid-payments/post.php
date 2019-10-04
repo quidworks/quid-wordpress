@@ -45,7 +45,12 @@ namespace QUIDPaymentsPost {
 
             error_log('QUID: handleSliderWithExcerpt');
             
-            $justification = Helpers\buttonAlignment($meta['align']);
+            if (isset($meta['align'])) {
+                $alignOption = $meta['align'];
+            } else {
+                $alignOption = get_option('quid-align');
+            }
+            $justification = Helpers\buttonAlignment($alignOption);
 
             $html = <<<HTML
             <div style="width: 100%" id="post-container-{$post->ID}">
@@ -134,7 +139,11 @@ HTML;
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
 
-            $justification = Helpers\buttonAlignment($meta['align']);
+            if (isset($meta['align'])) {
+                $justification = Helpers\buttonAlignment($meta['align']);
+            } else {
+                $justification = Helpers\buttonAlignment();
+            }
 
             $html = <<<HTML
             <div style="width: 100%" id="post-container-{$post->ID}">
@@ -198,6 +207,7 @@ HTML;
                 }
             }
 
+            error_log('$post->ID: ' . $post->ID);
             $html = <<<HTML
                 <div style="width: 100%;" id="post-content-{$post->ID}">
 HTML;
