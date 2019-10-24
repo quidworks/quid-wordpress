@@ -77,6 +77,7 @@ HTML;
 
             $html = <<<HTML
                 <div style="width: 100%;" id="post-content-{$meta['id']}">
+                    <p>{$post->post_excerpt}</p>
                     <p id="read-more-content-{$meta['id']}" style="display: none;"></p>
                     <div style="display: flex; justify-content: {$justification}">
                         <button class="quid-pay-button quid-pay-button-default" id="read-more-button-{$meta['id']}" style="display: none;">Read More</button>
