@@ -2,8 +2,8 @@
 Contributors: quidworks
 Tags: payment,payments,micropayment,micropayments,donation,donations,paywall,monetization,pay-per-use
 Requires at least: 5.0
-Tested up to: 5.2.2
-Stable tag: 1.1.6
+Tested up to: 5.2.4
+Stable tag: 1.1.7
 Requires PHP: 7.0
 License: MIT
 License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
@@ -75,6 +75,10 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 
 == Changelog ==
 
+= 1.1.7 =
+* Fixed an issue where post excerpts were not properly displayed
+* Verified plugin with WordPress 5.2.4
+
 = 1.1.6 =
 * Fixed an issue where decimal values were not permitted in some number fields in WordPress admin
 
@@ -108,6 +112,9 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.7 =
+Version 1.1.7 has been verified to work with WordPress 5.2.4
 
 = 1.1.5 =
 Version 1.1.5 adds the floating tip button feature and a display option for previously purchased content
