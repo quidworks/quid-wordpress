@@ -60,7 +60,7 @@
   display: inline-block;
   margin-top: 10px;
   margin-left: 3px;
-  margin-bottom: 2px;
+  margin-bottom: 5px;
 }
 
 .quid-pay-settings .quid-settings-label-tooltip label {
@@ -240,42 +240,42 @@ th {
 }
 
 .quid-pay-settings-container {
-    margin-top: 60px;
-    background-color: white;
-    margin-right: 20px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    padding: 20px 20px;
-    position: relative;
+  margin-top: 60px;
+  background-color: white;
+  margin-right: 20px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 20px 20px;
+  position: relative;
 }
 
 .quid-pay-settings-tabs {
-    position: absolute;
-    height: 35px;
-    top: calc(0px - 35px);
-    right: 0px;
-    left: 0px;
-    background-color: transparent;
-    display: flex;
-    flex-flow: nowrap;
+  position: absolute;
+  height: 35px;
+  top: calc(0px - 35px);
+  right: 0px;
+  left: 0px;
+  background-color: transparent;
+  display: flex;
+  flex-flow: nowrap;
 }
 
 .quid-pay-settings-tab {
-    margin-right: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    font-size: 15px;
-    padding: 0px 15px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background-color: #009089;
-    color: rgba(0, 0, 0, 0.6);
-    text-decoration: none;
-    color: white;
+  margin-right: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 15px;
+  padding: 0px 15px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #009089;
+  color: rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  color: white;
 }
 
 .quid-pay-settings-tab:hover {
@@ -285,13 +285,13 @@ th {
 }
 
 .quid-pay-settings-tab-active {
-   background-color: white;
-   color: black;
+  background-color: white;
+  color: black;
 }
 
 .quid-pay-settings-tab-active:hover {
-   background-color: white;
-   color: black;
+  background-color: white;
+  color: black;
 }
 
 .quid-pay-settings-category-container {
@@ -320,6 +320,35 @@ th {
 .quid-settings-checkbox-container input {
   width: auto;
   margin: 0px 12px 0px 4px;
+}
+
+.quid-post-checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-left: 3px;
+  width: 100% !important;
+}
+
+.quid-post-checkbox-container input {
+  width: auto !important;
+  margin: 0px 12px 0px 4px;
+  display: inline-block;
+}
+
+.quid-post-checkbox-label {
+  width: auto !important;
+}
+
+.quid-post-locations {
+  width: auto !important;
+}
+
+.quid-post-meta label {
+  font-weight: 500;
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 3px;
+  margin-bottom: 5px;
 }
 
 .quid-category-override .quid-settings-tooltip-container {

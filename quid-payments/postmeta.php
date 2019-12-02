@@ -14,6 +14,13 @@ namespace QUIDPaymentsMeta {
             $categorySlug = $postCategoriesArray[0]->slug;
             $categorySettings = json_decode(get_option('quid-category-options'), true);
             if (isset($categorySettings[$categorySlug])) {
+                if (!isset($categorySettings[$categorySlug]['category-enabled'])) {
+                    $categoryEnabled = "Off";
+                } else {
+                    $categoryEnabled = $categorySettings[$categorySlug]['category-enabled'];
+                }
+            }
+            if (isset($categorySettings[$categorySlug])) {
                 if (!isset($categorySettings[$categorySlug]['post-override'])) {
                     $postOverride = "Off";
                 } else {
@@ -21,15 +28,18 @@ namespace QUIDPaymentsMeta {
                 }
             }
 
-            $settingSource = "";
+            $postSettings = [];
+            $postHasSettings = get_post_meta($post->ID, 'quid_post_settings', true) || get_post_meta($post->ID, 'quid_field_type', true) ? true : false;
 
-            if ($postOverride == "On" && $pagenow != 'post.php') {
-                $settingSource = "Category";
+            if ($categoryEnabled == "On" && $postOverride == "On" && $pagenow != 'post.php') {
                 $postSettings = $categorySettings[$categorySlug];
+                $postSettings['settingSource'] = "Category and post override";
+            } else if ($categoryEnabled == "On" && $postOverride == "Off" && !$postHasSettings && $pagenow != 'post.php') {
+                $postSettings = $categorySettings[$categorySlug];
+                $postSettings['settingSource'] = "Category and no post settings";
             } else {
                 $postSettings = json_decode(get_post_meta($post->ID, 'quid_post_settings', true), true);
                 if ( empty($postSettings)) {
-                    $settingSource = "Old post metadata";
                     $postSettings = array(
                         "type" => get_post_meta($post->ID, 'quid_field_type', true),
                         "input" => get_post_meta($post->ID, 'quid_field_input', true),
@@ -41,12 +51,12 @@ namespace QUIDPaymentsMeta {
                         "initial" => get_post_meta($post->ID, 'quid_field_initial', true),
                         "locations" => json_decode(get_post_meta($post->ID, 'quid_field_locations', true), true),
                     );
+                    $postSettings['settingSource'] = "Old post metadata";
                 } else {
-                    $settingSource = "New post json";
+                    $postSettings['settingSource'] = "New post json";
                 }
             }
             $postSettings['id'] = $post->ID;
-            error_log('QUID: Using setting source: ' . $settingSource . '; with values: ' . json_encode($postSettings));
             return $postSettings;
         }
 
@@ -118,7 +128,7 @@ namespace QUIDPaymentsMeta {
                 <div>
                     <label>Price</label>
                     <input class="quid-post-meta-button-only" <?php echo $sliderReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)"
-                        name="quid_field_price" placeholder="Price ($0.01 - $2)" type="number" step="0.01" value="<?php echo $meta['price'] ?>" />
+                        name="quid_field_price" placeholder="Price ($0.01 - $10)" type="number" step="0.01" value="<?php echo $meta['price'] ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>
@@ -130,27 +140,29 @@ namespace QUIDPaymentsMeta {
                 <div>
                     <label>Maximum Slider Value</label>
                     <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handleMaxKeypress(event)"
-                        name="quid_field_max" placeholder="Max Amount ($2 or less)" type="number" step="0.01" value="<?php echo $meta['max'] != '' ? $meta['max'] : '2.00' ?>" />
+                        name="quid_field_max" placeholder="Max Amount ($10 or less)" type="number" step="0.01" value="<?php echo $meta['max'] != '' ? $meta['max'] : '10.00' ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
                 <div>
                     <label>Initial Slider Value</label>
                     <input class="quid-post-meta-slider-only" <?php echo $buttonsReadOnly ?> onkeyup="quidPostMeta.handlePriceKeypress(event)"
-                        name="quid_field_initial" placeholder="Initial Amount ($0.01 - $2)" type="number" step="0.01" value="<?php echo $meta['initial'] ?>" />
+                        name="quid_field_initial" placeholder="Initial Amount ($0.01 - $10)" type="number" step="0.01" value="<?php echo $meta['initial'] ?>" />
                     <div class="quid-post-meta-message" style="display: none;"></div>
                 </div>
-                <div>
-                    <label>Locations</label>
-                    <div>Top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[top]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['top'])) { if ($meta['locations']['top']) { echo 'checked'; } } ?> />
-                    <div>Near top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearTop]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearTop'])) { if ($meta['locations']['nearTop']) { echo 'checked'; } } ?> />
-                    <div>Near middle</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearMiddle]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearMiddle'])) { if ($meta['locations']['nearMiddle']) { echo 'checked'; } } ?> />
-                    <div>Near bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearBottom]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearBottom'])) { if ($meta['locations']['nearBottom']) { echo 'checked'; } } ?> />
-                    <div>Bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[bottom]" value=true type="checkbox"
-                        <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['bottom'])) { if ($meta['locations']['bottom']) { echo 'checked'; } } ?> />
+                <div class="quid-post-locations">
+                    <label>Locations within post body (optional payments only)</label>
+                    <div class="quid-post-checkbox-container">
+                        <div class="quid-post-checkbox-label">Top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[top]" value=true type="checkbox"
+                            <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['top'])) { if ($meta['locations']['top']) { echo 'checked'; } } ?> />
+                        <div class="quid-post-checkbox-label">Near top</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearTop]" value=true type="checkbox"
+                            <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearTop'])) { if ($meta['locations']['nearTop']) { echo 'checked'; } } ?> />
+                        <div class="quid-post-checkbox-label">Near middle</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearMiddle]" value=true type="checkbox"
+                            <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearMiddle'])) { if ($meta['locations']['nearMiddle']) { echo 'checked'; } } ?> />
+                        <div class="quid-post-checkbox-label">Near bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[nearBottom]" value=true type="checkbox"
+                            <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['nearBottom'])) { if ($meta['locations']['nearBottom']) { echo 'checked'; } } ?> />
+                        <div class="quid-post-checkbox-label">Bottom</div><input class="quid-post-meta-optional-only" name="quid_field_locations[bottom]" value=true type="checkbox"
+                            <?php echo $requiredReadOnly ?> <?php if (isset($meta['locations']['bottom'])) { if ($meta['locations']['bottom']) { echo 'checked'; } } ?> />
+                    </div>
                 </div>
                 <div style="display: none;">
                     <label>Product ID</label>
@@ -209,7 +221,7 @@ namespace QUIDPaymentsMeta {
             if ($allowBlank && $value == "") return $value;
 
             $price = floatval($value);
-            if ($price < 0.01 || $price > 2.00) return "0.01";
+            if ($price < 0.01 || $price > 10.00) return "0.01";
 
             return $value;
         }
@@ -218,7 +230,7 @@ namespace QUIDPaymentsMeta {
             if ($allowBlank && $value == "") return $value;
 
             $price = floatval($value);
-            if ($price < 0.01 || $price > 2.00) return "2.00";
+            if ($price < 0.01 || $price > 10.00) return "10.00";
 
             return $value;
         }
@@ -228,7 +240,7 @@ namespace QUIDPaymentsMeta {
 
             $price = floatval($value);
 
-            if ($price < 0.01 || $price > 2.00) $price = 1.00;
+            if ($price < 0.01 || $price > 10.00) $price = 1.00;
 
             return strval(number_format($price, 2, '.', ','));
         }
@@ -241,7 +253,7 @@ namespace QUIDPaymentsMeta {
             $maxpriceFloat = floatval($maxprice);
 
             if ($maxpriceFloat == $minpriceFloat) {
-                if ($maxpriceFloat == 2.00) {
+                if ($maxpriceFloat == 10.00) {
                     $minpriceFloat -= 0.01;
                     $minprice = strval($minpriceFloat);
                 } else {

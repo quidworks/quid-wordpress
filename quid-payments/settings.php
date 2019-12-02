@@ -83,7 +83,7 @@ namespace QUIDPaymentsSettings {
         }
 
         function addMenuPage() {
-            add_submenu_page( 'options-general.php', 'QUID Settings', 'QUID Settings', 'manage_options', 'quid_settings', array($this, 'renderSettings') );
+            add_submenu_page( 'options-general.php', 'QUID Payments', 'QUID Payments', 'manage_options', 'quid_settings', array($this, 'renderSettings') );
         }
 
         function actionLinks( $links ) {

@@ -11,6 +11,7 @@ namespace QUIDPaymentsPost {
         function filterPostContent($content) {
             global $post;
             global $pagenow;
+            global $wp;
             $inputs = new Inputs\Inputs();
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
@@ -18,21 +19,29 @@ namespace QUIDPaymentsPost {
             if ($pagenow == 'post.php') return $content;
             if ($post->post_type != 'post') return $content;
 
-            $readMore = get_option('quid-read-more');
-            if ($meta['type'] == "Required" || $readMore) {
+            $excerptsEnabled = get_option('quid-read-more');
+            $postURL = Helpers\getPostURL($post);
+            $currentPagePattern = str_replace("?", "\?", '(' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '$)');
+            $onThePostPage = preg_match($currentPagePattern, $postURL) ? true : false;
+
+            if ($meta['type'] == "Required") {
                 if ($meta['input'] == "Buttons") {
                     return $this->handleButtonWithExcerpt();
                 } else {
                     return $this->handleSliderWithExcerpt();
                 }
-            } else if ($meta['type'] == "Optional") {
+            } else if (!$onThePostPage && $excerptsEnabled == "true") {
+                if ($meta['input'] == "Buttons") {
+                    return $this->handleButtonWithExcerpt();
+                } else {
+                    return $this->handleSliderWithExcerpt();
+                }
+            } else {
                 if ($meta['input'] == "Buttons") {
                     return $this->handleButtonWithoutExcerpt($content);
                 } else {
                     return $this->handleSliderWithoutExcerpt($content);
                 }
-            } else {
-                return $content;
             }
         }
 
@@ -43,7 +52,7 @@ namespace QUIDPaymentsPost {
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
 
-            error_log('QUID: handleSliderWithExcerpt');
+            error_log('QUID: post ' . $post->ID . ' handleSliderWithExcerpt with meta ' . json_encode($meta));
             
             if (isset($meta['align'])) {
                 $alignOption = $meta['align'];
@@ -72,21 +81,21 @@ HTML;
             global $post;
             $inputs = new Inputs\Inputs();
 
-            error_log('QUID: handleSliderWithoutExcerpt');
-
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
+
+            error_log('QUID: post ' . $post->ID . ' handleSliderWithoutExcerpt with meta ' . json_encode($meta));
 
             $newContent = $content;
 
             if (isset($meta['locations']['top'])) {
-                if ($meta['locations']['top']) {
+                if ($meta['locations']['top'] == "true") {
                     $newContent = $inputs->quidSlider($meta, true) . $newContent;
                 }
             }
 
             if (isset($meta['locations']['nearTop'])) {
-                if ($meta['locations']['nearTop']) {
+                if ($meta['locations']['nearTop'] == "true") {
                     $postLength = strlen($newContent);
                     $locationCharacters = round($postLength * 0.05);
                     $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
@@ -96,7 +105,7 @@ HTML;
             }
 
             if (isset($meta['locations']['nearMiddle'])) {
-                if ($meta['locations']['nearMiddle']) {
+                if ($meta['locations']['nearMiddle'] == "true") {
                     $postLength = strlen($newContent);
                     $locationCharacters = round($postLength * 0.50);
                     $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
@@ -106,7 +115,7 @@ HTML;
             }
 
             if (isset($meta['locations']['nearBottom'])) {
-                if ($meta['locations']['nearBottom']) {
+                if ($meta['locations']['nearBottom'] == "true") {
                     $postLength = strlen($newContent);
                     $locationCharacters = round($postLength * 0.95);
                     $locationParagraph = strpos($newContent, '</p>', $locationCharacters);
@@ -116,7 +125,7 @@ HTML;
             }
 
             if (isset($meta['locations']['bottom'])) {
-                if ($meta['locations']['bottom']) {
+                if ($meta['locations']['bottom'] == "true") {
                     $newContent .= $inputs->quidSlider($meta, true);
                 }
             }
@@ -134,16 +143,17 @@ HTML;
             global $post;
             $inputs = new Inputs\Inputs();
 
-            error_log('QUID: handleButtonWithExcerpt');
+            error_log('QUID: post ' . $post->ID . ' handleButtonWithExcerpt with meta ' . json_encode($meta));
 
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
 
             if (isset($meta['align'])) {
-                $justification = Helpers\buttonAlignment($meta['align']);
+                $alignOption = $meta['align'];
             } else {
-                $justification = Helpers\buttonAlignment();
+                $alignOption = get_option('quid-align');
             }
+            $justification = Helpers\buttonAlignment($alignOption);
 
             $html = <<<HTML
             <div style="width: 100%" id="post-container-{$post->ID}">
@@ -164,12 +174,18 @@ HTML;
             global $post;
             $inputs = new Inputs\Inputs();
 
-            error_log('QUID: handleButtonWithoutExcerpt');
+            error_log('QUID: post ' . $post->ID . ' handleButtonWithoutExcerpt with meta ' . json_encode($meta));
 
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
 
             $newContent = $content;
+
+            if (isset($meta['locations']['top'])) {
+                if ($meta['locations']['top']) {
+                    $newContent = $inputs->quidButton($meta, true) . $newContent;
+                }
+            }
 
             if (isset($meta['locations']['nearTop'])) {
                 if ($meta['locations']['nearTop']) {
@@ -207,7 +223,6 @@ HTML;
                 }
             }
 
-            error_log('$post->ID: ' . $post->ID);
             $html = <<<HTML
                 <div style="width: 100%;" id="post-content-{$post->ID}">
 HTML;

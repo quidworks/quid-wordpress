@@ -2,7 +2,7 @@
 Contributors: quidworks
 Tags: payment,payments,micropayment,micropayments,donation,donations,paywall,monetization,pay-per-use
 Requires at least: 5.0
-Tested up to: 5.2.2
+Tested up to: 5.3
 Stable tag: 1.2
 Requires PHP: 7.0
 License: MIT
@@ -33,7 +33,7 @@ To start accepting QUID payments on your WordPress site you will need to [signup
 
 1.  Download the plugin from our [release page](https://github.com/quidworks/quid-wordpress/releases) or install directly from the WordPress plugin directory.
 1.  Activate the plugin through the ‘Plugins’ screen in WordPress admin
-1.  Use the ‘Settings > QUID’ screen to configure the plugin by adding your Public and Private QUID API keys
+1.  Use the ‘Settings > QUID Payments’ screen to configure the plugin by adding your Public and Private QUID API keys
 1.  Write new posts or edit existing posts to add the QUID payment option
 
 == Frequently Asked Questions ==
@@ -66,19 +66,22 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 
 == Screenshots ==
 
-1. After installing and activating the QUID Payments plugin, navigate to the Settings > QUID Payments settings page and add your API key and secret from your [QUID merchant account](https://app.quid.works/merchant). Your API secret will not be saved in the database, only a hash of the key is saved.
-2. Configure the QUID post settings fields for each post where you want to display the payment button or slider. For detailed instructions on how to use each field visit our [knowledge base](https://how.quid.works/quid-wordpress-plugin/). Include an excerpt of the post for the plugin to display before a user has paid.
-3. Once your post is published, the payment button or slider will be displayed below the excerpt of the post.
-4. Upon clicking the Pay button the user is presented with a payment confirmation screen.
-5. Once the payment succeeds, the full post content is displayed.
-6. Enable the floating tip button to display the tip button on each page of your site.
+1. After installing and activating the QUID Payments plugin, navigate to the **Merchant** tab of the **Settings** > **QUID Payments** settings page and add your preferred currency and your API key and secret from your [QUID merchant account](https://app.quid.works/merchant). Your API secret will not be saved in the database, only a hash of the key is saved.
+2. Enable the QUID floating button and manage the plugin's global settings by navigating to the **Buttons** tab of the **Settings** > **QUID Payments** settings page.
+3. Manage the payment settings for each blog post category.
+4. Configure the QUID post settings fields for each post where you want to display the payment button or slider. For detailed instructions on how to use each field visit our [knowledge base](https://how.quid.works/quid-wordpress-plugin/). Include an excerpt of the post for the plugin to display before a user has paid.
+5. Once your post is published, the payment button or slider will be displayed below the excerpt of the post.
+6. Upon clicking the Pay button the user is presented with a payment confirmation screen.
+7. Once the payment succeeds, the full post content is displayed.
+8. Once enabled, the floating tip button will be displayed on each page of your site.
 
 == Changelog ==
 
 = 1.2 =
 * Set default payment options for each category of blog posts
-* Display the payment button or slider at the top of a post, at the bottom of a post, or in both places
-* Simpler admin with plugin settings page tabs
+* Choose where in the body of a blog post to display the payment button or slider: at the top, near the top, near the middle, near the bottom, or at the bottom of a post
+* Choose to display only post excerpts on your blog page, with the full content displaying on the page for each post
+* Simplified admin with plugin settings page tabs
 
 = 1.1.6 =
 * Fixed an issue where decimal values were not permitted in some number fields in WordPress admin
@@ -113,6 +116,9 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2 =
+Additional functionality including setting payment options by blog post category, displaying only post excerpts on your main page, and choosing where in the blog post to put the optional payment buttons and sliders
 
 = 1.1.5 =
 Version 1.1.5 adds the floating tip button feature and a display option for previously purchased content

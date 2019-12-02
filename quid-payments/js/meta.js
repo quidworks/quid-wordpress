@@ -1,7 +1,7 @@
 class QuidPostMeta {
   constructor() {
     this.minPrice = 0.01;
-    this.maxPrice = 2.0;
+    this.maxPrice = 10.0;
   }
 
   outputMessage(el, message) {
@@ -91,10 +91,10 @@ class QuidPostMeta {
 
   handleMaxKeypress(e) {
     let float = parseFloat(e.target.value);
-    if (float > 2.0) {
+    if (float > 10.0) {
       this.outputMessage(
         e.target.nextElementSibling,
-        "can't be more than $2.00"
+        "can't be more than $10.00"
       );
     } else if (float <= this.minPrice) {
       this.outputMessage(
@@ -110,10 +110,10 @@ class QuidPostMeta {
 
   handlePriceKeypress(e) {
     let float = parseFloat(e.target.value);
-    if (float > 2.0) {
+    if (float > 10.0) {
       this.outputMessage(
         e.target.nextElementSibling,
-        "can't be more than $2.00"
+        "can't be more than $10.00"
       );
     } else if (float < 0.01) {
       this.outputMessage(

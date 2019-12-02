@@ -107,10 +107,10 @@ class QuidSettings {
       );
       return;
     }
-    if (float > 2.00) {
+    if (float > 10.0) {
       this.outputMessage(
         e.target.nextElementSibling,
-        "must be less than $2.00"
+        "must be less than $10.00"
       );
       return;
     }
@@ -162,7 +162,7 @@ class QuidSettings {
     if (float > 2.0) {
       this.outputMessage(
         e.target.nextElementSibling,
-        "can't be more than $2.00"
+        "can't be more than $10.00"
       );
     } else if (float <= this.minPrice) {
       this.outputMessage(
@@ -188,7 +188,7 @@ class QuidSettings {
     if (float > 2.0) {
       this.outputMessage(
         e.target.nextElementSibling,
-        "can't be more than $2.00"
+        "can't be more than $10.00"
       );
     } else if (float < 0.01) {
       this.outputMessage(
@@ -218,14 +218,14 @@ class QuidSettings {
     }
 
     if (maxPriceAsFloat > 2.0) {
-      data["quid-fab-max"] = "2.00";
+      data["quid-fab-max"] = "10.00";
     }
 
     if (maxPriceAsFloat < minPriceAsFloat) {
       if (minPriceAsFloat !== 2.0) {
-        data["quid-fab-max"] = "2.00";
+        data["quid-fab-max"] = "10.00";
       } else {
-        data["quid-fab-max"] = "2.00";
+        data["quid-fab-max"] = "10.00";
         data["quid-fab-min"] = "1.99";
       }
     }
@@ -246,24 +246,30 @@ class QuidSettings {
   submitQuidSettings() {
     const data = {};
     const currentTab = this.getCurrentTabID();
-    const tabPanel = document.getElementsByClassName(`quid-pay-settings-${currentTab.id}`)[0];
+    const tabPanel = document.getElementsByClassName(
+      `quid-pay-settings-${currentTab.id}`
+    )[0];
     const tabName = currentTab.name;
 
-    if (tabName === 'quid-categories') {
-
-      const categories = document.getElementsByClassName('quid-pay-settings-category-container');
+    if (tabName === "quid-categories") {
+      const categories = document.getElementsByClassName(
+        "quid-pay-settings-category-container"
+      );
       const categoriesData = {};
 
-      for(let c = 0; c < categories.length; c++) {
+      for (let c = 0; c < categories.length; c++) {
         const categoryData = {};
-        const category_fields = categories[c].getElementsByClassName('quid-category-field');
+        const category_fields = categories[c].getElementsByClassName(
+          "quid-category-field"
+        );
         for (let i = 0; i < category_fields.length; i++) {
-          categoryData[category_fields[i].getAttribute("name")] = category_fields[i].value; 
+          categoryData[category_fields[i].getAttribute("name")] =
+            category_fields[i].value;
         }
 
         const categoryCheckboxes = categories[c].getElementsByClassName(
-            "quid-pay-settings-category-location-checkbox"
-          );
+          "quid-pay-settings-category-location-checkbox"
+        );
         const locationsData = {};
         for (let k = 0; k < categoryCheckboxes.length; k++) {
           if (categoryCheckboxes[k].checked) {
@@ -274,21 +280,21 @@ class QuidSettings {
           categoryData["locations"] = locationsData;
         }
 
-        categoriesData[categories[c].getAttribute('category-slug')] = categoryData;
+        categoriesData[
+          categories[c].getAttribute("category-slug")
+        ] = categoryData;
       }
 
       data[tabName] = categoriesData;
-
     } else {
-
-      if (tabName === 'quid-buttons') {
+      if (tabName === "quid-buttons") {
         const fields = tabPanel.getElementsByClassName("quid-fab-field");
         const fabData = {};
         for (let i = 0; i < fields.length; i++) {
           fabData[fields[i].getAttribute("name")] = fields[i].value;
         }
-        data['quid-fab'] = fabData;
-        this.cleanDollarValues(data['quid-fab']);
+        data["quid-fab"] = fabData;
+        this.cleanDollarValues(data["quid-fab"]);
       }
 
       const fields = tabPanel.getElementsByClassName("quid-field");
@@ -297,7 +303,6 @@ class QuidSettings {
         tabData[fields[i].getAttribute("name")] = fields[i].value;
       }
       data[tabName] = tabData;
-      
     }
 
     var json = JSON.stringify(data);
@@ -316,26 +321,34 @@ class QuidSettings {
   }
 
   getCurrentTabID() {
-    var activeTab = document.getElementsByClassName('quid-pay-settings-tab-active')[0];
+    var activeTab = document.getElementsByClassName(
+      "quid-pay-settings-tab-active"
+    )[0];
     return {
-      id: activeTab.getAttribute('tab-id'),
-      name: activeTab.getAttribute('tab-name'),
-    }
+      id: activeTab.getAttribute("tab-id"),
+      name: activeTab.getAttribute("tab-name")
+    };
   }
 
   selectTab(e) {
-    var tabs = document.getElementsByClassName('quid-pay-settings-tab');
+    var tabs = document.getElementsByClassName("quid-pay-settings-tab");
     for (let i = 0; i < tabs.length; i++) {
-      tabs[i].classList.remove('quid-pay-settings-tab-active');
+      tabs[i].classList.remove("quid-pay-settings-tab-active");
     }
-    e.classList.add('quid-pay-settings-tab-active');
+    e.classList.add("quid-pay-settings-tab-active");
 
-    var sections = document.getElementsByClassName('quid-pay-settings-tab-content');
+    var sections = document.getElementsByClassName(
+      "quid-pay-settings-tab-content"
+    );
     for (let i = 0; i < sections.length; i++) {
-      if (sections[i].classList.contains(`quid-pay-settings-${e.getAttribute('tab-id')}`)) {
-        sections[i].style.display = 'block';
+      if (
+        sections[i].classList.contains(
+          `quid-pay-settings-${e.getAttribute("tab-id")}`
+        )
+      ) {
+        sections[i].style.display = "block";
       } else {
-        sections[i].style.display = 'none';
+        sections[i].style.display = "none";
       }
     }
   }

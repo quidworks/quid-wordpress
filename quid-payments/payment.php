@@ -6,11 +6,15 @@ namespace QUIDPaymentsPayment {
 
     class Payment {
 
-        function respond($content, $error) {
+        function respond($postid, $content, $error) {
+            $excerptsEnabled = get_option('quid-read-more');
+            $postUrl = get_permalink($postid);
             $json = json_encode(
                 array(
                     'content' => $content,
                     'errorMessage' => $error,
+                    'excerptsEnabled' => $excerptsEnabled,
+                    'postUrl' => $postUrl,
                 )
             );
             print_r($json);
@@ -26,10 +30,11 @@ namespace QUIDPaymentsPayment {
             // gets POST content
             $json = json_decode(file_get_contents('php://input'));
             if (!$this->validatePaymentResponse($json->paymentResponse)) {
-                $this->respond('', 'validation failed');
+                $this->respond($postUrl, '', 'validation failed');
                 return;
             };
             setcookie( "quidUserHash", $json->paymentResponse->userHash, time() + (86400 * 30), "/" );
+            $postid = $json->postid;
 
             $cost = (float)$json->paymentResponse->amount;
             if ($cost != 0.000000000) {
@@ -38,7 +43,7 @@ namespace QUIDPaymentsPayment {
                     $json->paymentResponse->productID,
                     false)
                 ) {
-                    $this->respond('', "database error");
+                    $this->respond($postid, '', "database error");
                     return;
                 };
             } else {
@@ -46,25 +51,26 @@ namespace QUIDPaymentsPayment {
                     $json->paymentResponse->userHash,
                     $json->paymentResponse->productID
                 )) {
-                    $this->respond('', "unpurchased");
+                    $this->respond($postid, '', "unpurchased");
                     return;
                 }
             }
 
-            $this->respond($this->fetchContent($json->postid), '');
+            $this->respond($postid, $this->fetchContent($json->postid), '');
         }
 
         function tipCallback() {
             $nonce = $_REQUEST['_wpnonce'];
             if ( !wp_verify_nonce( $nonce, 'quid-payment-nonce' ) ) {
-                $this->respond('', 'security error - nonce mismatch');
+                $this->respond($postid, '', 'security error - nonce mismatch');
                 die();
             }
             
             $json = json_decode(file_get_contents('php://input'));
             setcookie( "quidUserHash", $json->paymentResponse->userHash, time() + (86400 * 30), "/" );
 
-            $this->respond('', '');
+            $postid = $json->postid;
+            $this->respond($postid, '', '');
         }
 
         // https://how.quid.works/developer/verifying-payments

@@ -1,6 +1,6 @@
 <div class='quid-pay-settings'>
     <div class="quid-pay-settings-header">
-        <h1 class='quid-pay-settings-page-title'>QUID Settings</h1>
+        <h1 class='quid-pay-settings-page-title'>QUID Payments</h1>
     </div>
 
     <div id="quidSettingsMessageContainer" class="quid-settings-message notice is-dismissible"></div>
@@ -48,7 +48,7 @@
             <div class='quid-pay-settings-section-header'>
                 <div class='quid-pay-settings-section-title'>Inline Button Settings</div>
                 <div class='quid-pay-settings-section-description'>
-                Inline buttons are displayed within your blog posts using the <a target='_blank' href='https://how.quid.works/en/articles/3046949-blog-post-payment-fields'>QUID payment fields</a> for each blog post or using <a target='_blank' href='https://how.quid.works/en/articles/3047042-shortcodes'>shortcodes</a>.
+                Inline buttons are displayed within your blog posts using the <a target='_blank' href='https://how.quid.works/en/articles/3046949-blog-post-payment-fields'>QUID payment fields</a> or category payment settings for each blog post or using <a target='_blank' href='https://how.quid.works/en/articles/3047042-shortcodes'>shortcodes</a>.
                 </div>
             </div>
 
@@ -150,14 +150,14 @@
                 <div>
                     <label>Maximum Price</label>
                     <div class="quid-settings-tooltip-container">
-                        <input class="quid-fab-field" onkeyup="quidSettings.handleMaxKeypress(event)" name="quid-fab-max" placeholder="Max Amount ($2 or less)" type="number" step="0.01" value="<?php echo $quidFabSettings['quid-fab-max'] === "" ? "2.00" : $quidFabSettings['quid-fab-max']; ?>" />
+                        <input class="quid-fab-field" onkeyup="quidSettings.handleMaxKeypress(event)" name="quid-fab-max" placeholder="Max Amount ($10 or less)" type="number" step="0.01" value="<?php echo $quidFabSettings['quid-fab-max'] === "" ? "10.00" : $quidFabSettings['quid-fab-max']; ?>" />
                         <div class="quid-fab-setting-message" style="display: none;"></div>
                     </div>
                 </div>
                 <div>
                     <label>Default Price</label>
                     <div class="quid-settings-tooltip-container">
-                        <input class="quid-fab-field" onkeyup="quidSettings.handlePriceKeypress(event)" name="quid-fab-initial" placeholder="Initial Amount ($0.01 - $2)" type="number" step="0.01" value="<?php echo $quidFabSettings['quid-fab-initial'] === "" ? "0.01" : $quidFabSettings['quid-fab-initial']; ?>" />
+                        <input class="quid-fab-field" onkeyup="quidSettings.handlePriceKeypress(event)" name="quid-fab-initial" placeholder="Initial Amount ($0.01 - $10)" type="number" step="0.01" value="<?php echo $quidFabSettings['quid-fab-initial'] === "" ? "0.01" : $quidFabSettings['quid-fab-initial']; ?>" />
                         <div class="quid-fab-setting-message" style="display: none;"></div>
                     </div>
                 </div>
@@ -178,8 +178,17 @@
                     <div class='quid-pay-settings-section-header'>
                         <div class='quid-pay-settings-section-title'><?php echo $category->name ?></div>
                     </div>
-                    <div class="quid-category-override">
-                        <label>Override post settings</label>
+                    <div class="quid-category-enabled">
+                        <label>Enable payment settings for this category</label>
+                        <div class="quid-settings-tooltip-container">
+                            <select class='quid-pay-settings-dropdown quid-category-field' name="category-enabled">
+                                <option value="Off" <?php echo $quidCategorySettings[$category->slug]['category-enabled'] === 'Off' || $quidCategorySettings[$category->slug]['category-enabled'] === '' ? 'selected' : '' ?>>Off</option>
+                                <option value="On" <?php echo $quidCategorySettings[$category->slug]['category-enabled'] === 'On' ? 'selected' : '' ?>>On</option>
+                            </select>
+                        </div>
+                    </div>
+                     <div class="quid-category-override">
+                        <label>Override individual post payment settings</label>
                         <div class="quid-settings-tooltip-container">
                             <select class='quid-pay-settings-dropdown quid-category-field' name="post-override">
                                 <option value="Off" <?php echo $quidCategorySettings[$category->slug]['post-override'] === 'Off' || $quidCategorySettings[$category->slug]['post-override'] === '' ? 'selected' : '' ?>>Off</option>
@@ -244,7 +253,7 @@
                             <div class="quid-settings-tooltip-container">
                                 <input class="quid-category-field" onkeyup="quidSettings.onlyHandleMinKeypress(event)"
                                     name="max" placeholder="Max Amount ($0.01 or more)" type="number" step="0.01"
-                                    value="<?php echo $quidCategorySettings[$category->slug]['max'] === "" ? "2.00" : $quidCategorySettings[$category->slug]['max']; ?>" />
+                                    value="<?php echo $quidCategorySettings[$category->slug]['max'] === "" ? "10.00" : $quidCategorySettings[$category->slug]['max']; ?>" />
                                 <div class="quid-fab-setting-message" style="display: none;"></div>
                             </div>
                         </div>
@@ -260,7 +269,7 @@
                     </div>
 
                     <div class="quid-category-locations">
-                        <label>Locations</label>
+                        <label>Locations within post body (optional payments only)</label>
                         <div class="quid-settings-checkbox-container">
                             <div>Top</div><input class="quid-pay-settings-category-location-checkbox" name="top" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['top'] === "true") { echo 'checked'; } ?> />
                             <div>Near top</div><input class="quid-pay-settings-category-location-checkbox" name="nearTop" value=true type="checkbox" <?php if ($quidCategorySettings[$category->slug]['locations']['nearTop'] === "true") { echo 'checked'; } ?> />
