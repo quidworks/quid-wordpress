@@ -10,6 +10,16 @@ namespace QUIDHelperFunctions {
         return $blogTitle;
     }
 
+    function getSiteTitleSlug() {
+        $blogTitle = strtolower(html_entity_decode(get_bloginfo('name'), ENT_QUOTES | ENT_XML1, 'UTF-8'));
+        $blogTitleSlug = preg_replace('/[^a-z0-9\. -]/', '', $blogTitle);
+        $blogTitleSlug = preg_replace('/  */', '-', $blogTitleSlug);
+        if (strlen($blogTitleSlug) < 5) {
+            $blogTitleSlug .= "-website";
+        }
+        return $blogTitleSlug;
+    }
+
     function getPostTitle($post) {
         $postTitle = get_the_title($post);
         if (strlen($postTitle) < 5) {
@@ -34,17 +44,16 @@ namespace QUIDHelperFunctions {
         return $permalink;
     }
 
-    function buttonAlignment($shortcodeArg) {
-        $alignOption = get_option('quid-align');
+    function buttonAlignment($alignArg) {
 
-        if (!isset($shortcodeArg)) {
+        if (!isset($alignArg)) {
             if ($alignOption == "") $alignOption = 'right';
-            $shortcodeArg = $alignOption;
+            $alignArg = $alignOption;
         }
 
-        if ($shortcodeArg == 'center') return 'center';
-        if ($shortcodeArg == 'left') return 'flex-start';
-        if ($shortcodeArg == 'right') return 'flex-end';
+        if ($alignArg == 'center') return 'center';
+        if ($alignArg == 'left') return 'flex-start';
+        if ($alignArg == 'right') return 'flex-end';
 
         return 'flex-end';
     }

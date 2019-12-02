@@ -4,7 +4,7 @@
 Plugin Name: QUID Payments
 Plugin URI: https://quid.works
 Description: Let Your Fans Support You! QUID is kickstarting the pay-per-use economy by letting users make payments and tips as low as 1¢ for content.
-Version: 1.1.7
+Version: 1.2
 Author: QUID Works Inc.
 Author URI: https://quid.works
 License: MIT
@@ -13,7 +13,7 @@ License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
 
 namespace QUIDPayments {
 
-    $quidPluginVersion = "1.1.7";
+    $quidPluginVersion = "1.2";
     $baseURL = 'https://app.quid.works';
 
     require_once dirname( __FILE__ ) .'/database.php';
@@ -45,8 +45,11 @@ namespace QUIDPayments {
     
     add_filter( 'the_content', array(new Post\Post(), 'filterPostContent') );
 
-    add_action( 'admin_post_nopriv_purchase-check', array(new Inputs\Inputs(), 'returnUserCookie') );
-    add_action( 'admin_post_purchase-check', array(new Inputs\Inputs(), 'returnUserCookie') );
+    add_action( 'admin_post_nopriv_purchase-check', array(new Database\Database(), 'purchasedContentCheck') );
+    add_action( 'admin_post_purchase-check', array(new Database\Database(), 'purchasedContentCheck') );
+
+    add_action( 'admin_post_nopriv_post-content', array(new Database\Database(), 'purchasedContentCheck') );
+    add_action( 'admin_post_post-content', array(new Database\Database(), 'purchasedContentCheck') );
 
     add_action( 'admin_post_nopriv_quid-settings', array(new Settings\Settings(), 'saveSettings') );
     add_action( 'admin_post_quid-settings', array(new Settings\Settings(), 'saveSettings') );

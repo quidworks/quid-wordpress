@@ -8,51 +8,42 @@ namespace QUIDPaymentsInputs {
 
     class Inputs {
 
-        function returnUserCookie() {
-            $nonce = $_REQUEST['_wpnonce'];
-            if ( ! wp_verify_nonce( $nonce, 'quid-cookie-nonce' ) ) {
-                die( 'Security check' ); 
-            }
-
-            $productID = sanitize_text_field($_POST["productID"]);
-            $postID = sanitize_text_field($_POST["postID"]);
-            $quidUserHash = sanitize_text_field($_COOKIE["quidUserHash"]);
-
-            $database = new Database\Database();
-            $purchased = false;
-            $userCookie = '';
-
-            if (isset($quidUserHash)) $userCookie = $quidUserHash;
-            else { echo ''; return; }
-
-            if ($database->hasPurchasedAlready($userCookie, $productID)) $purchased = true;
-            else { echo ''; return; }
-
-            if ($purchased) echo do_shortcode(get_post_field('post_content', $postID));
-            else { echo ''; return; }
-        }
-
         function quidButton($meta, $metaInputAndNotShortcode) {
             global $post;
+            $nonce = wp_create_nonce( 'quid-cookie-nonce' );
 
             $blogTitle = Helpers\getSiteTitle();
+            $blogTitleSlug = Helpers\getSiteTitleSlug();
             $productName = "";
             $productID = "";
             $productURL = "";
+            $id = "";
 
             if ($metaInputAndNotShortcode) {
+                if (isset($meta['id'])) {
+                    $id = $meta['id'];
+                    $post = get_post($id);
+                } else {
+                    $id = $post->ID;
+                }
                 $productName = Helpers\getPostTitle($post);
                 $productID = Helpers\getPostSlug($post);
                 $productURL = Helpers\getPostURL($post);
             } else {
-                $productName = $blogTitle."-tip";
-                $productID = $blogTitle."-tip";
+                $productName = "Tip for " . $blogTitle;
+                $productID = $blogTitleSlug."-tip";
                 $productURL = get_site_url();
+                $id = $blogTitleSlug;
             }
 
-            $microtimeIdentifier = microtime();
+            $uniqId = uniqid();
             $currencyOption = get_option('quid-currency');
-            $justification = Helpers\buttonAlignment($meta['align']);
+            if (isset($meta['align'])) {
+                $alignOption = $meta['align'];
+            } else {
+                $alignOption = get_option('quid-align');
+            }
+            $justification = Helpers\buttonAlignment($alignOption);
             $requiredFields = ['price']; // Add required shortcode attributes to array
 
             if (!$meta) {
@@ -62,7 +53,7 @@ namespace QUIDPaymentsInputs {
             if (!isset($meta['type'])) $meta['type'] = 'Optional';
             if (!isset($meta['paid'])) $meta['paid'] = 'Thanks!';
 
-            $meta['dom-id'] = $productID.$microtimeIdentifier;
+            $meta['dom-id'] = $productID.'-'.$id.'-'.$uniqId;
 
             foreach ($requiredFields as $field) {
                 if (!isset($meta[$field])) return "";
@@ -75,7 +66,7 @@ namespace QUIDPaymentsInputs {
 
             $html = <<<HTML
                 <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none; justify-content: {$justification};">
-                    <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
+                    <div id="quid-error-{$id}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
                         <span>Payment validation failed</span>
                     </div>
@@ -111,37 +102,37 @@ HTML;
 HTML;
 
             $this->enqueueJS(
-                'js_quid_button_'.$microtimeIdentifier,
-                plugins_url( 'js/button.js?'.$microtimeIdentifier, __FILE__ ),
+                'js_quid_button_'.$id.$uniqId,
+                plugins_url( 'js/button.js?'.$id.$uniqId, __FILE__ ),
                 array(
-                    'post_id' => $post->ID,
+                    'content_url' => admin_url("admin-post.php?action=post-content&_wpnonce=".$nonce),
+                    'post_id' => $id,
                     'meta_name' => $productName,
+                    'meta_url' => $productURL,
                     'meta_id' => $productID,
                     'meta_domID' => $meta['dom-id'],
                     'meta_type' => $meta['type'],
                     'meta_price' => $meta['price'],
                     'meta_paid' => $meta['paid'],
                     'meta_currency' => $currencyOption,
+                    'meta_readMore' => get_option('quid-read-more'),
                 )
             );
 
-            # If required, add already paid button beside the pay button.
+            # If payment is required, add RESTORE PURCHASE button beside the pay button.
             if ($meta['type'] == "Required") {
-                $nonce = wp_create_nonce( 'quid-cookie-nonce' );
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
 
                 $this->enqueueJS(
-                    'js_quid_button_required_'.$microtimeIdentifier,
-                    plugins_url( 'js/buttonRequired.js?'.$microtimeIdentifier, __FILE__ ),
+                    'js_quid_button_required_'.$id.$uniqId,
+                    plugins_url( 'js/buttonRestorePurchases.js?'.$id.$uniqId, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
-                        'post_id' => $post->ID,
+                        'post_id' => $id,
                         'meta_name' => $productName,
                         'meta_id' => $productID,
-                        'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
-                        'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],
                         'meta_currency' => $currencyOption,
                         'meta_readMore' => get_option('quid-read-more'),
@@ -154,25 +145,40 @@ HTML;
 
         function quidSlider($meta, $metaInputAndNotShortcode) {
             global $post;
+            $nonce = wp_create_nonce( 'quid-cookie-nonce' );
 
             $blogTitle = Helpers\getSiteTitle();
+            $blogTitleSlug = Helpers\getSiteTitleSlug();
             $productName = "";
             $productID = "";
             $productURL = "";
+            $id = "";
 
             if ($metaInputAndNotShortcode) {
+                if (isset($meta['id'])) {
+                    $id = $meta['id'];
+                    $post = get_post($id);
+                } else {
+                    $id = $post->ID;
+                }
                 $productName = Helpers\getPostTitle($post);
                 $productID = Helpers\getPostSlug($post);
                 $productURL = Helpers\getPostURL($post);
             } else {
-                $productName = $blogTitle."-tip";
-                $productID = $blogTitle."-tip";
+                $productName = "Tip for " . $blogTitle;
+                $productID = $blogTitleSlug."-tip";
                 $productURL = get_site_url();
+                $id = $blogTitleSlug;
             }
             
-            $microtimeIdentifier = microtime();
+            $uniqId = uniqid();
             $currencyOption = get_option('quid-currency');
-            $justification = Helpers\buttonAlignment($meta['align']);
+            if (isset($meta['align'])) {
+                $alignOption = $meta['align'];
+            } else {
+                $alignOption = get_option('quid-align');
+            }
+            $justification = Helpers\buttonAlignment($alignOption);
             $requiredFields = []; // Add required shortcode attributes to array
 
             if (!$meta) {
@@ -181,12 +187,12 @@ HTML;
 
             if (!isset($meta['type'])) $meta['type'] = 'Optional';
             if (!isset($meta['min'])) $meta['min'] = '0.01';
-            if (!isset($meta['max'])) $meta['max'] = '2.00';
+            if (!isset($meta['max'])) $meta['max'] = '10.00';
             if (!isset($meta['text'])) $meta['text'] = 'Give';
             if (!isset($meta['initial'])) $meta['initial'] = '1.00';
             if (!isset($meta['paid'])) $meta['paid'] = 'Thanks!';
 
-            $meta['dom-id'] = $productID.$microtimeIdentifier;
+            $meta['dom-id'] = $productID.'-'.$id.'-'.$uniqId;
 
             foreach ($requiredFields as $field) {
                 if (!isset($meta[$field])) return "";
@@ -199,7 +205,7 @@ HTML;
 
             $html = <<<HTML
                 <div class="quid-pay-error-container" style="text-align: center; margin: 0px; display: none; justify-content: {$justification};">
-                    <div id="quid-error-{$post->ID}" class="quid-pay-error" style="display: inline-flex;">
+                    <div id="quid-error-{$productID}" class="quid-pay-error" style="display: inline-flex;">
                         <img class="quid-pay-error-image" src="https://js.quid.works/v1/assets/quid.png" />
                         <span>Payment validation failed</span>
                     </div>
@@ -224,16 +230,16 @@ HTML;
             wp_enqueue_style( 'css_quid_init' );
 
             $this->enqueueJS(
-                'js_quid_slider'.$microtimeIdentifier,
-                plugins_url( 'js/slider.js?'.$microtimeIdentifier, __FILE__ ),
+                'js_quid_slider'.$id.$uniqId,
+                plugins_url( 'js/slider.js?'.$id.$uniqId, __FILE__ ),
                 array(
-                    'post_id' => $post->ID,
+                    'content_url' => admin_url("admin-post.php?action=post-content&_wpnonce=".$nonce),
+                    'post_id' => $id,
                     'meta_id' => $productID,
                     'meta_domID' => $meta['dom-id'],
                     'meta_initial' => $meta['initial'],
                     'meta_type' => $meta['type'],
                     'meta_text' => $meta['text'],
-                    'meta_price' => $meta['price'],
                     'meta_paid' => $meta['paid'],
                     'meta_description' => $blogTitle,
                     'meta_name' => $productName,
@@ -241,25 +247,23 @@ HTML;
                     'meta_min' => $meta['min'],
                     'meta_max' => $meta['max'],
                     'meta_currency' => $currencyOption,
+                    'meta_readMore' => get_option('quid-read-more'),
                 )
             );
 
 
-            # If required, add already paid button beside the pay button.
+            # If payment is required, add RESTORE PURCHASE button beside the pay button.
             if ($meta['type'] == "Required") {
-                $nonce = wp_create_nonce( 'quid-cookie-nonce' );
                 $purchaseCheckURL = admin_url("admin-post.php?action=purchase-check&_wpnonce=".$nonce);
                 $this->enqueueJS(
-                    'js_quid_button_required'.$microtimeIdentifier,
-                    plugins_url( 'js/sliderRequired.js?'.$microtimeIdentifier, __FILE__ ),
+                    'js_quid_button_required'.$id.$uniqId,
+                    plugins_url( 'js/sliderRestorePurchases.js?'.$id.$uniqId, __FILE__ ),
                     array(
                         'purchase_check_url' => $purchaseCheckURL,
-                        'post_id' => $post->ID,
+                        'post_id' => $id,
                         'meta_id' => $productID,
-                        'content_id' => $meta['id'],
                         'meta_domID' => $meta['dom-id'],
                         'meta_type' => $meta['type'],
-                        'meta_price' => $meta['price'],
                         'meta_paid' => $meta['paid'],
                         'meta_description' => $blogTitle,
                         'meta_name' => $productName,
