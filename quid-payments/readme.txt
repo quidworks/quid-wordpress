@@ -77,6 +77,9 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 
 == Changelog ==
 
+= 1.2.1 =
+* Added an admin setting to disable display of payment options for WordPress admin pages
+
 = 1.2 =
 * Set default payment options for each category of blog posts
 * Choose where in the body of a blog post to display the payment button or slider: at the top, near the top, near the middle, near the bottom, or at the bottom of a post
@@ -121,6 +124,9 @@ Check out our [support knowledge base](https://how.quid.works/en/collections/178
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+Adds a setting that can be used to disable the display of QUID payment options for admin pages, which could cause problems while creating and managing content for some WordPress configurations
 
 = 1.2 =
 Version 1.2 has been verified to work with WordPress 5.3. Additional functionality including setting payment options by blog post category, displaying only post excerpts on your main page, and choosing where in the blog post to put the optional payment buttons and sliders

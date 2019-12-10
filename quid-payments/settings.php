@@ -48,6 +48,11 @@ namespace QUIDPaymentsSettings {
                 unset($data['quid-read-more']);
             }
 
+            if (isset($data['quid-disable-admin'])) {
+                update_option('quid-disable-admin', sanitize_text_field($data['quid-disable-admin']));
+                unset($data['quid-disable-admin']);
+            }
+
             if (isset($data['quid-button-position'])) {
                 $align = strtolower($data['quid-button-position']);
                 if ($align == 'centre') {
@@ -117,6 +122,7 @@ namespace QUIDPaymentsSettings {
             $quidPublicKey = get_option('quid-publicKey');
             $quidAlign = get_option('quid-align');
             $quidReadMore = get_option('quid-read-more');
+            $quidDisableAdmin = get_option('quid-disable-admin');
             $quidCurrency = get_option('quid-currency');
             $quidFabSettings = json_decode(get_option('quid-fab-options'), true);
             $quidCategorySettings = json_decode(get_option('quid-category-options'), true);

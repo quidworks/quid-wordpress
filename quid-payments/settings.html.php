@@ -8,9 +8,9 @@
     <div class="quid-pay-settings-container">
 
         <div class="quid-pay-settings-tabs">
-            <a class="quid-pay-settings-tab quid-pay-settings-tab-active" tab-id="merchant-tab" tab-name="quid-merchant" onclick="quidSettings.selectTab(this)">Merchant</a>
-            <a class="quid-pay-settings-tab" tab-id="button-tab" tab-name="quid-buttons" onclick="quidSettings.selectTab(this)">Buttons</a>
-            <a class="quid-pay-settings-tab" tab-id="category-tab" tab-name="quid-categories" onclick="quidSettings.selectTab(this)">Categories</a>
+            <a class="quid-pay-settings-tab quid-pay-settings-tab-active" tab-id="merchant-tab" tab-name="quid-merchant" onclick="quidSettings.selectTab(this)">Merchant Account</a>
+            <a class="quid-pay-settings-tab" tab-id="button-tab" tab-name="quid-buttons" onclick="quidSettings.selectTab(this)">General Settings</a>
+            <a class="quid-pay-settings-tab" tab-id="category-tab" tab-name="quid-categories" onclick="quidSettings.selectTab(this)">Post Category Settings</a>
         </div>
 
         <div class="quid-pay-settings-save-top">
@@ -45,6 +45,19 @@
         </div>
 
         <div class="quid-pay-settings-tab-content quid-pay-settings-button-tab" style="display: none;">
+            <div class='quid-pay-settings-section-header'>
+                <div class='quid-pay-settings-section-title'>Admin Settings</div>
+                <div class='quid-pay-settings-section-description'></div>
+            </div>
+
+            <label>Disable QUID payment options for admin pages</label>
+            <div class="quid-settings-tooltip-container">
+                <select id='quid-align' class='quid-pay-settings-dropdown quid-field' name="quid-disable-admin">
+                    <option value="false" <?php echo $quidDisableAdmin === 'false' || $quidDisableAdmin === '' ? 'selected' : '' ?>>Off</option>
+                    <option value="true" <?php echo $quidDisableAdmin === 'true' ? 'selected' : '' ?>>On</option>
+                </select>
+            </div>
+
             <div class='quid-pay-settings-section-header'>
                 <div class='quid-pay-settings-section-title'>Inline Button Settings</div>
                 <div class='quid-pay-settings-section-description'>
