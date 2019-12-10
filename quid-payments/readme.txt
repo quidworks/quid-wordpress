@@ -3,7 +3,7 @@ Contributors: quidworks
 Tags: payment,payments,micropayment,micropayments,donation,donations,paywall,monetization,pay-per-use
 Requires at least: 5.0
 Tested up to: 5.3
-Stable tag: 1.2
+Stable tag: 1.2.1
 Requires PHP: 7.0
 License: MIT
 License URI: https://github.com/quidworks/quid-wordpress/blob/master/LICENSE
