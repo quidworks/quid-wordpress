@@ -15,8 +15,10 @@ namespace QUIDPaymentsPost {
             $inputs = new Inputs\Inputs();
             $metaInstance = new Meta\Meta();
             $meta = $metaInstance->getMetaFields($post);
+            $disableAdmin = get_option('quid-disable-admin');
 
             if ($pagenow == 'post.php') return $content;
+            if (is_admin() && $disableAdmin == "true") return $content;
             if ($post->post_type != 'post') return $content;
 
             $excerptsEnabled = get_option('quid-read-more');
